@@ -39,7 +39,7 @@ export default function Header() {
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative">
             <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#D4A017] group-hover:to-[#F5D061]">
-              Churrasquería Rodeo Grill, Tenerife
+              Mario Viajes
             </span>
             <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[#D4A017] to-[#F5D061] transition-all duration-300 group-hover:w-full" />
           </Link>
