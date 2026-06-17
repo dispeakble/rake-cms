@@ -204,12 +204,17 @@ export const rapidDeployCommand = new Command("rapid:deploy")
 
     let photos: Awaited<ReturnType<typeof scrapePhotos>> = [];
     const photoSpinner = spinner();
+    // Also check the business name for type detection (e.g. "Grill" = restaurant)
+    const nameBusinessType = guessTypeFromName(rawName);
+    const effectiveType = site?.businessType && site.businessType !== "other"
+      ? site.businessType
+      : (business as any)?.categories?.[0] || nameBusinessType || "other";
     photoSpinner.start("Collecting photos from website/Maps/Unsplash...");
     try {
       photos = await scrapePhotos(
         site,
         business,
-        site?.businessType || (business as any)?.categories?.[0] || "other"
+        effectiveType
       );
       photoSpinner.stop(`✅ ${photos.length} photos collected`);
       if (photos.length > 0) {
@@ -445,3 +450,33 @@ export const rapidDeployCommand = new Command("rapid:deploy")
 
     outro(`Site ready at https://${subdomain} 🎉`);
   });
+
+/**
+ * Guess business type from a business name string.
+ * Used as fallback when website/Maps detection returns "other".
+ */
+function guessTypeFromName(name: string): string | null {
+  const lower = name.toLowerCase();
+  const restaurant = ["grill", "restaurant", "cafe", "bistro", "pizza", "sushi", "steakhouse", "bbq", "bar", "pub", "churrascaria", "rodizio", "diner", "bakery", "brasserie"];
+  const retail = ["store", "shop", "boutique", "market", "mart", "outlet", "mall"];
+  const service = ["service", "repair", "cleaning", "salon", "spa", "barber", "laundry", "taxi"];
+  const healthcare = ["clinic", "doctor", "dental", "dentist", "hospital", "medical", "pharmacy", "care"];
+  const education = ["school", "academy", "college", "university", "institute", "center", "centre", "kindergarten", "preschool"];
+  const professional = ["law", "legal", "attorney", "accounting", "consulting", "insurance", "financial", "broker", "realty"];
+  const construction = ["construction", "building", "contractor", "renovation", "roofing", "plumbing", "electrical", "paving"];
+  const tech = ["tech", "software", "digital", "it ", "computer", "web", "development", "app ", "saas", "hosting", "cloud"];
+  const creative = ["studio", "design", "photography", "art", "creative", "media", "production", "film"];
+  const realEstate = ["real estate", "property", "realtor", "homes", "apartments", "rentals", "mortgage"];
+
+  for (const kw of restaurant) if (lower.includes(kw)) return "restaurant";
+  for (const kw of retail) if (lower.includes(kw)) return "retail";
+  for (const kw of service) if (lower.includes(kw)) return "service";
+  for (const kw of healthcare) if (lower.includes(kw)) return "healthcare";
+  for (const kw of education) if (lower.includes(kw)) return "education";
+  for (const kw of professional) if (lower.includes(kw)) return "professional";
+  for (const kw of construction) if (lower.includes(kw)) return "construction";
+  for (const kw of tech) if (lower.includes(kw)) return "technology";
+  for (const kw of creative) if (lower.includes(kw)) return "creative";
+  for (const kw of realEstate) if (lower.includes(kw)) return "real-estate";
+  return null;
+}
