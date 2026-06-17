@@ -7,6 +7,9 @@
  */
 
 import * as cheerio from "cheerio";
+import { fetchWithRetry } from "@/lib/reliability/retry";
+import { scrapeUrlSchema, sanitizeScrapedContent } from "@/lib/security/validation";
+import { scraperLimiter } from "@/lib/security/rate-limiter";
 
 export interface ScrapedPage {
   url: string;
@@ -245,12 +248,14 @@ function discoverPages($: cheerio.CheerioAPI, baseUrl: string): string[] {
  * Scrape a single page URL.
  */
 async function scrapePage(url: string): Promise<ScrapedPage> {
-  const response = await fetch(url, {
+  const response = await fetchWithRetry(url, {
     headers: {
       "User-Agent": "Mozilla/5.0 (compatible; RakeCMS-Scraper/1.0)",
       Accept: "text/html",
     },
-    signal: AbortSignal.timeout(10000),
+    timeoutMs: 15000,
+    maxAttempts: 3,
+    logger: (msg) => console.log(`   ⚠️  ${msg}`),
   });
 
   const html = await response.text();
@@ -270,7 +275,7 @@ async function scrapePage(url: string): Promise<ScrapedPage> {
   const paragraphs: string[] = [];
   $("p").each((_, el) => {
     const text = $(el).text().trim();
-    if (text.length > 20) paragraphs.push(text);
+    if (text.length > 20) paragraphs.push(sanitizeScrapedContent(text));
   });
 
   const images: { src: string; alt: string }[] = [];
@@ -309,6 +314,20 @@ async function scrapePage(url: string): Promise<ScrapedPage> {
  * Main scrape function — crawls a website and returns structured data.
  */
 export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
+  // SSRF protection: validate URL before scraping
+  const validatedUrl = scrapeUrlSchema.safeParse(url);
+  if (!validatedUrl.success) {
+    throw new Error(`Invalid or blocked URL: ${validatedUrl.error.issues[0]?.message || "URL validation failed"}`);
+  }
+  url = validatedUrl.data;
+
+  // Rate limiting for external scrapes
+  const scraperCheck = scraperLimiter.check("scrape");
+  if (scraperCheck.blocked) {
+    const waitMinutes = Math.ceil(scraperCheck.resetInMs / 60000);
+    throw new Error(`Scrape limit reached. Try again in ${waitMinutes} minute(s).`);
+  }
+
   // Normalize URL
   if (!url.startsWith("http://") && !url.startsWith("https://")) {
     url = "https://" + url;
@@ -322,9 +341,10 @@ export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
   console.log(`   Homepage: "${homepage.title}"`);
 
   // Discover linked pages
-  const $ = cheerio.load(await fetch(baseUrl, {
+  const $ = cheerio.load(await fetchWithRetry(baseUrl, {
     headers: { "User-Agent": "Mozilla/5.0 (compatible; RakeCMS-Scraper/1.0)" },
-    signal: AbortSignal.timeout(10000),
+    timeoutMs: 15000,
+    maxAttempts: 2,
   }).then((r) => r.text()));
 
   const pageUrls = discoverPages($, baseUrl).filter((u) => u !== baseUrl);

@@ -7,8 +7,8 @@
  *  - Business type/category
  *
  * Requires GOOGLE_PLACES_API_KEY in environment.
- * Get one at https://console.cloud.google.com/apis/library/places-backend.googleapis.com
  */
+import { fetchWithRetry } from "@/lib/reliability/retry";
 
 export interface BusinessData {
   name: string;
@@ -62,7 +62,7 @@ export async function searchBusiness(
     const searchQuery = location ? `${query} ${location}` : query;
     const searchUrl = `https://places.googleapis.com/v1/places:searchText`;
 
-    const searchResponse = await fetch(searchUrl, {
+    const searchResponse = await fetchWithRetry(searchUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -93,12 +93,13 @@ export async function searchBusiness(
     // Step 2: Get detailed place info
     const detailUrl = `https://places.googleapis.com/v1/places/${placeId}`;
 
-    const detailResponse = await fetch(detailUrl, {
+    const detailResponse = await fetchWithRetry(detailUrl, {
       headers: {
         "X-Goog-Api-Key": apiKey,
         "X-Goog-FieldMask": "id,displayName,formattedAddress,types,rating,userRatingCount,internationalPhoneNumber,websiteUri,regularOpeningHours,priceLevel,editorialSummary,reviews,photos,location,plusCode,shortFormattedAddress,subDestinations,addressComponents",
       },
-      signal: AbortSignal.timeout(10000),
+      timeoutMs: 10000,
+      maxAttempts: 2,
     });
 
     if (!detailResponse.ok) {
