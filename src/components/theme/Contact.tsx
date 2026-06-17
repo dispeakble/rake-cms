@@ -1,22 +1,37 @@
-// Auto-generated Contact — both locations, framer-motion
+// ============================================================
+//  Contact — Animated Gradient Fields + Pulse Button + Hover Lift
+//  MAXIMUM WOW EDITION
+// ============================================================
+
 "use client";
 
 import { motion } from "framer-motion";
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative px-4 py-24">
+    <section id="contact" className="relative px-4 py-24 overflow-hidden">
+      {/* Animated Background Pattern */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-black to-[#0d0d0d]" />
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, #D4A017 1px, transparent 1px),
+            radial-gradient(circle at 75% 75%, #8B1A1A 1px, transparent 1px)`,
+          backgroundSize: "60px 60px",
+          animation: "drift 20s linear infinite",
+        }}
+      />
+
       <div className="relative z-10 container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-14 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-amber-500/60">Contact</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl">Get in Touch</h2>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contact</span>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Get in Touch</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">Reserve your table or ask us anything.</p>
         </motion.div>
 
@@ -26,13 +41,16 @@ export default function Contact() {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15 }}
             className="space-y-8"
           >
-            {/* SUR location */}
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+            {/* SUR location — Hover Lift Card */}
+            <motion.div
+              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
+            >
               <h3 className="mb-4 text-lg font-bold text-white">
-                Rodeo Grill <span className="text-amber-400">SUR</span>
+                Rodeo Grill <span className="text-[#D4A017]">SUR</span>
                 <span className="ml-2 text-sm font-normal text-gray-400">— Costa Adeje</span>
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
@@ -42,11 +60,11 @@ export default function Contact() {
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:+34922713255" className="text-amber-400 transition hover:text-amber-300">922 713 255</a>
+                  <a href="tel:+349****3255" className="text-[#D4A017] transition hover:text-[#F5D061]">922 713 255</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:rodeosur@rodizio.com" className="text-amber-400 transition hover:text-amber-300">rodeosur@rodizio.com</a>
+                  <a href="mailto:rodeosur@rodizio.com" className="text-[#D4A017] transition hover:text-[#F5D061]">rodeosur@rodizio.com</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">🕐</span>
@@ -56,12 +74,15 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* NORTE location */}
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+            {/* NORTE location — Hover Lift Card */}
+            <motion.div
+              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
+            >
               <h3 className="mb-4 text-lg font-bold text-white">
-                Rodeo Grill <span className="text-amber-400">NORTE</span>
+                Rodeo Grill <span className="text-[#D4A017]">NORTE</span>
                 <span className="ml-2 text-sm font-normal text-gray-400">— La Esperanza</span>
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
@@ -71,11 +92,11 @@ export default function Contact() {
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:+34922443900" className="text-amber-400 transition hover:text-amber-300">922 443 900</a>
+                  <a href="tel:+349****3900" className="text-[#D4A017] transition hover:text-[#F5D061]">922 443 900</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:rodeonorte@rodizio.com" className="text-amber-400 transition hover:text-amber-300">rodeonorte@rodizio.com</a>
+                  <a href="mailto:rodeonorte@rodizio.com" className="text-[#D4A017] transition hover:text-[#F5D061]">rodeonorte@rodizio.com</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">🕐</span>
@@ -88,7 +109,7 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Contact form */}
@@ -96,49 +117,57 @@ export default function Contact() {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
             <h3 className="mb-6 text-lg font-semibold text-white">Send Us a Message</h3>
             <form className="space-y-5">
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Your Name</label>
-                <input
+                <motion.input
                   type="text"
                   placeholder="John Doe"
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  whileFocus={{ scale: 1.01 }}
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 />
               </div>
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Your Email</label>
-                <input
+                <motion.input
                   type="email"
                   placeholder="john@example.com"
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  whileFocus={{ scale: 1.01 }}
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 />
               </div>
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Preferred Location</label>
-                <select className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white transition focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
+                <motion.select
+                  whileFocus={{ scale: 1.01 }}
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                >
                   <option value="sur" className="bg-black">Rodeo Grill SUR — Costa Adeje</option>
                   <option value="norte" className="bg-black">Rodeo Grill NORTE — La Esperanza</option>
-                </select>
+                </motion.select>
               </div>
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Your Message</label>
-                <textarea
+                <motion.textarea
                   placeholder="Tell us about your reservation or inquiry..."
                   rows={4}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition focus:border-amber-500/50 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  whileFocus={{ scale: 1.01 }}
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 />
               </div>
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full rounded-lg bg-gradient-to-r from-amber-600 to-amber-500 px-6 py-3.5 text-sm font-semibold text-black shadow-lg transition hover:from-amber-500 hover:to-amber-400 hover:shadow-xl"
+                whileHover={{ scale: 1.03, boxShadow: "0 0 30px rgba(212,160,23,0.4)" }}
+                whileTap={{ scale: 0.97 }}
+                animate={{ boxShadow: ["0 0 15px rgba(212,160,23,0.2)", "0 0 25px rgba(212,160,23,0.4)", "0 0 15px rgba(212,160,23,0.2)"] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[#8B1A1A] via-[#D4A017] to-[#8B1A1A] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[#D4A017] hover:via-[#F5D061] hover:to-[#D4A017]"
               >
-                Send Message
+                <span className="relative z-10">✨ Send Message ✨</span>
               </motion.button>
             </form>
           </motion.div>

@@ -1,17 +1,44 @@
-// Auto-generated Reviews component — framer-motion staggered cards
+// ============================================================
+//  Reviews — 3D Perspective Cards + Sparkle Stars + Gradient Quotes
+//  MAXIMUM WOW EDITION
+// ============================================================
+
 "use client";
 
 import { motion } from "framer-motion";
 
 const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"María G.","text":"Espectacular rodizio brasileño. La picanha estaba en su punto perfecto y los acompañamientos tradicionales son deliciosos. El personal muy atento y el ambiente acogedor. Volveremos sin duda.","rating":5,"source":"Google"},{"author":"Carlos R.","text":"Excelente relación calidad-precio. El rodizio no para de traer carnes hasta que dices basta. La caipirinha obligatoria. Muy recomendable para grupos grandes.","rating":5,"source":"Tripadvisor"},{"author":"Ana & Pedro","text":"Hemos ido varias veces y nunca defrauda. La costilla y el pollo a la brasa son espectaculares. El servicio es rápido y muy profesional.","rating":5,"source":"Google"},{"author":"James T.","text":"Best Brazilian BBQ in Tenerife! The meat keeps coming and everything is perfectly grilled. Great atmosphere and friendly staff. The garlic bread is amazing!","rating":5,"source":"Tripadvisor"},{"author":"Laura S.","text":"Fuimos a celebrar un cumpleaños y fue una experiencia increíble. El trato del personal, la calidad de la carne y el postre de pudim... todo perfecto.","rating":4,"source":"Restaurant Guru"},{"author":"David M.","text":"Increíble variedad de carnes. La alcatra y el lomo son mis favoritos. El pan de ajo que sirven de entrante ya es una experiencia. Los precios muy ajustados para la calidad.","rating":5,"source":"Google"}];
 
+function SparkleStar({ filled, delay }: { filled: boolean; delay: number }) {
+  return (
+    <motion.span
+      className={`relative inline-block text-lg ${
+        filled ? "text-[#D4A017]" : "text-gray-600"
+      }`}
+      initial={{ opacity: 0, scale: 0, rotate: -180 }}
+      whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, type: "spring", stiffness: 200, damping: 10 }}
+    >
+      {filled ? "★" : "☆"}
+      {filled && (
+        <motion.span
+          className="absolute -top-1 -right-1 text-[8px] text-[#F5D061]"
+          animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0], rotate: [0, 180, 360] }}
+          transition={{ repeat: Infinity, duration: 2, delay: delay + 0.5, ease: "easeInOut" }}
+        >
+          ✦
+        </motion.span>
+      )}
+    </motion.span>
+  );
+}
+
 function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-1">
       {[1, 2, 3, 4, 5].map((star) => (
-        <span key={star} className={`text-sm ${
-          star <= rating ? "text-amber-400" : "text-gray-600"
-        }`}>★</span>
+        <SparkleStar key={star} filled={star <= rating} delay={star * 0.1} />
       ))}
     </div>
   );
@@ -19,35 +46,61 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function Reviews() {
   return (
-    <section id="reviews" className="relative px-4 py-24">
+    <section id="reviews" className="relative px-4 py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
+      <div
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: "radial-gradient(circle at 70% 30%, rgba(212,160,23,0.15), transparent 50%)",
+        }}
+      />
+
       <div className="relative z-10 container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-12 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-amber-500/60">Testimonials</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl">What Our Guests Say</h2>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Testimonials</span>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">What Our Guests Say</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">Real reviews from real guests across Tenerife.</p>
         </motion.div>
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {REVIEWS.map((review, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, rotateX: 10, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="rounded-xl border border-white/10 bg-white/5 p-6 shadow-sm backdrop-blur-sm transition hover:border-amber-600/30 hover:bg-white/10"
+              transition={{
+                delay: i * 0.1,
+                type: "spring",
+                stiffness: 80,
+                damping: 12,
+              }}
+              whileHover={{
+                y: -8,
+                scale: 1.02,
+                boxShadow: "0 20px 60px rgba(212,160,23,0.15)",
+              }}
+              className="relative rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm hover:border-[#D4A017]/30"
+              style={{ transformPerspective: 800 }}
             >
+              {/* Gradient Quote Decoration */}
+              <div className="absolute -top-2 -left-2 text-4xl text-[#D4A017]/20 select-none leading-none" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z"/>
+                </svg>
+              </div>
+
               <StarRating rating={review.rating} />
-              <p className="mt-3 text-sm leading-relaxed text-gray-300">"{review.text}"</p>
+              <p className="mt-3 text-sm leading-relaxed text-gray-300 relative z-10">"{review.text}"</p>
               <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-gray-400">
                 <span className="font-medium text-white">— {review.author}</span>
-                <span className="text-amber-400/80">{review.source}</span>
+                <span className="text-[#D4A017]/80">{review.source}</span>
               </div>
             </motion.div>
           ))}
