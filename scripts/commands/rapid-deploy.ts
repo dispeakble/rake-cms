@@ -18,6 +18,7 @@ import { Command } from "commander";
 import { intro, text, select, confirm, isCancel, cancel, outro, spinner } from "@clack/prompts";
 import { scrapeWebsite } from "@/lib/scraper/web-scraper";
 import { searchBusiness } from "@/lib/scraper/maps-scraper";
+import { scrapePhotos } from "@/lib/scraper/photo-scraper";
 import { generateTheme } from "@/lib/theme-generator/index";
 import { seedSite } from "@/lib/seeder/site-seeder";
 import { slugify } from "@/lib/site-context";
@@ -196,25 +197,48 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       }
     }
 
-    // Phase 3: Generate Theme
+    // Phase 3: Scrape Photos
     console.log("\n" + "=".repeat(50));
-    console.log("  PHASE 3: Generating Theme");
+    console.log("  PHASE 3: Scraping Photos");
+    console.log("=".repeat(50));
+
+    let photos: Awaited<ReturnType<typeof scrapePhotos>> = [];
+    const photoSpinner = spinner();
+    photoSpinner.start("Collecting photos from website/Maps/Unsplash...");
+    try {
+      photos = await scrapePhotos(
+        site,
+        business,
+        site?.businessType || (business as any)?.categories?.[0] || "other"
+      );
+      photoSpinner.stop(`✅ ${photos.length} photos collected`);
+      if (photos.length > 0) {
+        console.log(`   📸 Hero: ${photos[0].localPath}`);
+        if (photos[1]) console.log(`   📸 About: ${photos[1].localPath}`);
+      }
+    } catch (error) {
+      photoSpinner.stop(`⚠️  Photo scraping: ${(error as Error).message}`);
+    }
+
+    // Phase 4: Generate Theme
+    console.log("\n" + "=".repeat(50));
+    console.log("  PHASE 4: Generating Theme");
     console.log("=".repeat(50));
 
     const themeSpinner = spinner();
-    themeSpinner.start("Creating business-specific theme...");
+    themeSpinner.start("Creating business-specific theme with AI-quality copy...");
 
     try {
-      const themeConfig = await generateTheme(site, business, outputDir);
+      const themeConfig = await generateTheme(site, business, outputDir, photos);
       themeSpinner.stop(`✨ Theme generated: ${themeConfig.name} (${themeConfig.businessType})`);
     } catch (error) {
       themeSpinner.stop(`❌ Theme generation failed: ${(error as Error).message}`);
     }
 
-    // Phase 4: Seed CMS
+    // Phase 5: Seed CMS
     if (options.seed !== false && siteId > 0) {
       console.log("\n" + "=".repeat(50));
-      console.log("  PHASE 4: Seeding CMS Content");
+      console.log("  PHASE 5: Seeding CMS Content");
       console.log("=".repeat(50));
 
       const seedSpinner = spinner();
@@ -237,10 +261,10 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       }
     }
 
-    // Phase 5: Virtualmin + Apache Setup
+    // Phase 6: Virtualmin + Apache Setup
     if (doDeploy) {
       console.log("\n" + "=".repeat(50));
-      console.log("  PHASE 5: Virtualmin Subdomain Setup");
+      console.log("  PHASE 6: Virtualmin Subdomain Setup");
       console.log("=".repeat(50));
 
       const deploySpinner = spinner();
@@ -318,9 +342,9 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       }
     }
 
-    // Phase 6: Build & Deploy
+    // Phase 7: Build & Deploy
     console.log("\n" + "=".repeat(50));
-    console.log("  PHASE 6: Build Next.js App");
+    console.log("  PHASE 7: Build Next.js App");
     console.log("=".repeat(50));
 
     if (options.build !== false) {
