@@ -22,10 +22,10 @@ export interface GeneratedContent {
  */
 const TAGLINES: Record<BusinessType, string[]> = {
   restaurant: [
-    "Where every meal tells a story",
-    "Authentic flavors, unforgettable moments",
-    "Taste the difference freshness makes",
-    "Serving happiness since day one",
+    "CARNE SIN FIN, SABOR SIN LÍMITE",
+    "El auténtico rodizio brasileño en Tenerife",
+    "Cortes premium, tradición gaucha, sabor inigualable",
+    "Déjate llevar por la tradición del asado brasileño",
   ],
   retail: [
     "Discover products you'll love",
@@ -94,9 +94,30 @@ const TAGLINES: Record<BusinessType, string[]> = {
  */
 const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: string }[]> = {
   restaurant: [
-    { title: "Dine-In Experience", description: "Enjoy our carefully crafted menu in a warm and inviting atmosphere. Every dish is prepared fresh using locally sourced ingredients." },
-    { title: "Takeaway & Delivery", description: "Can't make it to us? Order online and enjoy our delicious food in the comfort of your own home." },
-    { title: "Private Events & Catering", description: "Let us make your special occasion unforgettable. We offer customized menus and full-service catering for events of all sizes." },
+    {
+      title: "Picanha Premium",
+      description: "El corte estrella de nuestra casa. Picanha brasileña seleccionada, asada a la perfección en nuestros espetos verticales. Jugosa por dentro, crocante por fuera, servida en su punto exacto directamente de la parrilla a su mesa.",
+    },
+    {
+      title: "Alcatra",
+      description: "Tierno corte de contrafilet bañado en una salsa de ajo y aceite de oliva que realza su sabor natural. Una experiencia que combina la tradición gaucha con un toque de sofisticación.",
+    },
+    {
+      title: "Costela de Res",
+      description: "Nuestra costilla de res se cocina lentamente durante horas hasta que la carne se desprende del hueso. Ahumada y caramelizada de forma natural, es uno de los platos más aclamados por nuestros comensales.",
+    },
+    {
+      title: "Medallones de Lomo",
+      description: "Jugosos medallones de lomo de ternera envueltos en panceta, asados a la parrilla hasta conseguir ese punto perfecto. Una delicia que combina textura y sabor en cada bocado.",
+    },
+    {
+      title: "Entraña y Solomillo",
+      description: "Dos cortes emblemáticos de la parrilla argentina y brasileña. La entraña, tierna y sabrosa, junto al solomillo más selecto, servidos con chimichurri casero y farofa crujiente.",
+    },
+    {
+      title: "Postres y Carta de Vinos",
+      description: "Una cuidada selección de vinos españoles y sudamericanos para maridar cada corte. Nuestros postres caseros, como la tradicional delicia de maracuyá y el pudim de leche condensada, ponen el broche de oro a la experiencia.",
+    },
   ],
   retail: [
     { title: "Product Selection", description: "Browse our carefully curated collection of products. We pride ourselves on offering only the highest quality items." },
@@ -162,6 +183,30 @@ export function generateContent(
   const location = business?.city || business?.address?.split(",")[0]?.trim() || "";
   const rawDescription = business?.description || site?.pages[0]?.metaDescription || "";
   const rawParagraphs = site?.pages[0]?.paragraphs || [];
+
+  // For restaurant type, use curated Spanish churrascaria content
+  if (businessType === "restaurant") {
+    const tagline = "CARNE SIN FIN, SABOR SIN LÍMITE";
+    const heroSubtitle = "Bienvenido a Churrasquería Rodeo Grill, donde el auténtico rodizio brasileño cobra vida en Costa Adeje. Déjese llevar por el incesante desfile de carnes premium asadas a la perfección por nuestros gauchos.";
+    const aboutHeading = "La Experiencia Rodizio";
+    const aboutParagraphs = [
+      "En Churrasquería Rodeo Grill hemos traído la esencia más pura del rodizio brasileño hasta el sur de Tenerife. Nuestra parrilla trabaja sin descanso para ofrecerle un festín de carnes seleccionadas, asadas lentamente sobre brasas naturales. Cada corte es preparado con el respeto y la maestría que la tradición gaucha exige, garantizando una experiencia que despierta todos los sentidos.",
+      "El servicio continuo es el alma de nuestra propuesta: nuestros passadores recorren las mesas con espetos humeantes de picanha, alcatra, costela de res, medallones de lomo y mucho más. Usted decide el ritmo, el corte y la cantidad. Cada pieza se sirve en su punto óptimo, recién salida del fuego, con ese sabor ahumado e intenso que solo el asado tradicional puede ofrecer.",
+      "Maridamos cada bocado con una cuidada selección de vinos, cervezas artesanales y cócteles tropicales que complementan la riqueza de la carne. Nuestra guarnición incluye clásicos brasileños como la farofa crujiente, la vinagreta fresca, el arroz con frijoles negros y el plátano frito caramelizado, creando un equilibrio perfecto de sabores y texturas.",
+      "El ambiente de Rodeo Grill evoca la calidez de las churrascuerías de São Paulo y Porto Alegre, con una decoración rústica y acogedora que invita a compartir. Ya sea para una cena en pareja, una reunión familiar o una celebración especial, nuestro equipo está dedicado a hacer de cada visita un momento inolvidable. Ven y descubre por qué somos el destino favorito de los amantes de la carne en Tenerife.",
+    ];
+    const services = getServices(site, businessType);
+    const seoDescription = `Churrasquería Rodeo Grill — CARNE SIN FIN, SABOR SIN LÍMITE. ${generateSeoDescription(name, businessType, location)}`;
+
+    return {
+      tagline,
+      heroSubtitle,
+      aboutHeading,
+      aboutParagraphs,
+      services,
+      seoDescription,
+    };
+  }
 
   // Pick tagline — use scraped or random from industry templates
   const industryTaglines = TAGLINES[businessType] || TAGLINES.other;
@@ -253,7 +298,7 @@ function generateSecondParagraph(name: string, type: BusinessType, location: str
 function generateSeoDescription(name: string, type: BusinessType, location: string): string {
   const loc = location ? ` in ${location}` : "";
   const intros: Record<BusinessType, string> = {
-    restaurant: `Visit ${name}${loc} for delicious food and great service. Browse our menu, make a reservation, or order online.`,
+    restaurant: `Visite ${name}${loc} para disfrutar del mejor rodizio brasileño. Cortes premium como picanha, alcatra y costela asados a la perfección. Disfrute de nuestra experiencia gastronómica en Costa Adeje, Tenerife. Reserve su mesa y déjese conquistar por el sabor sin límite de nuestras parrillas.`,
     retail: `Shop at ${name}${loc} for quality products at great prices. Visit our store or browse our online catalog.`,
     service: `Need reliable service${loc}? Trust ${name} for professional results. Contact us today for a free quote.`,
     professional: `${name} provides expert professional services${loc}. Schedule a consultation and let us help you succeed.`,
@@ -283,7 +328,7 @@ function getServices(
     if (servicePage) {
       const headings = servicePage.headings
         .filter((h) => h.level >= 2)
-        .slice(0, 3);
+        .slice(0, 6);
       if (headings.length >= 2) {
         return headings.map((h) => ({
           title: h.text,
@@ -303,9 +348,10 @@ function getServices(
 function generateServiceDescription(serviceName: string, businessType: BusinessType): string {
   const templates: Record<BusinessType, string[]> = {
     restaurant: [
-      `Our ${serviceName.toLowerCase()} service offers a curated experience that showcases the best of our culinary expertise.`,
-      `Experience our ${serviceName.toLowerCase()} — crafted with care and served with a smile.`,
-      `We pride ourselves on our ${serviceName.toLowerCase()}. Every detail is designed to delight.`,
+      `Nuestro servicio de ${serviceName.toLowerCase()} ofrece una experiencia única que captura la esencia de la parrilla tradicional brasileña, preparada con cortes seleccionados y el toque auténtico de nuestros gauchos.`,
+      `Descubra nuestro ${serviceName.toLowerCase()} — una especialidad de la casa elaborada con los mejores ingredientes y asada a la perfección sobre brasas naturales.`,
+      `Nos enorgullecemos de nuestro ${serviceName.toLowerCase()}. Cada detalle está cuidado al máximo para ofrecerle un sabor inigualable y una textura perfecta.`,
+      `Disfrute de nuestro ${serviceName.toLowerCase()}, servido directamente del espeto a su plato en el punto exacto que usted prefiera.`,
     ],
     retail: [
       `Explore our ${serviceName.toLowerCase()} collection. Quality products, fair prices, expert advice.`,
