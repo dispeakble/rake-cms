@@ -77,7 +77,7 @@ export default function About() {
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              About Mario Viajes
+              Sobre Mario Viajes
             </motion.h2>
             <motion.p
               variants={springUp}
@@ -132,7 +132,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[#D4A017]/20 via-[#8B1A1A]/20 to-[#D4A017]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1781715528357-37uu00.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1781715528357-37uu00.jpeg" alt="Sobre Mario Viajes" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>
