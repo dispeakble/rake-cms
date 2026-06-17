@@ -13,6 +13,7 @@ import {
  */
 export const options = pgTable("wp_options", {
   id: serial("option_id").primaryKey(),
+  siteId: integer("site_id").notNull().default(0),
   optionName: varchar("option_name", { length: 191 })
     .notNull()
     .default(""),

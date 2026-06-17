@@ -25,3 +25,6 @@ export type { Option, NewOption } from "./options";
 
 export { comments } from "./comments";
 export type { Comment, NewComment } from "./comments";
+
+export { sites } from "./sites";
+export type { Site, NewSite } from "./sites";

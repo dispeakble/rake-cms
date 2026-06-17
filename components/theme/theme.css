@@ -1,0 +1,12 @@
+/* Rake CMS — Generated Theme: La Tajea, Pje. Cabezos Sau 10, 38679 Adeje, Santa Cruz de Tenerife */
+:root {
+  --theme-primary: #3b82f6;
+  --theme-primary-rgb: 59, 130, 246;
+  --theme-secondary: #6b7280;
+  --theme-accent: #f9fafb;
+}
+
+/* Custom theme overrides */
+.bg-theme-primary { background-color: var(--theme-primary); }
+.text-theme-primary { color: var(--theme-primary); }
+.border-theme-primary { border-color: var(--theme-primary); }

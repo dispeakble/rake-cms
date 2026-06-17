@@ -14,7 +14,7 @@
 
 import { db } from "@/db";
 import { posts, options, terms, termTaxonomy } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import type { ScrapedSite } from "@/lib/scraper/web-scraper";
 import type { BusinessData } from "@/lib/scraper/maps-scraper";
 
@@ -27,11 +27,11 @@ export interface SeederResult {
 /**
  * Create or update a site option.
  */
-async function setOption(name: string, value: string) {
+async function setOption(name: string, value: string, siteId: number) {
   const existing = await db
     .select()
     .from(options)
-    .where(eq(options.optionName, name))
+    .where(and(eq(options.optionName, name), eq(options.siteId, siteId)))
     .limit(1)
     .then((r) => r[0]);
 
@@ -39,12 +39,13 @@ async function setOption(name: string, value: string) {
     await db
       .update(options)
       .set({ optionValue: value })
-      .where(eq(options.optionName, name));
+      .where(and(eq(options.optionName, name), eq(options.siteId, siteId)));
   } else {
     await db.insert(options).values({
       optionName: name,
       optionValue: value,
       autoload: "yes",
+      siteId,
     });
   }
 }
@@ -58,12 +59,13 @@ async function createPage(
   content: string,
   excerpt: string,
   type: "page" | "post" = "page",
-  status: "publish" | "draft" = "publish"
+  status: "publish" | "draft" = "publish",
+  siteId: number = 0
 ) {
   const existing = await db
     .select()
     .from(posts)
-    .where(eq(posts.postName, slug))
+    .where(and(eq(posts.postName, slug), eq(posts.siteId, siteId)))
     .limit(1)
     .then((r) => r[0]);
 
@@ -76,7 +78,7 @@ async function createPage(
         postExcerpt: excerpt,
         postStatus: status,
       })
-      .where(eq(posts.postName, slug));
+      .where(and(eq(posts.postName, slug), eq(posts.siteId, siteId)));
     console.log(`   ✓ Updated: ${title}`);
   } else {
     await db.insert(posts).values({
@@ -87,6 +89,7 @@ async function createPage(
       postType: type,
       postStatus: status,
       guid: `/${slug}`,
+      siteId,
     });
     console.log(`   ✓ Created: ${title}`);
   }
@@ -172,7 +175,8 @@ ${
  */
 export async function seedSite(
   site: ScrapedSite | null,
-  business: BusinessData | null
+  business: BusinessData | null,
+  siteId: number = 0
 ): Promise<SeederResult> {
   const name = business?.name || site?.businessName || "My Business";
   const description = site?.pages[0]?.metaDescription || business?.description || `Welcome to ${name}`;
@@ -181,8 +185,8 @@ export async function seedSite(
 
   // 1. Set site options
   console.log("\n📋 Setting site options...");
-  await setOption("blogname", name);
-  await setOption("blogdescription", description);
+  await setOption("blogname", name, siteId);
+  await setOption("blogdescription", description, siteId);
 
   // 2. Create pages from scraped content
   console.log("\n📄 Creating pages...");
@@ -200,7 +204,9 @@ export async function seedSite(
           slug,
           content,
           excerpt,
-          slug === "home" ? "page" : "page"
+          slug === "home" ? "page" : "page",
+          "publish",
+          siteId
         );
         pagesCreated++;
       }
@@ -217,7 +223,9 @@ export async function seedSite(
       "services",
       generateServicesContent(business),
       `Services offered by ${business.name}`,
-      "page"
+      "page",
+      "publish",
+      siteId
     );
     pagesCreated++;
 
@@ -227,7 +235,9 @@ export async function seedSite(
       "contact",
       `# Contact Us\n\n## ${business.name}\n\n- **Address:** ${business.address}\n- **Phone:** ${business.phone}\n- **Website:** ${business.website}\n\n## Business Hours\n\n${business.hours.map((h) => `- ${h}`).join("\n")}`,
       `Get in touch with ${business.name}`,
-      "page"
+      "page",
+      "publish",
+      siteId
     );
     pagesCreated++;
   }
@@ -235,7 +245,7 @@ export async function seedSite(
   // If no pages were created from scraping, create generic ones
   if (pagesCreated === 0) {
     console.log("   No scraped content found — creating generic pages");
-    await createPage("Home", "home", `# ${name}\n\n${description}`, description, "page");
+    await createPage("Home", "home", `# ${name}\n\n${description}`, description, "page", "publish", siteId);
     pagesCreated++;
 
     await createPage(
@@ -243,7 +253,9 @@ export async function seedSite(
       "about",
       `# About ${name}\n\nWe are dedicated to providing exceptional service to our community.`,
       `About ${name}`,
-      "page"
+      "page",
+      "publish",
+      siteId
     );
     pagesCreated++;
 
@@ -252,7 +264,9 @@ export async function seedSite(
       "contact",
       `# Contact Us\n\nGet in touch with us today.`,
       `Contact ${name}`,
-      "page"
+      "page",
+      "publish",
+      siteId
     );
     pagesCreated++;
   }
@@ -280,7 +294,7 @@ export async function seedSite(
       } as ScrapedSite),
       business
     );
-    await createPage("Home", "home", homeContent, description, "page");
+    await createPage("Home", "home", homeContent, description, "page", "publish", siteId);
   }
 
   console.log(`\n✅ CMS seeded: ${pagesCreated} pages created/updated`);

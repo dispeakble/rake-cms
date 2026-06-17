@@ -15,6 +15,7 @@ import {
  */
 export const posts = pgTable("wp_posts", {
   id: serial("ID").primaryKey(),
+  siteId: integer("site_id").notNull().default(0),
   postAuthor: integer("post_author").notNull().default(0),
   postDate: timestamp("post_date", { mode: "string" })
     .notNull()
