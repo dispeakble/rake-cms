@@ -13,6 +13,7 @@ import { createSiteCommand } from "./commands/create-site";
 import { createPostCommand } from "./commands/create-post";
 import { importWpCommand } from "./commands/import-wp";
 import { themeActivateCommand } from "./commands/theme-activate";
+import { rapidDeployCommand } from "./commands/rapid-deploy";
 import pkg from "../package.json";
 
 const program = new Command();
@@ -26,5 +27,6 @@ program.addCommand(createSiteCommand);
 program.addCommand(createPostCommand);
 program.addCommand(importWpCommand);
 program.addCommand(themeActivateCommand);
+program.addCommand(rapidDeployCommand);
 
 program.parse();

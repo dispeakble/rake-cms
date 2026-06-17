@@ -23,6 +23,7 @@
     "@clack/prompts": "^1.5.1",
     "@hookform/resolvers": "^5.4.0",
     "bcryptjs": "^3.0.3",
+    "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "commander": "^15.0.0",
     "drizzle-kit": "^0.31.10",
