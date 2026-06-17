@@ -125,12 +125,13 @@ async function verifyDeployment(
   return { pass, checks, duration: Date.now() - start };
 }
 
-// CLI entry point
-const slug = process.argv.find((a) => a.startsWith("--slug="))?.split("=")[1] || process.argv[2];
-const pagesStr = process.argv.find((a) => a.startsWith("--pages="))?.split("=")[1] || "home,about,services,contact";
-const port = process.argv.find((a) => a.startsWith("--port="))?.split("=")[1] || "";
+// CLI entry point — only runs when executed directly (not imported)
+const isMainModule = process.argv[1]?.includes("verify-deploy");
 
-if (slug) {
+if (isMainModule) {
+  const slug = process.argv.find((a) => a.startsWith("--slug="))?.split("=")[1] || process.argv[2];
+  const pagesStr = process.argv.find((a) => a.startsWith("--pages="))?.split("=")[1] || "home,about,services,contact";
+  const port = process.argv.find((a) => a.startsWith("--port="))?.split("=")[1] || "";
   const pageSlugs = pagesStr.split(",");
   verifyDeployment(`${slug}.alexawebservers.com`, pageSlugs, port ? parseInt(port) : undefined).then((result) => {
     console.log("\n  🔍 DEPLOYMENT VERIFICATION");

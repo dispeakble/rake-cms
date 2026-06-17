@@ -229,6 +229,22 @@ export async function seedSite(
     );
     pagesCreated++;
 
+    // About page
+    await createPage(
+      "About Us",
+      "about",
+      `# About ${business.name}\n\n${business.description || "We are dedicated to providing exceptional service to our community, bringing years of experience and a passion for excellence."}\n\n## Our Mission\n\nOur mission is to deliver outstanding quality and customer satisfaction in everything we do. We believe in building lasting relationships with our customers through trust, transparency, and exceptional service.\n\n${
+        business.rating > 0
+          ? `## Our Reputation\n\nWith a rating of ${business.rating}/5 from ${business.totalRatings} reviews, we take pride in the trust our customers place in us.`
+          : ""
+      }`,
+      `About ${business.name}`,
+      "page",
+      "publish",
+      siteId
+    );
+    pagesCreated++;
+
     // Contact page
     await createPage(
       "Contact Us",

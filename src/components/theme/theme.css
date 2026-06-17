@@ -1,56 +1,5 @@
-/* Rake CMS — Generated Theme: Churrasquería Rodeo Grill */
-:root {
-  --theme-primary: #8B1A1A;
-  --theme-primary-rgb: 139, 26, 26;
-  --theme-secondary: #D4A017;
-  --theme-secondary-rgb: 212, 160, 23;
-  --theme-accent: #1a1a2e;
-  --theme-accent-rgb: 26, 26, 46;
-  --theme-dark: #0d0d0d;
-  --theme-cream: #faf6f0;
-}
-
+/* Rake CMS — Theme: Churrasquería Rodeo Grill, Tenerife */
+:root { --theme-primary: #000000; --theme-primary-rgb: 0, 0, 0; --theme-secondary: #abb8c3; --theme-accent: #ffffff; }
 .bg-theme-primary { background-color: var(--theme-primary); }
 .text-theme-primary { color: var(--theme-primary); }
 .border-theme-primary { border-color: var(--theme-primary); }
-.bg-theme-secondary { background-color: var(--theme-secondary); }
-.text-theme-secondary { color: var(--theme-secondary); }
-
-/* Floating animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-@keyframes float-delayed {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-}
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(139, 26, 26, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(139, 26, 26, 0.6); }
-}
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-@keyframes rotate-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-float-delayed { animation: float-delayed 7s ease-in-out infinite 1s; }
-.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--theme-accent); }
-::-webkit-scrollbar-thumb { background: var(--theme-primary); border-radius: 4px; }
-
-/* Selection */
-::selection { background: var(--theme-secondary); color: var(--theme-dark); }
