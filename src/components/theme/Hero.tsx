@@ -36,7 +36,7 @@ export default function Hero() {
     <section
       ref={ref}
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-4"
-      style={{ backgroundImage: 'url(/media/scraped/website-1781712351449-tytfhj.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: 'url(/media/scraped/website-1781713455507-vmqh5x.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       {/* ── 1. Animated Mesh/Gradient Background ── */}
       <div
@@ -115,7 +115,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[#D4A017]/30 bg-[#D4A017]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[#D4A017] backdrop-blur-sm">
-            ✦ Brazilian Rodizio ✦
+            Explora
           </span>
         </motion.div>
 
@@ -124,11 +124,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          CARNE SIN FIN,
-          <br />
-          <span className="gradient-text-gold inline-block">
-            SABOR SIN LÍMITE
-          </span>
+          Explora, sueña, descubre — Islas Canarias
         </motion.h1>
 
         {/* ── 4. Typewriter / Staggered Subtitle ── */}
@@ -136,7 +132,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"Vacaciones que mereces, experiencias que recordarás".split("").map((char, i) => (
+          {"Explora, sueña, descubre — Islas Canarias".split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
@@ -158,13 +154,13 @@ export default function Hero() {
             href="/#menu"
             className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[#8B1A1A] to-[#D4A017] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(212,160,23,0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,160,23,0.5)] hover:scale-105 active:scale-95"
           >
-            <span className="relative z-10">Explore Menu &amp; Prices</span>
+            <span className="relative z-10">Explore Our Services</span>
           </Link>
           <Link
             href="/#contact"
             className="shimmer-btn relative inline-flex items-center rounded-xl border-2 border-white/30 px-10 py-4 font-bold text-white transition-all duration-300 hover:border-[#D4A017] hover:bg-[#D4A017]/10 hover:shadow-[0_0_30px_rgba(212,160,23,0.3)] hover:scale-105 active:scale-95"
           >
-            <span className="relative z-10">Reserve Your Table</span>
+            <span className="relative z-10">Get in Touch</span>
           </Link>
         </motion.div>
       </motion.div>

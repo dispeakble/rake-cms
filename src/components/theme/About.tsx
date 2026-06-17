@@ -71,7 +71,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/80"
             >
-              Our Story
+              Explora
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -83,19 +83,19 @@ export default function About() {
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Step into About Mario Viajes and experience the centuries-old gaucho tradition of rodizio — a continuous service of fire-grilled meats, carved directly onto your plate by our skilled passadores. Each cut is seasoned with coarse sea salt and grilled over open flames to perfection.
+              Tenerife es considerada como la isla de la &quot;primavera eterna&quot; con un clima suave durante todo el año. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España. [...]
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              From the coveted picanha (prime rump cap) to succulent costela (beef ribs) and tender alcatra (top sirloin), our rotating selection features 12+ premium cuts brought to your table on skewers. Use the color-coded card — green means "keep them coming," red means "I need a moment."
+              Tenerife es el lugar donde se puede estar en la altura más alta de España rodeado de nieve y dos horas más tarde para broncearse a la playa.
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              Complement your feast with our hot and cold buffet of traditional Brazilian sides — garlic bread, black beans, rice, farofa, fried bananas, and fresh salads. Save room for dessert and finish with a caipirinha, Brazil's national cocktail.
+              Si usted deja ir su imaginación durante su visita a Gran Canaria, tendrá la sensación de que en lugar de una isla, en realidad visitará tres continentes: África, Europa y América. Es la tercera isla más grande del archipiélago canario. [...]
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -104,9 +104,9 @@ export default function About() {
               className="mt-8 grid grid-cols-3 gap-4"
             >
               {[
-                { value: 14, label: "Premium Cuts", suffix: "+" },
-                { value: 842, label: "Happy Guests", suffix: "+" },
-                { value: 23, label: "Years Serving", suffix: "+" },
+                { value: 500, label: "Happy Clients", suffix: "+" },
+                { value: 15, label: "Years Experience", suffix: "+" },
+                { value: 99, label: "Satisfaction", suffix: "%" },
               ].map((stat) => (
                 <div
                   key={stat.label}
@@ -132,7 +132,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[#D4A017]/20 via-[#8B1A1A]/20 to-[#D4A017]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1781712351467-vxj50u.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1781713455522-ngzsfn.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>

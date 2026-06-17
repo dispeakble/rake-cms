@@ -436,6 +436,14 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
     ? `backgroundImage: 'url(${heroPhoto})', backgroundSize: 'cover', backgroundPosition: 'center'`
     : `background: 'linear-gradient(135deg, ${config.primaryColor}, ${config.secondaryColor})'`;
 
+  // Dynamic CTA text based on business type
+  const ctaPrimary = config.businessType === "restaurant"
+    ? "Explore Menu &amp; Prices"
+    : "Explore Our Services";
+  const ctaSecondary = config.businessType === "restaurant"
+    ? "Reserve Your Table"
+    : "Get in Touch";
+
   return `// ============================================================
 //  Hero — Animated Gradient Mesh + Floating Particles + Shimmer CTAs
 //  MAXIMUM WOW EDITION
@@ -553,7 +561,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[#D4A017]/30 bg-[#D4A017]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[#D4A017] backdrop-blur-sm">
-            ✦ Brazilian Rodizio ✦
+            ${escapeJsx(content.tagline?.split(",")[0]?.trim() || "Welcome")}
           </span>
         </motion.div>
 
@@ -562,11 +570,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          CARNE SIN FIN,
-          <br />
-          <span className="gradient-text-gold inline-block">
-            SABOR SIN LÍMITE
-          </span>
+          ${escapeJsx(content.tagline || "Welcome")}
         </motion.h1>
 
         {/* ── 4. Typewriter / Staggered Subtitle ── */}
@@ -574,7 +578,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"${escapeJsx(content.heroSubtitle || "Discover the authentic Brazilian rodizio experience — an endless parade of premium grilled meats, carved tableside by our expert passadores.")}".split("").map((char, i) => (
+          {"${escapeJsx(content.heroSubtitle || "Welcome to our establishment. We look forward to serving you.")}".split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
@@ -596,13 +600,13 @@ export default function Hero() {
             href="/#menu"
             className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[#8B1A1A] to-[#D4A017] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(212,160,23,0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,160,23,0.5)] hover:scale-105 active:scale-95"
           >
-            <span className="relative z-10">Explore Menu &amp; Prices</span>
+            <span className="relative z-10">${ctaPrimary}</span>
           </Link>
           <Link
             href="/#contact"
             className="shimmer-btn relative inline-flex items-center rounded-xl border-2 border-white/30 px-10 py-4 font-bold text-white transition-all duration-300 hover:border-[#D4A017] hover:bg-[#D4A017]/10 hover:shadow-[0_0_30px_rgba(212,160,23,0.3)] hover:scale-105 active:scale-95"
           >
-            <span className="relative z-10">Reserve Your Table</span>
+            <span className="relative z-10">${ctaSecondary}</span>
           </Link>
         </motion.div>
       </motion.div>
@@ -717,31 +721,31 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/80"
             >
-              Our Story
+              ${escapeJsx(content.tagline?.split(",")[0]?.trim() || "About Us")}
             </motion.span>
             <motion.h2
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              ${escapeJsx(content.aboutHeading || "The Rodizio Experience")}
+              ${escapeJsx(content.aboutHeading || "About Us")}
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Step into ${escapeJsx(content.aboutHeading?.split(" in ")[0] || "our restaurant")} and experience the centuries-old gaucho tradition of rodizio — a continuous service of fire-grilled meats, carved directly onto your plate by our skilled passadores. Each cut is seasoned with coarse sea salt and grilled over open flames to perfection.
+              ${escapeJsx(content.aboutParagraphs[0] || "Welcome to our establishment. We're dedicated to providing an exceptional experience for every guest.")}
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              From the coveted picanha (prime rump cap) to succulent costela (beef ribs) and tender alcatra (top sirloin), our rotating selection features 12+ premium cuts brought to your table on skewers. Use the color-coded card — green means "keep them coming," red means "I need a moment."
+              ${escapeJsx(content.aboutParagraphs[1] || "Our team is committed to quality and service, ensuring every visit is memorable.")}
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              Complement your feast with our hot and cold buffet of traditional Brazilian sides — garlic bread, black beans, rice, farofa, fried bananas, and fresh salads. Save room for dessert and finish with a caipirinha, Brazil's national cocktail.
+              ${escapeJsx(content.aboutParagraphs[2] || "We invite you to join us and discover what makes us special.")}
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -750,9 +754,9 @@ export default function About() {
               className="mt-8 grid grid-cols-3 gap-4"
             >
               {[
-                { value: 14, label: "Premium Cuts", suffix: "+" },
-                { value: 842, label: "Happy Guests", suffix: "+" },
-                { value: 23, label: "Years Serving", suffix: "+" },
+                { value: 500, label: "Happy Clients", suffix: "+" },
+                { value: 15, label: "Years Experience", suffix: "+" },
+                { value: 99, label: "Satisfaction", suffix: "%" },
               ].map((stat) => (
                 <div
                   key={stat.label}
@@ -784,34 +788,11 @@ export default function About() {
 // ─── Services — 3D TILT + GLOWING BORDERS + PULSE DOTS ───────────
 
 function generateServices(content: GeneratedContent, config: ThemeConfig): string {
-  const meats = [
-    { name: "Picanha", desc: "Prime rump cap — the crown jewel of churrasco" },
-    { name: "Alcatra", desc: "Tender top sirloin, grilled to juicy perfection" },
-    { name: "Costela", desc: "Succulent beef ribs, slow-roasted until fall-off-the-bone" },
-    { name: "Maminha", desc: "Flavorful bottom sirloin, beautifully marbled" },
-    { name: "Lomo", desc: "Premium pork tenderloin, seasoned and fire-grilled" },
-    { name: "Frango", desc: "Chicken thighs and drumsticks, marinated in citrus and herbs" },
-    { name: "Cordeiro", desc: "Herb-crusted lamb chops, smoky and tender" },
-    { name: "Linguica", desc: "Spicy Portuguese sausage with a perfect char" },
-  ];
-  const starters = [
-    { name: "Pão de Queijo", desc: "Cheese bread — warm, chewy, and addictive" },
-    { name: "Polenta Frita", desc: "Crispy fried polenta sticks with garlic aioli" },
-    { name: "Azeitonas", desc: "Mixed marinated olives with herbs and olive oil" },
-    { name: "Salada Tropical", desc: "Fresh garden salad with hearts of palm" },
-  ];
-  const desserts = [
-    { name: "Tres Leches", desc: "Three-milk sponge cake with vanilla whipped cream" },
-    { name: "Pudim", desc: "Classic Brazilian flan with caramel sauce" },
-    { name: "Mousse de Chocolate", desc: "Rich Belgian chocolate mousse" },
-    { name: "Tarta de Limón", desc: "Zesty lemon meringue pie with toasted meringue" },
-    { name: "Helado Artesanal", desc: "Artisan ice cream — vanilla, dulce de leche, or coconut" },
-    { name: "Fruta Fresca", desc: "Seasonal fresh fruit platter with honey-lime drizzle" },
-  ];
-
-  const meatsJson = JSON.stringify(meats);
-  const startersJson = JSON.stringify(starters);
-  const dessertsJson = JSON.stringify(desserts);
+  const services = content.services && content.services.length > 0
+    ? content.services
+    : [{ title: config.name || "Our Services", description: "Discover what we offer." }];
+  const servicesJson = JSON.stringify(services);
+  const bizName = escapeJsx(config.name || "Our Business");
 
   return `// ============================================================
 //  Services — 3D Perspective Tilt + Glowing Borders + Pulse Dots
@@ -823,9 +804,7 @@ function generateServices(content: GeneratedContent, config: ThemeConfig): strin
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-const MEATS = ${meatsJson};
-const STARTERS = ${startersJson};
-const DESSERTS = ${dessertsJson};
+const SERVICES = ${servicesJson};
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -884,7 +863,7 @@ export default function Services() {
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* ── Locations ── */}
+        {/* ── Our Services ── */}
         <motion.div
           id="locations"
           initial={{ opacity: 0, y: 40 }}
@@ -901,67 +880,24 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
             >
-              Our Locations
+              What We Offer
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Find Your Nearest Rodeo Grill</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Our Services</h2>
           </div>
-          <div className="grid gap-8 md:grid-cols-2">
-            {/* SUR */}
-            <TiltCard className="rounded-2xl p-[1px] glow-card">
-              <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
-                {/* Pulse dot indicator */}
-                <div className="absolute top-4 right-4 flex items-center gap-2">
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4A017] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-[#D4A017]" />
-                  </span>
-                  <span className="text-xs text-[#D4A017]/60">Open Now</span>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {SERVICES.map((service, i) => (
+              <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
+                <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
+                  <span className="mb-2 inline-block rounded bg-[#D4A017]/20 px-2 py-0.5 text-xs font-medium text-[#D4A017]">#{(i + 1).toString().padStart(2, "0")}</span>
+                  <h3 className="mb-3 text-xl font-bold text-white">{service.title}</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">{service.description}</p>
                 </div>
-                <div className="mb-4 flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4A017]/20 text-lg">📍</span>
-                  <h3 className="text-xl font-bold text-white">Rodeo Grill <span className="text-[#D4A017]">SUR</span></h3>
-                </div>
-                <div className="space-y-3 text-sm text-gray-300">
-                  <p className="font-medium text-white">Costa Adeje</p>
-                  <p>C. Dublin 1, 38660 Costa Adeje</p>
-                  <p>📞 <a href="tel:+349****3255" className="text-[#D4A017] transition hover:text-[#F5D061]">922 713 255</a></p>
-                  <p className="text-gray-400">Wed — Sun: 14:00 – 23:00</p>
-                  <a href="https://maps.google.com/?q=C.+Dublin+1,+38660+Costa+Adeje" target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-[#D4A017] underline transition hover:text-[#F5D061]">View on Google Maps →</a>
-                </div>
-              </div>
-            </TiltCard>
-            {/* NORTE */}
-            <TiltCard className="rounded-2xl p-[1px] glow-card">
-              <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
-                <div className="absolute top-4 right-4 flex items-center gap-2">
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4A017] opacity-75" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-[#D4A017]" />
-                  </span>
-                  <span className="text-xs text-[#D4A017]/60">Open Now</span>
-                </div>
-                <div className="mb-4 flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D4A017]/20 text-lg">📍</span>
-                  <h3 className="text-xl font-bold text-white">Rodeo Grill <span className="text-[#D4A017]">NORTE</span></h3>
-                </div>
-                <div className="space-y-3 text-sm text-gray-300">
-                  <p className="font-medium text-white">La Esperanza</p>
-                  <p>Carr. de la Esperanza Km4.8, La Esperanza</p>
-                  <p>📞 <a href="tel:+349****3900" className="text-[#D4A017] transition hover:text-[#F5D061]">922 443 900</a></p>
-                  <div className="text-gray-400">
-                    <p>Mon &amp; Thu: 13:00 – 18:00</p>
-                    <p>Fri: 13:00 – 23:00</p>
-                    <p>Sat: 12:00 – 23:00</p>
-                    <p>Sun: 12:00 – 20:00</p>
-                  </div>
-                  <a href="https://maps.google.com/?q=Carr.+de+la+Esperanza+Km4.8,+La+Esperanza" target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-[#D4A017] underline transition hover:text-[#F5D061]">View on Google Maps →</a>
-                </div>
-              </div>
-            </TiltCard>
+              </TiltCard>
+            ))}
           </div>
         </motion.div>
 
-        {/* ── Menu & Pricing ── */}
+        {/* ── Menu / More Services ── */}
         <motion.div
           id="menu"
           initial={{ opacity: 0, y: 40 }}
@@ -978,125 +914,26 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
             >
-              Menu &amp; Prices
+              Explore
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Our Rodizio Experience</h2>
-            <p className="mx-auto mt-4 max-w-xl text-gray-400">All-you-can-eat rodizio including hot &amp; cold buffet and traditional sides.</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Everything We Offer</h2>
           </div>
 
-          {/* ── Glassmorphism Pricing Cards ── */}
-          <div className="mb-16 grid gap-6 md:grid-cols-3">
-            {[
-              { label: "Adults", price: "31.90", desc: "Full rodizio + buffet", popular: true },
-              { label: "Kids", price: "17.90", desc: "Ages 4–12, rodizio + buffet", popular: false },
-              { label: "Desserts", price: "4.90", desc: "Homemade desserts per portion", popular: false },
-            ].map((item, i) => (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {SERVICES.map((service, i) => (
               <motion.div
-                key={item.label}
+                key={i}
                 initial={{ opacity: 0, y: 40, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.12, type: "spring", stiffness: 100, damping: 15 }}
+                transition={{ delay: i * 0.08, type: "spring", stiffness: 100, damping: 15 }}
                 whileHover={{ y: -8, scale: 1.03 }}
-                className={\`relative rounded-2xl p-[1px] overflow-hidden \${
-                  item.popular
-                    ? "bg-gradient-to-b from-[#D4A017] via-[#8B1A1A] to-[#D4A017]"
-                    : "bg-white/10"
-                }\`}
+                className="relative rounded-2xl p-[1px] overflow-hidden bg-white/10"
               >
-                <div className={\`relative rounded-2xl p-8 text-center h-full \${
-                  item.popular
-                    ? "bg-[#0a0a0f]"
-                    : "glass"
-                }\`}>
-                  {item.popular && (
-                    <motion.span
-                      initial={{ y: -20, opacity: 0 }}
-                      whileInView={{ y: 0, opacity: 1 }}
-                      viewport={{ once: true }}
-                      className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#D4A017] to-[#F5D061] px-4 py-1 text-xs font-bold text-black shadow-lg"
-                    >
-                      ★ Most Popular ★
-                    </motion.span>
-                  )}
-                  <h3 className="mb-2 text-lg font-semibold text-white">{item.label}</h3>
-                  {/* ── Animated Price Tag with Glow ── */}
-                  <motion.p
-                    className="mb-4 text-4xl font-black"
-                    whileHover={{ scale: 1.1, textShadow: "0 0 20px rgba(212,160,23,0.6)" }}
-                  >
-                    <span className="text-lg font-normal text-gray-400">€</span>
-                    <span className="gradient-text-gold">{item.price}</span>
-                  </motion.p>
-                  <p className="text-sm text-gray-400">{item.desc}</p>
+                <div className="relative rounded-2xl p-8 text-center h-full glass">
+                  <h3 className="mb-2 text-lg font-semibold text-white">{service.title}</h3>
+                  <p className="text-sm text-gray-400">{service.description}</p>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* ── Gradient Divider ── */}
-          <div className="mx-auto mb-12 h-[1px] max-w-2xl bg-gradient-to-r from-transparent via-[#D4A017]/40 to-transparent" />
-
-          {/* Premium Cuts */}
-          <h3 className="mb-8 text-center text-2xl font-bold text-white">🔥 Premium Cuts</h3>
-          <div className="mb-16 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-            {MEATS.map((meat, i) => (
-              <motion.div
-                key={meat.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06, type: "spring", stiffness: 100, damping: 12 }}
-                whileHover={{ scale: 1.05, y: -4 }}
-                className="glow-card rounded-xl p-5"
-              >
-                <span className="mb-2 inline-block rounded bg-[#D4A017]/20 px-2 py-0.5 text-xs font-medium text-[#D4A017]">#{(i + 1).toString().padStart(2, "0")}</span>
-                <h4 className="text-base font-semibold text-white">{meat.name}</h4>
-                <p className="mt-1 text-xs text-gray-400">{meat.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Gradient Divider */}
-          <div className="mx-auto mb-12 h-[1px] max-w-2xl bg-gradient-to-r from-transparent via-[#D4A017]/30 to-transparent" />
-
-          {/* Starters */}
-          <h3 className="mb-8 text-center text-2xl font-bold text-white">🥟 Starters &amp; Sides</h3>
-          <div className="mb-16 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-            {STARTERS.map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, type: "spring", stiffness: 100, damping: 12 }}
-                whileHover={{ scale: 1.05, y: -4 }}
-                className="glow-card rounded-xl p-5"
-              >
-                <h4 className="text-base font-semibold text-white">{item.name}</h4>
-                <p className="mt-1 text-xs text-gray-400">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Gradient Divider */}
-          <div className="mx-auto mb-12 h-[1px] max-w-2xl bg-gradient-to-r from-transparent via-[#D4A017]/30 to-transparent" />
-
-          {/* Desserts */}
-          <h3 className="mb-8 text-center text-2xl font-bold text-white">🍰 Homemade Desserts</h3>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-            {DESSERTS.map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06, type: "spring", stiffness: 100, damping: 12 }}
-                whileHover={{ scale: 1.08, y: -6 }}
-                className="glow-card rounded-xl p-5 text-center"
-              >
-                <h4 className="text-sm font-semibold text-white">{item.name}</h4>
-                <p className="mt-1 text-xs text-gray-400">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -1179,8 +1016,8 @@ export default function Reviews() {
           className="mb-12 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Testimonials</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">What Our Guests Say</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Real reviews from real guests across Tenerife.</p>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">What Our Clients Say</h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Real reviews from real customers.</p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -1264,7 +1101,7 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contact</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Get in Touch</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Reserve your table or ask us anything.</p>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Get in touch with us for inquiries or bookings.</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -1276,69 +1113,49 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
             className="space-y-8"
           >
-            {/* SUR location — Hover Lift Card */}
+            {/* Business location — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                Rodeo Grill <span className="text-[#D4A017]">SUR</span>
-                <span className="ml-2 text-sm font-normal text-gray-400">— Costa Adeje</span>
+                <span className="text-[#D4A017]">📍</span> ${escapeJsx(config.name || "Our Location")}
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>C. Dublin 1, 38660 Costa Adeje, Tenerife</span>
+                  <span>Contact us for our exact location and directions.</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:+349****3255" className="text-[#D4A017] transition hover:text-[#F5D061]">922 713 255</a>
+                  <a href="tel:" className="text-[#D4A017] transition hover:text-[#F5D061]">Call us for more information</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:rodeosur@rodizio.com" className="text-[#D4A017] transition hover:text-[#F5D061]">rodeosur@rodizio.com</a>
+                  <a href="mailto:" className="text-[#D4A017] transition hover:text-[#F5D061]">Email us for inquiries</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">🕐</span>
                   <div>
-                    <p>Wed — Sun: 14:00 – 23:00</p>
-                    <p className="text-gray-500">Closed Mon &amp; Tue</p>
+                    <p>Mon — Fri: 09:00 – 18:00</p>
+                    <p className="text-gray-500">Weekend hours may vary</p>
                   </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* NORTE location — Hover Lift Card */}
+            {/* Additional contact info — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                Rodeo Grill <span className="text-[#D4A017]">NORTE</span>
-                <span className="ml-2 text-sm font-normal text-gray-400">— La Esperanza</span>
+                <span className="text-[#D4A017]">📋</span> Get in Touch
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">📍</span>
-                  <span>Carr. de la Esperanza Km4.8, La Esperanza, Tenerife</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">📞</span>
-                  <a href="tel:+349****3900" className="text-[#D4A017] transition hover:text-[#F5D061]">922 443 900</a>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">✉️</span>
-                  <a href="mailto:rodeonorte@rodizio.com" className="text-[#D4A017] transition hover:text-[#F5D061]">rodeonorte@rodizio.com</a>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">🕐</span>
-                  <div>
-                    <p>Mon &amp; Thu: 13:00 – 18:00</p>
-                    <p>Fri: 13:00 – 23:00</p>
-                    <p>Sat: 12:00 – 23:00</p>
-                    <p>Sun: 12:00 – 20:00</p>
-                    <p className="text-gray-500">Closed Tue &amp; Wed</p>
-                  </div>
+                <p>We'd love to hear from you! Whether you have a question about our services, need assistance planning your visit, or just want to say hello, feel free to reach out.</p>
+                <div className="mt-4 pt-3 border-t border-white/10">
+                  <p className="text-xs text-gray-400">We typically respond within 24 hours.</p>
                 </div>
               </div>
             </motion.div>
@@ -1373,13 +1190,14 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Preferred Location</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Subject</label>
                 <motion.select
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 >
-                  <option value="sur" className="bg-black">Rodeo Grill SUR — Costa Adeje</option>
-                  <option value="norte" className="bg-black">Rodeo Grill NORTE — La Esperanza</option>
+                  <option value="general" className="bg-black">General Inquiry</option>
+                  <option value="booking" className="bg-black">Booking / Reservation</option>
+                  <option value="support" className="bg-black">Customer Support</option>
                 </motion.select>
               </div>
               <div>
@@ -1413,7 +1231,7 @@ export default function Contact() {
 
 // ─── Footer — GRADIENT BG + GLOW LINKS + ANIMATED BORDER ─────────
 
-function generateFooter(business: BusinessData | null, name: string, pageSlugs: SitePage[]): string {
+function generateFooter(business: BusinessData | null, name: string, pageSlugs: SitePage[], content: GeneratedContent): string {
   const year = new Date().getFullYear();
   const navLinks = buildNavLinks(pageSlugs);
   const quickLinks = renderNavLinks(
@@ -1468,7 +1286,7 @@ export default function Footer() {
               <span className="gradient-text-gold">${escapeJsx(name)}</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              Authentic Brazilian rodizio. Endless meat, bold flavors, unforgettable moments.
+              ${escapeJsx(content.heroSubtitle || "Welcome to our establishment. We look forward to serving you.")}
             </p>
             {/* Social / Watermark link with Glow Hover */}
             <div className="mt-6 flex gap-4">
@@ -1632,7 +1450,7 @@ export async function generateTheme(
   const aboutPhoto = photos.length > 1 ? photos[1].localPath : null;
 
   // Build review data
-  const reviews = getReviews(name);
+  const reviews = getReviews(name, businessType);
 
   const themeDir = path.join(outputDir, "src", "components", "theme");
   await fs.mkdir(themeDir, { recursive: true });
@@ -1645,7 +1463,7 @@ export async function generateTheme(
     { name: "Services.tsx", content: generateServices(content, config) },
     { name: "Reviews.tsx", content: generateReviews(reviews) },
     { name: "Contact.tsx", content: generateContact(site, business, config) },
-    { name: "Footer.tsx", content: generateFooter(business, name, pageSlugs) },
+    { name: "Footer.tsx", content: generateFooter(business, name, pageSlugs, content) },
     { name: "GeneratedPage.tsx", content: generateLayout(name) },
   ];
 
