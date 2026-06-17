@@ -225,11 +225,26 @@ export const rapidDeployCommand = new Command("rapid:deploy")
     console.log("  PHASE 4: Generating Theme");
     console.log("=".repeat(50));
 
+    // Determine which pages will be seeded, so nav links are accurate
+    const willHaveBusiness = !!(business || businessQuery);
+    const pageSlugs: { slug: string; label: string }[] = [
+      { slug: "home", label: "Home" },
+    ];
+    if (willHaveBusiness) {
+      pageSlugs.push({ slug: "about", label: "About" },
+        { slug: "services", label: "Services" },
+        { slug: "contact", label: "Contact" });
+    } else {
+      pageSlugs.push({ slug: "about", label: "About" },
+        { slug: "contact", label: "Contact" });
+    }
+    // Blog is always available via the /blog route
+
     const themeSpinner = spinner();
     themeSpinner.start("Creating business-specific theme with AI-quality copy...");
 
     try {
-      const themeConfig = await generateTheme(site, business, outputDir, photos);
+      const themeConfig = await generateTheme(site, business, outputDir, photos, pageSlugs);
       themeSpinner.stop(`✨ Theme generated: ${themeConfig.name} (${themeConfig.businessType})`);
     } catch (error) {
       themeSpinner.stop(`❌ Theme generation failed: ${(error as Error).message}`);
@@ -363,6 +378,46 @@ export const rapidDeployCommand = new Command("rapid:deploy")
         console.log(`   ${summary}`);
       } catch (error: any) {
         buildSpinner.stop(`❌ Build failed: ${(error as Error).message}`);
+      }
+    }
+
+    // Phase 8: Verification
+    if (options.build !== false) {
+      console.log("\n" + "=".repeat(50));
+      console.log("  PHASE 8: Verifying Deployment");
+      console.log("=".repeat(50));
+
+      const verifySpinner = spinner();
+      verifySpinner.start("Checking all routes return 200...");
+
+      try {
+        const { verifyDeployment } = await import("../../scripts/verify-deploy");
+        const allSlugs = pageSlugs.map((p) => p.slug);
+        const result = await verifyDeployment(
+          subdomain,
+          allSlugs,
+          3100
+        );
+        verifySpinner.stop(result.pass ? "✅ All checks passed" : "❌ Some checks failed");
+
+        let passCount = 0;
+        let failCount = 0;
+        for (const check of result.checks) {
+          if (check.status === "pass") {
+            passCount++;
+            console.log(`   ✅ ${check.name}: ${check.detail}`);
+          } else {
+            failCount++;
+            console.log(`   ❌ ${check.name}: ${check.detail}`);
+          }
+        }
+        console.log(`   📊 ${passCount} passed, ${failCount} failed (${result.duration}ms)`);
+
+        if (!result.pass) {
+          console.log("\n   ⚠️  Some checks failed. Review the output above.");
+        }
+      } catch (error: any) {
+        verifySpinner.stop(`⚠️  Verification skipped: ${(error as Error).message}`);
       }
     }
 
