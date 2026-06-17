@@ -1,4 +1,3 @@
-// Auto-generated Layout for La Tajea, Pje. Cabezos Sau 10, 38679 Adeje, Santa Cruz de Tenerife
 import Header from "@/components/theme/Header";
 import Footer from "@/components/theme/Footer";
 import Hero from "@/components/theme/Hero";
