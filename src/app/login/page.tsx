@@ -51,6 +51,12 @@ export default async function LoginPage() {
           >
             Sign In
           </button>
+
+          <div className="text-right">
+            <Link href="/forgot-password" className="text-xs text-muted-foreground underline hover:text-foreground">
+              Forgot password?
+            </Link>
+          </div>
         </form>
 
         <p className="text-center text-xs text-muted-foreground">

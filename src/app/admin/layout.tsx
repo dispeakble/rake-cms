@@ -16,7 +16,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <NavItem href="/admin" label="Dashboard" icon="H" />
           <NavItem href="/admin/posts" label="Posts" icon="P" />
           <NavItem href="/admin/media" label="Media" icon="M" />
-          <NavItem href="/admin/categories" label="Categories" icon="C" />
+          <NavItem href="/admin/comments" label="Comments" icon="C" />
+          <NavItem href="/admin/categories" label="Categories" icon="T" />
           <NavItem href="/admin/users" label="Users" icon="U" />
           <NavItem href="/admin/settings" label="Settings" icon="S" />
         </nav>
@@ -25,7 +26,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-xs text-primary-foreground">
               {session.user?.name?.[0] || "U"}
             </div>
-            <div className="flex-1 truncate text-sm">{session.user?.name || "User"}</div>
+            <div className="flex-1 truncate text-sm">
+              <Link href="/profile" className="hover:text-primary">{session.user?.name || "User"}</Link>
+            </div>
           </div>
         </div>
       </aside>

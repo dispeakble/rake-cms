@@ -24,13 +24,16 @@ export default function Footer() {
           <div>
             <h4 className="mb-3 font-semibold">Contact</h4>
             <div className="space-y-2 text-sm text-muted-foreground">
-              
-              
             </div>
           </div>
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; 2026 La Tajea, Pje. Cabezos Sau 10, 38679 Adeje, Santa Cruz de Tenerife. All rights reserved.</p>
+          <p>Made with ❤️ by{' '}
+            <Link href="https://alexawebservers.com" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+              alexawebservers.com
+            </Link>
+          </p>
+          <p className="mt-1">&copy; 2026 La Tajea, Pje. Cabezos Sau 10, 38679 Adeje, Santa Cruz de Tenerife. All rights reserved.</p>
         </div>
       </div>
     </footer>

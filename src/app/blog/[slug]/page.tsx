@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import RenderBlocks from "@/components/editor/RenderBlocks";
 import Header from "@/components/theme/Header";
 import Footer from "@/components/theme/Footer";
+import CommentForm from "@/components/comment/CommentForm";
 import type { Metadata } from "next";
 
 export default async function SinglePost({ params }: { params: Promise<{ slug: string }> }) {
@@ -64,10 +65,13 @@ export default async function SinglePost({ params }: { params: Promise<{ slug: s
                     <span className="font-medium">{comment.commentAuthor}</span>
                     <span className="text-muted-foreground">{new Date(comment.commentDate).toLocaleDateString()}</span>
                   </div>
-                  <p className="text-sm">{comment.commentContent}</p>
+                  <p className="text-sm whitespace-pre-wrap">{comment.commentContent}</p>
                 </div>
               ))}
             </div>
+
+            {/* Comment Form */}
+            <CommentForm postId={post.id} />
           </div>
         </section>
       </main>
