@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import GeneratedPage from "@/components/theme/GeneratedPage";
 
 export default function Home() {
-  redirect("/blog");
+  return <GeneratedPage />;
 }

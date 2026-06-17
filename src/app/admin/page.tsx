@@ -3,9 +3,14 @@ import { db } from "@/db";
 import { posts, comments, users } from "@/db/schema";
 import { count, eq } from "drizzle-orm";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function AdminDashboard() {
   const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
 
   const [postCount] = await db.select({ value: count() }).from(posts);
   const [commentCount] = await db.select({ value: count() }).from(comments);
