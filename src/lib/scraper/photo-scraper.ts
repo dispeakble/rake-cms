@@ -34,6 +34,7 @@ const UNSPLASH_QUERIES: Record<BusinessType, string[]> = {
   "real-estate": ["modern house", "apartment interior", "real estate agent", "property keys"],
   construction: ["construction site", "building architecture", "renovation tools", "blueprint"],
   creative: ["art studio", "design workspace", "photography", "creative tools"],
+  travel: ["canary islands travel", "tenerife beach", "vacation travel", "island tourism"],
   other: ["small business", "office space", "team work", "modern building"],
 };
 
@@ -200,6 +201,7 @@ function getPlaceholderColor(businessType: BusinessType): string {
     "real-estate": "0f766e",
     construction: "d97706",
     creative: "ec4899",
+    travel: "0d9488",
     other: "6b7280",
   };
   return colors[businessType] || "3b82f6";

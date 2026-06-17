@@ -81,6 +81,13 @@ const TAGLINES: Record<BusinessType, string[]> = {
     "Design that speaks volumes",
     "Creative solutions that stand out",
   ],
+  travel: [
+    "DESCUBRE LAS ISLAS CANARIAS CON NOSOTROS",
+    "Crea tu tipo de vacaciones",
+    "Tu aventura en Canarias empieza aquí",
+    "Explora, sueña, descubre — Islas Canarias",
+    "Vacaciones que mereces, experiencias que recordarás",
+  ],
   other: [
     "Exceptional service, every time",
     "Your trusted local partner",
@@ -163,6 +170,14 @@ const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: stri
     { title: "Brand Identity", description: "Stand out with a cohesive brand identity. From logos to full brand guidelines, we craft your visual story." },
     { title: "Graphic Design", description: "Eye-catching designs for print and digital. Marketing materials that capture attention." },
     { title: "Photography & Video", description: "Professional visual content that showcases your brand in the best light." },
+  ],
+  travel: [
+    { title: "Excursiones en Tenerife", description: "Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera." },
+    { title: "Escapadas a Gran Canaria", description: "Explore la tercera isla ms grande del archipilago canario. Dunas de Maspalomas, casco histrico de Vegueta y pueblos con encanto que le harn sentir que visita tres continentes en una sola isla." },
+    { title: "Recorridos por las 7 Islas", description: "La Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro cada isla con su personalidad nica. Le ayudamos a planificar su ruta interinsular para descubrir la verdadera esencia de Canarias." },
+    { title: "Paquetes Vacacionales", description: "Paquetes individuales, de grupo o a medida adaptados a todos los presupuestos. Desde escapadas romnticas hasta aventuras familiares, diseamos sus vacaciones soadas." },
+    { title: "Traslados y Alquiler de Coches", description: "Traslados locales privados o colectivos desde el aeropuerto a su alojamiento. Tambin ofrecemos alquiler de coches con las mejores condiciones para que se mueva con total libertad." },
+    { title: "Asistencia Turstica", description: "Asistencia turstica en varios idiomas. Nuestro equipo multilinge est a su disposicin para hacer de su estancia en Canarias una experiencia sin preocupaciones." },
   ],
   other: [
     { title: "Quality Service", description: "We're committed to delivering the highest standard of service to every customer, every time." },
@@ -269,6 +284,7 @@ function generateAboutParagraph(name: string, type: BusinessType, location: stri
     "real-estate": `${name} is your trusted real estate partner${loc}. With deep local knowledge and a commitment to exceptional service, we help you find the perfect property.`,
     construction: `${name} brings decades of construction expertise${loc}. We're known for quality craftsmanship, attention to detail, and completing projects on time and on budget.`,
     creative: `${name} is a creative studio${loc} dedicated to bringing bold ideas to life. We blend artistic vision with strategic thinking to create work that resonates.`,
+    travel: `${name} es su agencia de viajes de confianza en el sur de Tenerife${loc}. Con años de experiencia en el sector turístico de Canarias, le ofrecemos el conocimiento local y la dedicación necesaria para hacer de sus vacaciones una experiencia inolvidable. Nuestra pasión por las Islas Canarias se refleja en cada excursión y paquete que diseñamos.`,
     other: `${name} has been proudly serving our community${loc}. We're committed to quality, reliability, and building lasting relationships with every customer.`,
   };
   return templates[type] || templates.other;
@@ -287,6 +303,7 @@ function generateSecondParagraph(name: string, type: BusinessType, location: str
     "real-estate": `Whether you're buying, selling, or renting, our experienced team provides expert guidance and personalized service throughout the entire process.`,
     construction: `From initial concept through final walkthrough, we work closely with clients to ensure every detail meets their vision and expectations.`,
     creative: `We believe great design tells a story. Every project is an opportunity to create something meaningful that connects with audiences and drives results.`,
+    travel: `Estamos aquí para escuchar sus deseos y organizar sus vacaciones tan soñadas${loc}. Ofrecemos servicios turísticos individuales y de grupo para cualquiera de las 7 islas del Archipiélago Canario. Le esperamos para escribir juntos la historia de unas vacaciones ideales.`,
     other: `We believe in doing things right. Quality, integrity, and customer satisfaction guide every decision we make.`,
   };
   return templates[type] || templates.other;
@@ -308,6 +325,7 @@ function generateSeoDescription(name: string, type: BusinessType, location: stri
     "real-estate": `Find your dream property with ${name}${loc}. Browse listings or contact our expert agents today.`,
     construction: `${name} provides quality construction services${loc}. Get a free estimate for your project.`,
     creative: `${name} offers creative design services${loc}. Let's bring your vision to life.`,
+    travel: `Visite ${name}${loc} y descubra las Islas Canarias como nunca antes. Excursiones guiadas por Tenerife, Gran Canaria, La Gomera y ms. Paquetes vacacionales personalizados, traslados, alquiler de coches y asistencia turstica en varios idiomas. Reserve su aventura canaria hoy mismo.`,
     other: `${name} provides quality service${loc}. Contact us today to learn more about what we offer.`,
   };
   return intros[type] || intros.other;
@@ -388,6 +406,11 @@ function generateServiceDescription(serviceName: string, businessType: BusinessT
     creative: [
       `Our ${serviceName.toLowerCase()} services combine creativity with strategic thinking.`,
       `Stand out with our ${serviceName.toLowerCase()} expertise. Creative solutions that work.`,
+    ],
+    travel: [
+      `Nuestro servicio de ${serviceName.toLowerCase()} le ofrece una experiencia nica en las Islas Canarias. Guas locales, transporte cmodo y rutas seleccionadas para que disfrute al mximo.`,
+      `Descubra las Islas Canarias con nuestro ${serviceName.toLowerCase()}. Le garantizamos una experiencia autntica, segura y llena de momentos inolvidables.`,
+      `Reserve su ${serviceName.toLowerCase()} con nosotros y djese llevar por la magia de las Islas Canarias. Profesionales locales a su servicio.`,
     ],
     other: [
       `Our ${serviceName.toLowerCase()} service is designed to meet your needs with quality and care.`,

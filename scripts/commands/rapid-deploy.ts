@@ -459,6 +459,7 @@ function guessTypeFromName(name: string): string | null {
   const lower = name.toLowerCase();
   const restaurant = ["grill", "restaurant", "cafe", "bistro", "pizza", "sushi", "steakhouse", "bbq", "bar", "pub", "churrascaria", "rodizio", "diner", "bakery", "brasserie"];
   const retail = ["store", "shop", "boutique", "market", "mart", "outlet", "mall"];
+  const travel = ["travel", "viajes", "viaje", "turismo", "tour", "excursion", "vacation", "holiday", "cruise", "tours", "trips", "agency"];
   const service = ["service", "repair", "cleaning", "salon", "spa", "barber", "laundry", "taxi"];
   const healthcare = ["clinic", "doctor", "dental", "dentist", "hospital", "medical", "pharmacy", "care"];
   const education = ["school", "academy", "college", "university", "institute", "center", "centre", "kindergarten", "preschool"];
@@ -470,6 +471,7 @@ function guessTypeFromName(name: string): string | null {
 
   for (const kw of restaurant) if (lower.includes(kw)) return "restaurant";
   for (const kw of retail) if (lower.includes(kw)) return "retail";
+  for (const kw of travel) if (lower.includes(kw)) return "travel";
   for (const kw of service) if (lower.includes(kw)) return "service";
   for (const kw of healthcare) if (lower.includes(kw)) return "healthcare";
   for (const kw of education) if (lower.includes(kw)) return "education";

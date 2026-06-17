@@ -42,7 +42,7 @@ export default function Footer() {
         >
           <div className="md:col-span-2">
             <h4 className="mb-4 text-lg font-semibold text-white">
-              <span className="gradient-text-gold">Churrasquería Rodeo Grill, Tenerife</span>
+              <span className="gradient-text-gold">Mario Viajes</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
               Authentic Brazilian rodizio. Endless meat, bold flavors, unforgettable moments.
@@ -129,7 +129,7 @@ export default function Footer() {
               alexawebservers.com
             </Link>
           </p>
-          <p className="mt-1">&copy; 2026 Churrasquería Rodeo Grill, Tenerife. All rights reserved.</p>
+          <p className="mt-1">&copy; 2026 Mario Viajes. All rights reserved.</p>
         </motion.div>
       </div>
     </footer>

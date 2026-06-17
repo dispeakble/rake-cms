@@ -36,7 +36,7 @@ export default function Hero() {
     <section
       ref={ref}
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-4"
-      style={{ backgroundImage: 'url(/media/scraped/website-1781711754055-0z85c7.avif)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: 'url(/media/scraped/website-1781712351449-tytfhj.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       {/* ── 1. Animated Mesh/Gradient Background ── */}
       <div
@@ -136,7 +136,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"Bienvenido a Churrasquería Rodeo Grill, donde el auténtico rodizio brasileño cobra vida en Costa Adeje. Déjese llevar por el incesante desfile de carnes premium asadas a la perfección por nuestros gauchos.".split("").map((char, i) => (
+          {"Vacaciones que mereces, experiencias que recordarás".split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}

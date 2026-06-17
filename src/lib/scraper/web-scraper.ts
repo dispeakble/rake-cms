@@ -43,6 +43,7 @@ export type BusinessType =
   | "real-estate"
   | "construction"
   | "creative"
+  | "travel"
   | "other";
 
 export interface ContactInfo {
@@ -103,6 +104,7 @@ function detectBusinessType(text: string, url: string): BusinessType {
     "real-estate": ["real estate", "property", "home", "house", "apartment", "rent", "lease", "mortgage", "agent", "realtor"],
     construction: ["construction", "builder", "contractor", "renovation", "remodeling", "roofing", "flooring", "paving"],
     creative: ["design", "photography", "studio", "creative", "art", "portfolio", "graphic", "branding", "media"],
+    travel: ["travel", "viajes", "viaje", "turismo", "tour", "excursion", "vacation", "holiday", "cruise", "trips", "b2b", "canary islands", "canarias", "tenerife", "gran canaria"],
     other: [],
   };
 

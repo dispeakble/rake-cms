@@ -37,13 +37,14 @@ const INDUSTRY_PALETTES: Record<BusinessType, { primary: string; secondary: stri
   "real-estate": { primary: "#0f766e", secondary: "#d97706", accent: "#fefce8" },
   construction: { primary: "#d97706", secondary: "#dc2626", accent: "#fffbeb" },
   creative: { primary: "#ec4899", secondary: "#8b5cf6", accent: "#fdf2f8" },
+  travel: { primary: "#0d9488", secondary: "#d97706", accent: "#fffbeb" },
   other: { primary: "#3b82f6", secondary: "#6b7280", accent: "#f9fafb" },
 };
 
 const INDUSTRY_FONTS: Record<BusinessType, string> = {
   restaurant: "Inter", retail: "Inter", service: "Inter", professional: "Merriweather",
   healthcare: "Inter", education: "Lora", technology: "Inter",
-  "real-estate": "Inter", construction: "Inter", creative: "Poppins", other: "Inter",
+  "real-estate": "Inter", construction: "Inter", creative: "Poppins", travel: "Inter", other: "Inter",
 };
 
 // ─── Palette helper ───────────────────────────────────────────────

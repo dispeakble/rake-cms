@@ -77,13 +77,13 @@ export default function About() {
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              La Experiencia Rodizio
+              About Mario Viajes
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Step into La Experiencia Rodizio and experience the centuries-old gaucho tradition of rodizio — a continuous service of fire-grilled meats, carved directly onto your plate by our skilled passadores. Each cut is seasoned with coarse sea salt and grilled over open flames to perfection.
+              Step into About Mario Viajes and experience the centuries-old gaucho tradition of rodizio — a continuous service of fire-grilled meats, carved directly onto your plate by our skilled passadores. Each cut is seasoned with coarse sea salt and grilled over open flames to perfection.
             </motion.p>
             <motion.p
               variants={springUp}
@@ -132,7 +132,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[#D4A017]/20 via-[#8B1A1A]/20 to-[#D4A017]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/unsplash-1781711754349-1ei2td.svg+xml" alt="La Experiencia Rodizio" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1781712351467-vxj50u.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>
