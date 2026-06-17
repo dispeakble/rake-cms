@@ -250,7 +250,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
 
         // Create the Virtualmin virtual server for the subdomain
         // The parent domain is alexawebservers.com, so we create it as a sub-server
-        const createCmd = `sudo -n virtualmin create-domain --domain ${subdomain} --parent alexawebservers.com --user admin.alexa --pass $(openssl rand -base64 12) --dir --webmin --unix 2>&1`;
+        const createCmd = `sudo virtualmin create-domain --domain ${subdomain} --parent alexawebservers.com --user admin.alexa --pass $(openssl rand -base64 12) --dir --webmin --unix 2>&1`;
         
         if (options.dryRun) {
           console.log(`   [DRY RUN] Would run: ${createCmd}`);
@@ -300,14 +300,13 @@ export const rapidDeployCommand = new Command("rapid:deploy")
         if (options.dryRun) {
           console.log(`   [DRY RUN] Would write Apache vhost for ${subdomain}`);
         } else {
-          execSync(
-            `cat > /etc/apache2/sites-available/${subdomain}.conf << 'VHOST_EOF'
-${vhostContent}
-VHOST_EOF`,
-            { timeout: 5000, encoding: "utf-8" }
-          );
-          execSync(`sudo -n a2ensite ${subdomain}.conf 2>&1`, { timeout: 10000, encoding: "utf-8" });
-          execSync(`sudo -n systemctl reload apache2 2>&1`, { timeout: 15000, encoding: "utf-8" });
+          // Write to temp file, then sudo cp (avoids heredoc permission issues)
+          const tmpFile = `/tmp/rake-cms-vhost-${slug}.conf`;
+          const fs = await import("fs/promises");
+          await fs.writeFile(tmpFile, vhostContent, "utf-8");
+          execSync(`sudo mv ${tmpFile} /etc/apache2/sites-available/${subdomain}.conf`, { timeout: 5000, encoding: "utf-8" });
+          execSync(`sudo a2ensite ${subdomain}.conf 2>&1`, { timeout: 10000, encoding: "utf-8" });
+          execSync(`sudo systemctl reload apache2 2>&1`, { timeout: 15000, encoding: "utf-8" });
           console.log(`   ✓ Apache vhost enabled and reloaded`);
         }
 

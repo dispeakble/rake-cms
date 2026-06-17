@@ -399,7 +399,7 @@ export async function generateTheme(
     businessType,
   };
 
-  const themeDir = path.join(outputDir, "components", "theme");
+  const themeDir = path.join(outputDir, "src", "components", "theme");
   await fs.mkdir(themeDir, { recursive: true });
 
   // Write each component
