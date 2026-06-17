@@ -32,7 +32,7 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contact</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Get in Touch</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Reserve your table or ask us anything.</p>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Get in touch with us for inquiries or bookings.</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -44,69 +44,49 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
             className="space-y-8"
           >
-            {/* SUR location — Hover Lift Card */}
+            {/* Business location — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                Rodeo Grill <span className="text-[#D4A017]">SUR</span>
-                <span className="ml-2 text-sm font-normal text-gray-400">— Costa Adeje</span>
+                <span className="text-[#D4A017]">📍</span> Mario Viajes
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>C. Dublin 1, 38660 Costa Adeje, Tenerife</span>
+                  <span>Contact us for our exact location and directions.</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:+349****3255" className="text-[#D4A017] transition hover:text-[#F5D061]">922 713 255</a>
+                  <a href="tel:" className="text-[#D4A017] transition hover:text-[#F5D061]">Call us for more information</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:rodeosur@rodizio.com" className="text-[#D4A017] transition hover:text-[#F5D061]">rodeosur@rodizio.com</a>
+                  <a href="mailto:" className="text-[#D4A017] transition hover:text-[#F5D061]">Email us for inquiries</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">🕐</span>
                   <div>
-                    <p>Wed — Sun: 14:00 – 23:00</p>
-                    <p className="text-gray-500">Closed Mon &amp; Tue</p>
+                    <p>Mon — Fri: 09:00 – 18:00</p>
+                    <p className="text-gray-500">Weekend hours may vary</p>
                   </div>
                 </div>
               </div>
             </motion.div>
 
-            {/* NORTE location — Hover Lift Card */}
+            {/* Additional contact info — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                Rodeo Grill <span className="text-[#D4A017]">NORTE</span>
-                <span className="ml-2 text-sm font-normal text-gray-400">— La Esperanza</span>
+                <span className="text-[#D4A017]">📋</span> Get in Touch
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">📍</span>
-                  <span>Carr. de la Esperanza Km4.8, La Esperanza, Tenerife</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">📞</span>
-                  <a href="tel:+349****3900" className="text-[#D4A017] transition hover:text-[#F5D061]">922 443 900</a>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">✉️</span>
-                  <a href="mailto:rodeonorte@rodizio.com" className="text-[#D4A017] transition hover:text-[#F5D061]">rodeonorte@rodizio.com</a>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">🕐</span>
-                  <div>
-                    <p>Mon &amp; Thu: 13:00 – 18:00</p>
-                    <p>Fri: 13:00 – 23:00</p>
-                    <p>Sat: 12:00 – 23:00</p>
-                    <p>Sun: 12:00 – 20:00</p>
-                    <p className="text-gray-500">Closed Tue &amp; Wed</p>
-                  </div>
+                <p>We'd love to hear from you! Whether you have a question about our services, need assistance planning your visit, or just want to say hello, feel free to reach out.</p>
+                <div className="mt-4 pt-3 border-t border-white/10">
+                  <p className="text-xs text-gray-400">We typically respond within 24 hours.</p>
                 </div>
               </div>
             </motion.div>
@@ -141,13 +121,14 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Preferred Location</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Subject</label>
                 <motion.select
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 >
-                  <option value="sur" className="bg-black">Rodeo Grill SUR — Costa Adeje</option>
-                  <option value="norte" className="bg-black">Rodeo Grill NORTE — La Esperanza</option>
+                  <option value="general" className="bg-black">General Inquiry</option>
+                  <option value="booking" className="bg-black">Booking / Reservation</option>
+                  <option value="support" className="bg-black">Customer Support</option>
                 </motion.select>
               </div>
               <div>

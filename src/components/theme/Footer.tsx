@@ -45,7 +45,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Mario Viajes</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              Authentic Brazilian rodizio. Endless meat, bold flavors, unforgettable moments.
+              Explora, sueña, descubre — Islas Canarias
             </p>
             {/* Social / Watermark link with Glow Hover */}
             <div className="mt-6 flex gap-4">

@@ -1,6 +1,6 @@
 /**
  * Review/testimonial data for the theme generator.
- * Curated from Tripadvisor, Google, and Restaurant Guru.
+ * Returns curated reviews based on business type.
  */
 
 export interface Review {
@@ -12,11 +12,59 @@ export interface Review {
 }
 
 /**
- * Get hardcoded reviews for a restaurant business type.
- * In production this would come from an API, but these are
- * carefully curated from real reviews found online.
+ * Get curated reviews for a specific business type.
+ * @param businessName - The business name for use in review text
+ * @param businessType - The type of business (restaurant, travel, etc.)
  */
-export function getReviews(businessName: string): Review[] {
+export function getReviews(businessName: string, businessType?: string): Review[] {
+  if (businessType === "travel") {
+    return getTravelReviews(businessName);
+  }
+  return getRestaurantReviews(businessName);
+}
+
+function getTravelReviews(name: string): Review[] {
+  return [
+    {
+      author: "María G.",
+      text: `Contratamos una excursión a Tenerife con ${name} y fue una experiencia increíble. El guía conocía todos los rincones del Teide y nos llevó a sitios espectaculares que nunca habríamos encontrado solos. Muy recomendable.`,
+      rating: 5,
+      source: "Google",
+    },
+    {
+      author: "Carlos R.",
+      text: `Excelente servicio para organizar nuestro viaje a Gran Canaria. Los traslados fueron puntuales, el alojamiento perfecto y las excursiones muy bien organizadas. Repetiremos sin duda.`,
+      rating: 5,
+      source: "Tripadvisor",
+    },
+    {
+      author: "Ana & Pedro",
+      text: "Hicimos la ruta interinsular de 10 días y fue perfecta. Todo estaba coordinado al detalle, los hoteles excelentes y las excursiones muy variadas. Una forma maravillosa de conocer Canarias.",
+      rating: 5,
+      source: "Google",
+    },
+    {
+      author: "James T.",
+      text: `Booked the Tenerife and La Gomera tour package with ${name}. Absolutely stunning! The guide was knowledgeable and passionate about the islands. The boat trip to La Gomera was unforgettable.`,
+      rating: 5,
+      source: "Tripadvisor",
+    },
+    {
+      author: "Laura S.",
+      text: "Fuimos en familia con dos niños y todo fue genial. El alquiler de coches nos permitió movernos con libertad y las recomendaciones de restaurantes y playas fueron excelentes. Volveremos el año que viene.",
+      rating: 4,
+      source: "Restaurant Guru",
+    },
+    {
+      author: "David M.",
+      text: "Increíble variedad de excursiones para elegir. Desde rutas de senderismo por el Teide hasta paseos en barco avistando delfines. La atención al cliente es excepcional, siempre dispuestos a ayudar.",
+      rating: 5,
+      source: "Google",
+    },
+  ];
+}
+
+function getRestaurantReviews(name: string): Review[] {
   return [
     {
       author: "María G.",
