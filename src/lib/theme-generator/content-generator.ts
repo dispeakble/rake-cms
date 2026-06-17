@@ -172,12 +172,12 @@ const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: stri
     { title: "Photography & Video", description: "Professional visual content that showcases your brand in the best light." },
   ],
   travel: [
-    { title: "Excursiones en Tenerife", description: "Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera." },
-    { title: "Escapadas a Gran Canaria", description: "Explore la tercera isla ms grande del archipilago canario. Dunas de Maspalomas, casco histrico de Vegueta y pueblos con encanto que le harn sentir que visita tres continentes en una sola isla." },
-    { title: "Recorridos por las 7 Islas", description: "La Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro cada isla con su personalidad nica. Le ayudamos a planificar su ruta interinsular para descubrir la verdadera esencia de Canarias." },
-    { title: "Paquetes Vacacionales", description: "Paquetes individuales, de grupo o a medida adaptados a todos los presupuestos. Desde escapadas romnticas hasta aventuras familiares, diseamos sus vacaciones soadas." },
-    { title: "Traslados y Alquiler de Coches", description: "Traslados locales privados o colectivos desde el aeropuerto a su alojamiento. Tambin ofrecemos alquiler de coches con las mejores condiciones para que se mueva con total libertad." },
+    { title: "Paquetes Vacacionales a Medida", description: "Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos. Desde escapadas romnticas hasta aventuras familiares, diseamos sus vacaciones soadas." },
+    { title: "Eventos MICE", description: "Organizamos eventos de MICE (Meetings, Incentives, Conferences, Exhibitions) para empresas y grupos. Gestin integral de eventos corporativos en las Islas Canarias con servicios profesionales llave en mano." },
     { title: "Asistencia Turstica", description: "Asistencia turstica en varios idiomas. Nuestro equipo multilinge est a su disposicin para hacer de su estancia en Canarias una experiencia sin preocupaciones." },
+    { title: "Traslados Locales", description: "Traslados locales privados o colectivos desde el aeropuerto a su alojamiento y a cualquier punto de la isla. Comodidad y puntualidad garantizadas." },
+    { title: "Excursiones en Tenerife", description: "Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera." },
+    { title: "Alquiler de Coches", description: "Alquiler de coches con las mejores condiciones para que se mueva con total libertad por las Islas Canarias. Amplia flota de vehculos para todos los presupuestos." },
   ],
   other: [
     { title: "Quality Service", description: "We're committed to delivering the highest standard of service to every customer, every time." },
@@ -197,7 +197,30 @@ export function generateContent(
   const name = business?.name || site?.businessName || "My Business";
   const location = business?.city || business?.address?.split(",")[0]?.trim() || "";
   const rawDescription = business?.description || site?.pages[0]?.metaDescription || "";
-  const rawParagraphs = site?.pages[0]?.paragraphs || [];
+  const rawParagraphs = site?.pages.flatMap((p) => p.paragraphs) || [];
+
+  // For travel type (Mario Viajes), use curated Spanish content from original site
+  if (businessType === "travel" && rawParagraphs.length < 3) {
+    const tagline = "Mario Viajes. Crea tu tipo de vacaciones.";
+    const heroSubtitle = "Crea tu tipo de vacaciones. Descubra las Islas Canarias con nosotros.";
+    const aboutHeading = "Sobre nosotros";
+    const aboutParagraphs = [
+      "Con la ayuda de nuestra competencia en turismo de calidad y tambin, de los aos pasados en Canarias, podemos garantizarle unas vacaciones inolvidables.",
+      "Mario Viajes SLU es una empresa joven, desarrollado a partir de nuestro deseo para proporcionar a los turistas con la ayuda responsable y la informacin exacta. La disposicin, la sobriedad y la dedicacin que ponemos en nuestro servicio, nos permiten garantizar a nuestros clientes unas vacaciones inolvidables.",
+      "Estamos aqu para escuchar sus deseos y organizar sus vacaciones tan soadas. Ofrecemos servicios tursticos individuales y de grupo para cualquiera de las 7 islas del Archipilago Canario. Le estamos esperando para escribir juntos la historia de unas vacaciones ideales",
+    ];
+    const services = getServices(site, businessType);
+    const seoDescription = `Mario Viajes — Crea tu tipo de vacaciones. ${generateSeoDescription(name, businessType, location)}`;
+
+    return {
+      tagline,
+      heroSubtitle,
+      aboutHeading,
+      aboutParagraphs,
+      services,
+      seoDescription,
+    };
+  }
 
   // For restaurant type, use curated Spanish churrascaria content
   if (businessType === "restaurant") {

@@ -46,12 +46,13 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-8 md:flex">
-            <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">About</Link>
-          <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Services</Link>
-          <Link href="/#locations" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Locations</Link>
-          <Link href="/#menu" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Menu</Link>
-          <Link href="/#reviews" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Reviews</Link>
-          <Link href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Contact</Link>
+            <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Inicio</Link>
+            <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Sobre nosotros</Link>
+          <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Qu ofrecemos</Link>
+          <Link href="/#excursions" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Excursiones</Link>
+          <Link href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">Contacto</Link>
+            <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[#D4A017] after:to-[#F5D061] after:transition-all after:duration-300 hover:after:w-full">B2B</a>
+            <span className="relative text-sm font-medium text-[#D4A017]">ES</span>
           </nav>
 
           {/* Mobile Hamburger */}
@@ -96,12 +97,13 @@ export default function Header() {
                 }}
                 className="flex flex-col gap-4"
               >
-                <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>About</Link>
-          <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Services</Link>
-          <Link href="/#locations" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Locations</Link>
-          <Link href="/#menu" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Menu</Link>
-          <Link href="/#reviews" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Reviews</Link>
-          <Link href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Contact</Link>
+                <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Inicio</Link>
+                <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Sobre nosotros</Link>
+          <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Qu ofrecemos</Link>
+          <Link href="/#excursions" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Excursiones</Link>
+          <Link href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>Contacto</Link>
+                <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[#D4A017]" onClick={() => setOpen(false)}>B2B</a>
+                <span className="text-base font-medium text-[#D4A017]">ES</span>
               </motion.div>
             </div>
           </motion.div>
