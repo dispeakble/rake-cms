@@ -1,5 +1,6 @@
 import { Command } from "commander";
-import { intro, text, password, select, isCancel, cancel, outro } from "@clack/prompts";
+import { intro, text, password, select, isCancel, cancel, outro, spinner } from "@clack/prompts";
+import { importDatabase } from "./import-db";
 
 export const importWpCommand = new Command("import:wp")
   .description("Migrate an existing WordPress database and wp-content files")
@@ -17,29 +18,22 @@ export const importWpCommand = new Command("import:wp")
 
     const dbHost =
       options.dbHost ||
-      (await text({
-        message: "MySQL/MariaDB host:",
-        initialValue: "localhost",
-      }));
+      (await text({ message: "MySQL/MariaDB host:", initialValue: "localhost" }));
     if (isCancel(dbHost)) process.exit(0);
 
     const dbPort =
       options.dbPort ||
-      (await text({
-        message: "Port:",
-        initialValue: "3306",
-      }));
+      (await text({ message: "Port:", initialValue: "3306" }));
     if (isCancel(dbPort)) process.exit(0);
 
     const dbUser =
       options.dbUser ||
-      (await text({
-        message: "Database username:",
-        initialValue: "root",
-      }));
+      (await text({ message: "Database username:", initialValue: "root" }));
     if (isCancel(dbUser)) process.exit(0);
 
-    const dbPass = options.dbPassword || (await password({ message: "Database password:" }));
+    const dbPass =
+      options.dbPassword ||
+      (await password({ message: "Database password:" }));
     if (isCancel(dbPass)) process.exit(0);
 
     const dbName =
@@ -47,40 +41,54 @@ export const importWpCommand = new Command("import:wp")
       (await text({ message: "Database name:", placeholder: "wordpress" }));
     if (isCancel(dbName)) process.exit(0);
 
-    const wpContent = options.wpContent
-      ? undefined
-      : await select({
-          message: "Import wp-content/uploads?",
-          options: [
-            { value: true, label: "Yes — sync media files" },
-            { value: false, label: "No — skip files" },
-          ],
-        });
-    if (isCancel(wpContent)) process.exit(0);
+    const importFiles =
+      options.wpContent !== undefined
+        ? true
+        : await select({
+            message: "Import wp-content/uploads?",
+            options: [
+              { value: true, label: "Yes — sync media files" },
+              { value: false, label: "No — skip files" },
+            ],
+          });
+    if (isCancel(importFiles)) process.exit(0);
 
-    console.log("\n📋 Migration Plan:");
-    console.log(`  • DB: ${dbHost}:${dbPort}/${dbName} (prefix: ${options.dbPrefix})`);
-    console.log(`  • Files: ${wpContent ? "Yes" : "No"}`);
-    console.log(`  • Mode: ${options.dryRun ? "DRY RUN" : "LIVE"}`);
+    // Run database import
+    console.log("\n📦 Starting database import...");
+    const s = spinner();
+    s.start("Migrating database");
 
-    if (options.dryRun) {
-      console.log("\n🔍 Tables to migrate:");
-      const tables = [
-        "wp_posts",
-        "wp_users",
-        "wp_postmeta",
-        "wp_terms",
-        "wp_term_taxonomy",
-        "wp_term_relationships",
-        "wp_options",
-        "wp_comments",
-      ];
-      for (const table of tables) {
-        console.log(`  • ${options.dbPrefix}${table.replace("wp_", "")}`);
+    try {
+      const result = await importDatabase({
+        host: dbHost as string,
+        port: dbPort as string,
+        user: dbUser as string,
+        password: dbPass as string,
+        database: dbName as string,
+        prefix: options.dbPrefix,
+        dryRun: options.dryRun,
+      });
+
+      s.stop(`✅ Database migration complete`);
+
+      // Print summary
+      const totalRead = result.progress.reduce((a, p) => a + p.recordsRead, 0);
+      const totalWritten = result.progress.reduce((a, p) => a + p.recordsWritten, 0);
+      console.log(`\n📊 Summary: ${totalRead} records read, ${totalWritten} records migrated`);
+
+      if (importFiles && options.wpContent) {
+        console.log("\n📁 File import will be added in a future step.");
+        console.log(`   Source: ${options.wpContent}`);
       }
+
+      if (options.dryRun) {
+        console.log("\n⚠️  This was a DRY RUN — no data was written.");
+      }
+    } catch (error) {
+      s.stop("❌ Migration failed");
+      console.error(`\nError: ${(error as Error).message}`);
+      process.exit(1);
     }
 
-    // Placeholder: actual migration logic will be in Issue 5-6
-    console.log("\n⚠️  DB import engine — to be implemented (Issues 5 & 6)");
-    outro(`✅ Migration plan complete (${options.dryRun ? "dry run" : "ready"})`);
+    outro("Import complete. See migration-report.md for details.");
   });
