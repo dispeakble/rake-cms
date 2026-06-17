@@ -63,9 +63,9 @@ export default function Reviews() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-12 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Testimonials</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">What Our Clients Say</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Real reviews from real customers.</p>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Testimonios</span>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Lo que dicen nuestros clientes</h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Opiniones reales de clientes reales.</p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

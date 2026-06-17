@@ -154,13 +154,13 @@ export default function Hero() {
             href="/#menu"
             className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[#8B1A1A] to-[#D4A017] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(212,160,23,0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,160,23,0.5)] hover:scale-105 active:scale-95"
           >
-            <span className="relative z-10">Explore Our Services</span>
+            <span className="relative z-10">Explora nuestros servicios</span>
           </Link>
           <Link
             href="/#contact"
             className="shimmer-btn relative inline-flex items-center rounded-xl border-2 border-white/30 px-10 py-4 font-bold text-white transition-all duration-300 hover:border-[#D4A017] hover:bg-[#D4A017]/10 hover:shadow-[0_0_30px_rgba(212,160,23,0.3)] hover:scale-105 active:scale-95"
           >
-            <span className="relative z-10">Get in Touch</span>
+            <span className="relative z-10">Contacta con nosotros</span>
           </Link>
         </motion.div>
       </motion.div>

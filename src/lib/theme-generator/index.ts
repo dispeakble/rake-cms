@@ -289,7 +289,7 @@ function generateCss(config: ThemeConfig): string {
 function buildNavLinks(_pageSlugs: SitePage[]): SitePage[] {
   const sectionLinks: SitePage[] = [
     { slug: "/#about", label: "Sobre nosotros" },
-    { slug: "/#services", label: "Qu ofrecemos" },
+    { slug: "/#services", label: "Qué ofrecemos" },
     { slug: "/#excursions", label: "Excursiones" },
     { slug: "/#contact", label: "Contacto" },
   ];
@@ -454,11 +454,11 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
 
   // Dynamic CTA text based on business type
   const ctaPrimary = config.businessType === "restaurant"
-    ? "Explore Menu &amp; Prices"
-    : "Explore Our Services";
+    ? "Explora menú y precios"
+    : "Explora nuestros servicios";
   const ctaSecondary = config.businessType === "restaurant"
     ? "Reserve Your Table"
-    : "Get in Touch";
+    : "Contacta con nosotros";
 
   return `// ============================================================
 //  Hero — Animated Gradient Mesh + Floating Particles + Shimmer CTAs
@@ -806,7 +806,7 @@ export default function About() {
 function generateServices(content: GeneratedContent, config: ThemeConfig): string {
   const services = content.services && content.services.length > 0
     ? content.services
-    : [{ title: config.name || "Our Services", description: "Discover what we offer." }];
+    : [{ title: config.name || "Nuestros Servicios", description: "Discover what we offer." }];
   const servicesJson = JSON.stringify(services);
   const bizName = escapeJsx(config.name || "Our Business");
 
@@ -879,7 +879,7 @@ export default function Services() {
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* ── Our Services ── */}
+        {/* ── Nuestros Servicios ── */}
         <motion.div
           id="locations"
           initial={{ opacity: 0, y: 40 }}
@@ -896,9 +896,9 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
             >
-              What We Offer
+              Lo que ofrecemos
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Our Services</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Nuestros Servicios</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((service, i) => (
@@ -930,9 +930,9 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
             >
-              Explore
+              Explora
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Everything We Offer</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Todo lo que ofrecemos</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -1031,9 +1031,9 @@ export default function Reviews() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-12 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Testimonials</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">What Our Clients Say</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Real reviews from real customers.</p>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Testimonios</span>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Lo que dicen nuestros clientes</h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Opiniones reales de clientes reales.</p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -1117,7 +1117,7 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contacto</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Contacto</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Para ms informacin, rellene el siguiente formulario.</p>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Para más informacin, rellene el siguiente formulario.</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -1414,17 +1414,17 @@ import { motion } from "framer-motion";
 const ISLANDS = [
   {
     title: "Sobre Tenerife",
-    description: "Tenerife es considerada como la isla de la 'primavera eterna' con un clima suave durante todo el ao. Es la isla ms alta de las siete Islas Canarias debido al volcn Teide, que es 3718 metros de altura, siendo el pico ms alto de Espaa.",
+    description: "Tenerife es considerada como la isla de la 'primavera eterna' con un clima suave durante todo el ao. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España.",
     image: "/images/grancanaria.jpeg",
   },
   {
     title: "Sobre Gran Canaria",
-    description: "Si usted deja ir su imaginacin durante su visita a Gran Canaria, tendr la sensacin de que en lugar de una isla, en realidad visitar tres continentes: frica, Europa y Amrica. Es la tercera isla ms grande del archipilago canario.",
+    description: "Si usted deja ir su imaginación durante su visita a Gran Canaria, tendr la sensación de que en lugar de una isla, en realidad visitar tres continentes: frica, Europa y América. Es la tercera isla más grande del archipiélago canario.",
     image: "/images/grancanaria.jpeg",
   },
   {
     title: "Otras Islas Canarias",
-    description: "La Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro no son slo nombres. Son 5 islas hermosas y vale la pena visitar. Cada uno tiene caractersticas diferentes: La Gomera es considerada como la ltima selva en Europa.",
+    description: "La Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro no son sólo nombres. Son 5 islas hermosas y vale la pena visitar. Cada uno tiene características diferentes: La Gomera es considerada como la última selva en Europa.",
     image: "/images/img2.jpg",
   },
 ];
@@ -1451,7 +1451,7 @@ export default function Islands() {
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Destinos</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Descubre las Islas Canarias</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">
-            Te invitamos a descubrir juntos el encanto y la singularidad de las Islas Canarias! Desde el pico del volcn, hasta 30 metros de profundidad en el Atlntico, ofrecemos una amplia gama de actividades y excursiones que representan el superlativo de la diversidad para cualquier persona, logrando satisfacer incluso los gustos ms exigentes.
+            Te invitamos a descubrir juntos el encanto y la singularidad de las Islas Canarias! Desde el pico del volcán, hasta 30 metros de profundidad en el Atlántico, ofrecemos una amplia gama de actividades y excursiones que representan el superlativo de la diversidad para cualquier persona, logrando satisfacer incluso los gustos más exigentes.
           </p>
         </motion.div>
 

@@ -8,7 +8,7 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-const SERVICES = [{"title":"Paquetes Vacacionales a Medida","description":"Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos. Desde escapadas romnticas hasta aventuras familiares, diseamos sus vacaciones soadas."},{"title":"Eventos MICE","description":"Organizamos eventos de MICE (Meetings, Incentives, Conferences, Exhibitions) para empresas y grupos. Gestin integral de eventos corporativos en las Islas Canarias con servicios profesionales llave en mano."},{"title":"Asistencia Turstica","description":"Asistencia turstica en varios idiomas. Nuestro equipo multilinge est a su disposicin para hacer de su estancia en Canarias una experiencia sin preocupaciones."},{"title":"Traslados Locales","description":"Traslados locales privados o colectivos desde el aeropuerto a su alojamiento y a cualquier punto de la isla. Comodidad y puntualidad garantizadas."},{"title":"Excursiones en Tenerife","description":"Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera."},{"title":"Alquiler de Coches","description":"Alquiler de coches con las mejores condiciones para que se mueva con total libertad por las Islas Canarias. Amplia flota de vehculos para todos los presupuestos."}];
+const SERVICES = [{"title":"Paquetes Vacacionales a Medida","description":"Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos. Desde escapadas románticas hasta aventuras familiares, diseñamos sus vacaciones soñadas."},{"title":"Eventos MICE","description":"Organizamos eventos de MICE (Meetings, Incentives, Conferences, Exhibitions) para empresas y grupos. Gestión integral de eventos corporativos en las Islas Canarias con servicios profesionales llave en mano."},{"title":"Asistencia Turística","description":"Asistencia turística en varios idiomas. Nuestro equipo multilingüe est a su disposición para hacer de su estancia en Canarias una experiencia sin preocupaciones."},{"title":"Traslados Locales","description":"Traslados locales privados o colectivos desde el aeropuerto a su alojamiento y a cualquier punto de la isla. Comodidad y puntualidad garantizadas."},{"title":"Excursiones en Tenerife","description":"Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones más espectaculares de la isla de la eterna primavera."},{"title":"Alquiler de Coches","description":"Alquiler de coches con las mejores condiciones para que se mueva con total libertad por las Islas Canarias. Amplia flota de vehículos para todos los presupuestos."}];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -67,7 +67,7 @@ export default function Services() {
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* ── Our Services ── */}
+        {/* ── Nuestros Servicios ── */}
         <motion.div
           id="locations"
           initial={{ opacity: 0, y: 40 }}
@@ -84,9 +84,9 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
             >
-              What We Offer
+              Lo que ofrecemos
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Our Services</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Nuestros Servicios</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((service, i) => (
@@ -118,9 +118,9 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
             >
-              Explore
+              Explora
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Everything We Offer</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Todo lo que ofrecemos</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
