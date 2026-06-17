@@ -93,7 +93,7 @@ function detectBusinessType(text: string, url: string): BusinessType {
   const urlLower = url.toLowerCase();
 
   const signals: Record<BusinessType, string[]> = {
-    restaurant: ["restaurant", "menu", "cafe", "bistro", "cuisine", "food", "dining", "eat", "chef", "order online", "reservation", "breakfast", "lunch", "dinner"],
+    restaurant: ["restaurant", "menu", "cafe", "bistro", "cuisine", "food", "dining", "eat", "chef", "order online", "reservation", "breakfast", "lunch", "dinner", "churrascaria", "churrasco", "rodizio", "grill", "steakhouse", "bbq", "barbecue", "tapas", "pizza", "pasta", "sushi", "brunch"],
     retail: ["shop", "store", "products", "buy", "shopping", "retail", "ecommerce", "cart", "checkout", "sale", "discount"],
     service: ["service", "repair", "cleaning", "plumbing", "electrical", "maintenance", "support", "help"],
     professional: ["consulting", "consultant", "lawyer", "attorney", "accounting", "tax", "financial", "insurance", "broker", "agency"],
