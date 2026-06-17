@@ -1,5 +1,205 @@
-/* Rake CMS — Theme: Churrasquería Rodeo Grill, Tenerife */
-:root { --theme-primary: #000000; --theme-primary-rgb: 0, 0, 0; --theme-secondary: #abb8c3; --theme-accent: #ffffff; }
-.bg-theme-primary { background-color: var(--theme-primary); }
-.text-theme-primary { color: var(--theme-primary); }
-.border-theme-primary { border-color: var(--theme-primary); }
+/* Rake CMS — Theme: Churrasquería Rodeo Grill, Tenerife - MAXIMUM WOW EDITION */
+
+:root {
+  --color-primary: #000000;
+  --color-primary-rgb: 0, 0, 0;
+  --color-secondary: #abb8c3;
+  --color-secondary-rgb: 171, 184, 195;
+  --color-accent: #ffffff;
+  --color-gold: #D4A017;
+  --color-gold-rgb: 212, 160, 23;
+  --color-glow: rgba(212, 160, 23, 0.3);
+  --color-glow-intense: rgba(212, 160, 23, 0.6);
+  --gradient-main: linear-gradient(135deg, #000000, #abb8c3);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(212, 160, 23, 0.15), transparent 70%);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --border-angle: 0deg;
+}
+
+/* ── Gradient Text Utility ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #D4A017, #F5D061, #D4A017);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  background-size: 200% 200%;
+  animation: gradient 4s ease infinite;
+}
+
+/* ── Glassmorphism Utility ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* ── Glow Card Utility ── */
+.glow-card {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--border-angle), transparent, rgba(212, 160, 23, 0.3), transparent, rgba(212, 160, 23, 0.5), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: border-rotate 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+.glow-card:hover {
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 30px rgba(212, 160, 23, 0.15), 0 0 60px rgba(212, 160, 23, 0.05);
+  transform: translateY(-4px);
+}
+
+/* ── Shimmer Button Utility ── */
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.shimmer-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 2s infinite;
+  pointer-events: none;
+}
+
+.shimmer-btn-gold::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.35), transparent);
+}
+
+/* ── Animated Gradient Background ── */
+.animated-gradient {
+  background: linear-gradient(135deg, #000000, #abb8c3, #000000, #abb8c3);
+  background-size: 400% 400%;
+  animation: gradient 8s ease infinite;
+}
+
+/* ── Pulse Glow ── */
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ── Floating Animation ── */
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+.float-delayed {
+  animation: float 4s ease-in-out 1s infinite;
+}
+.float-slow {
+  animation: float 5s ease-in-out 0.5s infinite;
+}
+
+/* ── Keyframes ── */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 160, 23, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(212, 160, 23, 0.6); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(-10%, 5%); }
+  30% { transform: translate(5%, -10%); }
+  40% { transform: translate(-5%, 15%); }
+  50% { transform: translate(-10%, 10%); }
+  60% { transform: translate(15%, 5%); }
+  70% { transform: translate(10%, -5%); }
+  80% { transform: translate(-15%, 10%); }
+  90% { transform: translate(5%, 5%); }
+}
+
+@keyframes border-rotate {
+  0% { --border-angle: 0deg; }
+  100% { --border-angle: 360deg; }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(20px, -30px) rotate(120deg); }
+  66% { transform: translate(-15px, -10px) rotate(240deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* ── Legacy CSS utility classes ── */
+.bg-theme-primary { background-color: var(--color-primary); }
+.text-theme-primary { color: var(--color-primary); }
+.border-theme-primary { border-color: var(--color-primary); }
+
+/* ── Scrollbar Styling ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #000000, #abb8c3); border-radius: 3px; }
+
+/* ── Selection ── */
+::selection { background: #00000055; color: white; }
