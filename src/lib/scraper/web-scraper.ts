@@ -279,6 +279,15 @@ async function scrapePage(url: string): Promise<ScrapedPage> {
     const text = $(el).text().trim();
     if (text.length > 20) paragraphs.push(sanitizeScrapedContent(text));
   });
+  // Also capture text from divs and sections that might not use <p> tags
+  if (paragraphs.length < 3) {
+    $("div.paragraph, div.content, div.text, section.content, article").each((_, el) => {
+      const text = $(el).text().trim();
+      if (text.length > 50 && !paragraphs.some(p => text.includes(p) || p.includes(text))) {
+        paragraphs.push(sanitizeScrapedContent(text));
+      }
+    });
+  }
 
   const images: { src: string; alt: string }[] = [];
   $("img[src]").each((_, el) => {

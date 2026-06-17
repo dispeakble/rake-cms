@@ -30,13 +30,13 @@ export default function Contact() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-14 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contact</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Get in Touch</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Get in touch with us for inquiries or bookings.</p>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contacto</span>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Contacto</h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Para ms informacin, rellene el siguiente formulario.</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
-          {/* Locations grid */}
+          {/* Contact Details */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -55,22 +55,15 @@ export default function Contact() {
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>Contact us for our exact location and directions.</span>
+                  <span>Calle Montana Clara nr.6, C.C. Laurisilva Local 6 I, 38679, Adeje, Tenerife</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:" className="text-[#D4A017] transition hover:text-[#F5D061]">Call us for more information</a>
+                  <a href="tel:+34922724642" className="text-[#D4A017] transition hover:text-[#F5D061]">0034-922724642</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:" className="text-[#D4A017] transition hover:text-[#F5D061]">Email us for inquiries</a>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5">🕐</span>
-                  <div>
-                    <p>Mon — Fri: 09:00 – 18:00</p>
-                    <p className="text-gray-500">Weekend hours may vary</p>
-                  </div>
+                  <a href="mailto:office@marioviajes.com" className="text-[#D4A017] transition hover:text-[#F5D061]">office@marioviajes.com</a>
                 </div>
               </div>
             </motion.div>
@@ -81,12 +74,12 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[#D4A017]">📋</span> Get in Touch
+                <span className="text-[#D4A017]">📋</span> Informacin
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
-                <p>We'd love to hear from you! Whether you have a question about our services, need assistance planning your visit, or just want to say hello, feel free to reach out.</p>
+                <p>Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestros servicios o necesita ayuda para planificar sus vacaciones, no dude en contactarnos.</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">We typically respond within 24 hours.</p>
+                  <p className="text-xs text-gray-400">Le responderemos en un plazo de 24 horas.</p>
                 </div>
               </div>
             </motion.div>
@@ -100,45 +93,66 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">Send Us a Message</h3>
+            <h3 className="mb-6 text-lg font-semibold text-white">Envanos un mensaje</h3>
             <form className="space-y-5">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Your Name</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Nombre</label>
                 <motion.input
                   type="text"
-                  placeholder="John Doe"
+                  placeholder="Su nombre"
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Your Email</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Apellido</label>
+                <motion.input
+                  type="text"
+                  placeholder="Su apellido"
+                  whileFocus={{ scale: 1.01 }}
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                />
+              </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrnico</label>
                 <motion.input
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder="email@ejemplo.com"
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Subject</label>
-                <motion.select
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Telfono</label>
+                <motion.input
+                  type="tel"
+                  placeholder="+34 123 456 789"
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
-                >
-                  <option value="general" className="bg-black">General Inquiry</option>
-                  <option value="booking" className="bg-black">Booking / Reservation</option>
-                  <option value="support" className="bg-black">Customer Support</option>
-                </motion.select>
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Your Message</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Mensaje</label>
                 <motion.textarea
-                  placeholder="Tell us about your reservation or inquiry..."
+                  placeholder="Escriba su mensaje..."
                   rows={4}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
                 />
+              </div>
+              {/* reCAPTCHA placeholder */}
+              <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-black/30 px-4 py-3">
+                <div className="flex h-6 w-6 items-center justify-center rounded border border-white/20 bg-white/5">
+                  <input type="checkbox" className="h-4 w-4 accent-[#D4A017]" />
+                </div>
+                <span className="text-xs text-gray-400">No soy un robot</span>
+                <div className="ml-auto flex items-center gap-1 text-xs text-gray-500">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#D4A017]">
+                    <rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                  reCAPTCHA
+                </div>
               </div>
               <motion.button
                 type="submit"
@@ -148,7 +162,7 @@ export default function Contact() {
                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
                 className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[#8B1A1A] via-[#D4A017] to-[#8B1A1A] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[#D4A017] hover:via-[#F5D061] hover:to-[#D4A017]"
               >
-                <span className="relative z-10">✨ Send Message ✨</span>
+                <span className="relative z-10">Enviar mensaje</span>
               </motion.button>
             </form>
           </motion.div>

@@ -71,7 +71,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/80"
             >
-              Explora
+              Crea tu tipo de vacaciones
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -132,7 +132,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[#D4A017]/20 via-[#8B1A1A]/20 to-[#D4A017]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1781713455522-ngzsfn.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1781715528357-37uu00.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>
