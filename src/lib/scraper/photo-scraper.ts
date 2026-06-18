@@ -7,9 +7,9 @@
 import fs from "fs/promises";
 import path from "path";
 import { fetchWithRetry } from "@/lib/reliability/retry";
-import type { ScrapedSite } from "@/lib/scraper/web-scraper";
+import type { ScrapedSite, BusinessType } from "@/lib/scraper/web-scraper";
 import type { BusinessData } from "@/lib/scraper/maps-scraper";
-import type { BusinessType } from "@/lib/scraper/web-scraper";
+import { searchBraveImages } from "@/lib/scraper/brave-scraper";
 
 export interface ScrapedPhoto {
   url: string;
@@ -45,7 +45,11 @@ const UNSPLASH_QUERIES: Record<BusinessType, string[]> = {
 export async function scrapePhotos(
   site: ScrapedSite | null,
   business: BusinessData | null,
-  businessType: BusinessType
+  businessType: BusinessType,
+  /** Optional business name override (e.g. for Brave Search) */
+  businessName?: string,
+  /** Optional location override */
+  location?: string
 ): Promise<ScrapedPhoto[]> {
   const photos: ScrapedPhoto[] = [];
   const seen = new Set<string>();
@@ -141,6 +145,32 @@ export async function scrapePhotos(
       } catch {
         // Skip on failure — continue with what we have
       }
+    }
+  }
+
+  // Phase 4: Brave Search — find real business images from web
+  if (photos.length < 3) {
+    const braveName = businessName || business?.name || site?.businessName || "";
+    const braveLocation = location || business?.city || "";
+    console.log("\n🔍 Searching Brave for business images...");
+    try {
+      const braveImages = await searchBraveImages(braveName, businessType, braveLocation);
+      for (const img of braveImages.slice(0, 6 - photos.length)) {
+        if (seen.has(img.url)) continue;
+        seen.add(img.url);
+        try {
+          const downloaded = await downloadImage(img.url, img.title || braveName, "website");
+          if (downloaded) {
+            photos.push(downloaded);
+            console.log(`   ✓ Brave image: ${path.basename(downloaded.localPath)}`);
+          }
+        } catch {
+          // Skip failed downloads
+        }
+        if (photos.length >= 6) break;
+      }
+    } catch (error) {
+      console.log(`   ⚠️ Brave image search: ${(error as Error).message}`);
     }
   }
 
