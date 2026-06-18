@@ -444,7 +444,8 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
         const result = await verifyDeployment(
           subdomain,
           allSlugs,
-          3100
+          3100,
+          business?.name || site?.businessName || rawName
         );
         verifySpinner.stop(result.pass ? "✅ All checks passed" : "❌ Some checks failed");
 
