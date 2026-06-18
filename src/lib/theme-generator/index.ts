@@ -1551,10 +1551,12 @@ export async function generateTheme(
   outputDir: string,
   photos: ScrapedPhoto[] = [],
   /** Optional: page slugs that will be seeded. Determines nav links. */
-  pageSlugs: SitePage[] = []
+  pageSlugs: SitePage[] = [],
+  /** Optional: override business type (from name detection, etc.) */
+  overrideType?: BusinessType
 ): Promise<ThemeConfig> {
   const name = business?.name || site?.businessName || "My Business";
-  const businessType = site?.businessType || "other";
+  const businessType = overrideType || site?.businessType || "other";
   const palette = determinePalette(site, businessType);
 
   const config: ThemeConfig = {

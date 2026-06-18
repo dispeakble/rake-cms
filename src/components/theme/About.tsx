@@ -71,31 +71,31 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/80"
             >
-              Crea tu tipo de vacaciones
+              We are Blue Oasis Restaurant Tenerife
             </motion.span>
             <motion.h2
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              Sobre Mario Viajes
+              About Blue Oasis Restaurant Tenerife
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Tenerife es considerada como la isla de la &quot;primavera eterna&quot; con un clima suave durante todo el año. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España. [...]
+              Blue Oasis Restaurant Tenerife has been proudly serving our community. We&#x27;re committed to quality, reliability, and building lasting relationships with every customer.
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Tenerife es el lugar donde se puede estar en la altura más alta de España rodeado de nieve y dos horas más tarde para broncearse a la playa.
+              We believe in doing things right. Quality, integrity, and customer satisfaction guide every decision we make.
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              Si usted deja ir su imaginación durante su visita a Gran Canaria, tendrá la sensación de que en lugar de una isla, en realidad visitará tres continentes: África, Europa y América. Es la tercera isla más grande del archipiélago canario. [...]
+              We invite you to join us and discover what makes us special.
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -132,7 +132,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[#D4A017]/20 via-[#8B1A1A]/20 to-[#D4A017]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1781715528357-37uu00.jpeg" alt="Sobre Mario Viajes" className="h-full w-full object-cover" />
+                <img src="/media/scraped/unsplash-1781768237875-fpsnas.svg+xml" alt="About Blue Oasis Restaurant Tenerife" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>

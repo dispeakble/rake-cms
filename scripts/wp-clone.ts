@@ -8,6 +8,7 @@
  *   npx tsx scripts/wp-clone.ts import:wp
  *   npx tsx scripts/wp-clone.ts theme:activate my-theme
  */
+import "dotenv/config";
 import { Command } from "commander";
 import { createSiteCommand } from "./commands/create-site";
 import { createPostCommand } from "./commands/create-post";

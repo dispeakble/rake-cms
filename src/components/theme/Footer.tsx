@@ -42,10 +42,10 @@ export default function Footer() {
         >
           <div className="md:col-span-2">
             <h4 className="mb-4 text-lg font-semibold text-white">
-              <span className="gradient-text-gold">Mario Viajes</span>
+              <span className="gradient-text-gold">Blue Oasis Restaurant Tenerife</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              Crea tu tipo de vacaciones
+              We are Blue Oasis Restaurant Tenerife, serving the local area.
             </p>
             {/* Social / Watermark link with Glow Hover */}
             <div className="mt-6 flex gap-4">
@@ -82,7 +82,7 @@ export default function Footer() {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Enlaces</h4>
             <div className="space-y-3 text-sm">
               <Link href="/#about" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[#D4A017] hover:translate-x-1">Sobre nosotros</Link>
-          <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[#D4A017] hover:translate-x-1">Qu ofrecemos</Link>
+          <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[#D4A017] hover:translate-x-1">Qué ofrecemos</Link>
           <Link href="/#excursions" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[#D4A017] hover:translate-x-1">Excursiones</Link>
           <Link href="/#contact" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[#D4A017] hover:translate-x-1">Contacto</Link>
               <a
@@ -122,7 +122,7 @@ export default function Footer() {
           <p className="max-w-4xl mx-auto">
             De conformidad con lo dispuesto en el artculo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Informacin y de Comercio Electrnico, ponemos en su conocimiento que la sociedad mercantil MARIO VIAJES S.L.U., con domicilio Calle Montana Clara 6, C.C. Laurisilva, Local 6 I, 38679 Adeje, Santa Cruz de Tenerife, con CIF: B-76675081, inscrita en el Registro Mercantil de Santa Cruz de Tenerife, Tomo 3218, Folio 158, Hoja TF-486767, Inscripcin 1, I-AV-0003355.2, telfono (+34) 922724642, correo electrnico office@marioviajes.com, es la propietaria del sitio web.
           </p>
-          <p className="mt-4">&copy; 2026 Mario Viajes. Todos los derechos reservados.</p>
+          <p className="mt-4">&copy; 2026 Blue Oasis Restaurant Tenerife. Todos los derechos reservados.</p>
         </motion.div>
       </div>
     </footer>
