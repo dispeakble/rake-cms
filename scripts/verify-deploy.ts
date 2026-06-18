@@ -22,36 +22,57 @@ interface VerifyResult {
 async function verifyDeployment(
   subdomain: string,
   pageSlugs: string[],
-  port?: number
+  port?: number,
+  /** Expected business name in page content (optional) */
+  expectedName?: string
 ): Promise<VerifyResult> {
   const baseUrl = port ? `http://127.0.0.1:${port}` : `https://${subdomain}`;
-  const hostHeader = port ? `-H "Host: ${subdomain}"` : "";
+  const hostHeader = port ? `-H "Host: ${subdomain}\"` : "";
   const start = Date.now();
   const checks: VerifyResult["checks"] = [];
 
-  // 1. Check homepage
+  // 1. Check homepage — actually fetch content for verification
   try {
-    const cmd = `curl -s -o /dev/null -w "%{http_code}" ${hostHeader} "${baseUrl}/"`;
-    const code = execSync(cmd, { timeout: 10000, encoding: "utf-8" }).trim();
+    const cmd = `curl -s ${hostHeader} "${baseUrl}/"`;
+    const html = execSync(cmd, { timeout: 10000, encoding: "utf-8" });
+    const titleMatch = html.match(/<title>([^<]*)<\/title>/);
+    const title = titleMatch ? titleMatch[1] : "(no title)";
+    const bodySize = html.length;
+
+    const issues: string[] = [];
+    if (bodySize < 1000) issues.push(`body too small (${bodySize}b)`);
+    if (expectedName && !html.includes(expectedName)) issues.push(`missing business name "${expectedName}"`);
+    if (html.includes("Page not found") || html.includes("Not Found")) issues.push("contains 'Not Found'");
+
+    const pass = issues.length === 0;
     checks.push({
       name: "Homepage (/)",
-      status: code === "200" ? "pass" : "fail",
-      detail: `HTTP ${code}`,
+      status: pass ? "pass" : "fail",
+      detail: pass
+        ? `200 — ${bodySize}b, title: "${title}"${expectedName ? `, contains "${expectedName}"` : ""}`
+        : `Issues: ${issues.join("; ")}`,
     });
   } catch (e) {
     checks.push({ name: "Homepage (/)", status: "fail", detail: String(e) });
   }
 
-  // 2. Check all known page slugs
+  // 2. Check all known page slugs (status + content)
   for (const slug of pageSlugs) {
     try {
       const path = slug === "/" || slug === "home" ? "/" : `/${slug}`;
-      const cmd = `curl -s -o /dev/null -w "%{http_code}" ${hostHeader} "${baseUrl}${path}"`;
-      const code = execSync(cmd, { timeout: 10000, encoding: "utf-8" }).trim();
+      const cmd = `curl -s ${hostHeader} "${baseUrl}${path}"`;
+      const html = execSync(cmd, { timeout: 10000, encoding: "utf-8" });
+      const bodySize = html.length;
+      const issues: string[] = [];
+      if (bodySize < 500) issues.push(`body too small (${bodySize}b)`);
+      if (expectedName && !html.includes(expectedName)) issues.push(`missing name "${expectedName}"`);
+
       checks.push({
         name: `Page (/${slug})`,
-        status: code === "200" ? "pass" : "fail",
-        detail: `HTTP ${code}`,
+        status: issues.length === 0 ? "pass" : "fail",
+        detail: issues.length === 0
+          ? `HTTP 200 — ${bodySize}b`
+          : `Issues: ${issues.join("; ")}`,
       });
     } catch (e) {
       checks.push({ name: `Page (/${slug})`, status: "fail", detail: String(e) });
