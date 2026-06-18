@@ -27,7 +27,7 @@ async function verifyDeployment(
   expectedName?: string
 ): Promise<VerifyResult> {
   const baseUrl = port ? `http://127.0.0.1:${port}` : `https://${subdomain}`;
-  const hostHeader = port ? `-H "Host: ${subdomain}\"` : "";
+  const hostHeader = port ? `-H "Host: ${subdomain}"` : "";
   const start = Date.now();
   const checks: VerifyResult["checks"] = [];
 
@@ -42,7 +42,9 @@ async function verifyDeployment(
     const issues: string[] = [];
     if (bodySize < 1000) issues.push(`body too small (${bodySize}b)`);
     if (expectedName && !html.includes(expectedName)) issues.push(`missing business name "${expectedName}"`);
-    if (html.includes("Page not found") || html.includes("Not Found")) issues.push("contains 'Not Found'");
+    // Check only visible content — exclude RSC payload and script tags
+    const visibleHtml = html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<div hidden[^>]*>[\s\S]*?<\/div>/g, "");
+    if (visibleHtml.includes("Page not found") || visibleHtml.includes("Not Found")) issues.push("contains 'Not Found'");
 
     const pass = issues.length === 0;
     checks.push({
