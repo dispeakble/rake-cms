@@ -32,7 +32,7 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contacto</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Contacto</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Para ms informacin, rellene el siguiente formulario.</p>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Para más informacin, rellene el siguiente formulario.</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -50,7 +50,7 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[#D4A017]">📍</span> Mario Viajes
+                <span className="text-[#D4A017]">📍</span> Blue Oasis Restaurant Tenerife
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">

@@ -163,6 +163,14 @@ export const rapidDeployCommand = new Command("rapid:deploy")
     console.log("  PHASE 2: Creating Site in Database");
     console.log("=".repeat(50));
 
+    // Determine effective business type early (used by DB creation, photos, theme)
+    const nameBusinessType = guessTypeFromName(rawName);
+    const mapsType = (business as any)?.categories?.[0];
+    const effectiveType = site?.businessType && site.businessType !== "other"
+      ? site.businessType
+      : nameBusinessType || (mapsType && mapsType !== "business" ? mapsType : "other");
+    console.log(`   🏷️  Business type: ${effectiveType}`);
+
     let siteId = 0;
     const siteSpinner = spinner();
 
@@ -188,7 +196,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
             .set({
               name: business?.name || rawName,
               description: business?.description || site?.pages[0]?.metaDescription || "",
-              businessType: site?.businessType || "other",
+              businessType: effectiveType,
               updatedAt: new Date().toISOString(),
             })
             .where(eq(sites.id, siteId));
@@ -200,7 +208,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
             subdomain: slug,
             domain: subdomain,
             description: business?.description || site?.pages[0]?.metaDescription || "",
-            businessType: site?.businessType || "other",
+            businessType: effectiveType,
             themeConfig: {
               primaryColor: site?.colorPalette[0] || "#3b82f6",
               secondaryColor: site?.colorPalette[1] || "#6b7280",
@@ -226,11 +234,6 @@ export const rapidDeployCommand = new Command("rapid:deploy")
 
     let photos: Awaited<ReturnType<typeof scrapePhotos>> = [];
     const photoSpinner = spinner();
-    // Also check the business name for type detection (e.g. "Grill" = restaurant)
-    const nameBusinessType = guessTypeFromName(rawName);
-    const effectiveType = site?.businessType && site.businessType !== "other"
-      ? site.businessType
-      : (business as any)?.categories?.[0] || nameBusinessType || "other";
     photoSpinner.start("Collecting photos from website/Maps/Unsplash...");
     try {
       photos = await scrapePhotos(
@@ -273,7 +276,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
     themeSpinner.start("Creating business-specific theme with AI-quality copy...");
 
     try {
-      const themeConfig = await generateTheme(site, business, outputDir, photos, pageSlugs);
+      const themeConfig = await generateTheme(site, business, outputDir, photos, pageSlugs, effectiveType as any);
       themeSpinner.stop(`✨ Theme generated: ${themeConfig.name} (${themeConfig.businessType})`);
     } catch (error) {
       themeSpinner.stop(`❌ Theme generation failed: ${(error as Error).message}`);

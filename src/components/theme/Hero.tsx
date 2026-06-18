@@ -36,7 +36,7 @@ export default function Hero() {
     <section
       ref={ref}
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-4"
-      style={{ backgroundImage: 'url(/media/scraped/website-1781715528341-9aa7nd.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
+      style={{ backgroundImage: 'url(/media/scraped/unsplash-1781768237619-a8ul9k.svg+xml)', backgroundSize: 'cover', backgroundPosition: 'center' }}
     >
       {/* ── 1. Animated Mesh/Gradient Background ── */}
       <div
@@ -115,7 +115,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[#D4A017]/30 bg-[#D4A017]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[#D4A017] backdrop-blur-sm">
-            Crea tu tipo de vacaciones
+            We are Blue Oasis Restaurant Tenerife
           </span>
         </motion.div>
 
@@ -124,7 +124,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          Crea tu tipo de vacaciones
+          We are Blue Oasis Restaurant Tenerife, serving the local area.
         </motion.h1>
 
         {/* ── 4. Typewriter / Staggered Subtitle ── */}
@@ -132,7 +132,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"Crea tu tipo de vacaciones".split("").map((char, i) => (
+          {"We are Blue Oasis Restaurant Tenerife, serving the local area.".split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
