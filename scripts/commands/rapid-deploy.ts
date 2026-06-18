@@ -342,6 +342,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
         deploySpinner.message("Configuring Apache reverse proxy...");
 
         // Create Apache proxy config for this specific subdomain
+        // Uses Let's Encrypt wildcard cert (alexawebservers.com covers all subdomains)
         const vhostContent = `<VirtualHost *:80>
     ServerName ${subdomain}
     UseCanonicalName Off
@@ -351,6 +352,9 @@ export const rapidDeployCommand = new Command("rapid:deploy")
     ProxyPassReverse / http://127.0.0.1:3100/
     ErrorLog /var/log/apache2/rake-cms-${slug}-error.log
     CustomLog /var/log/apache2/rake-cms-${slug}-access.log combined
+RewriteEngine on
+RewriteCond %{SERVER_NAME} =${subdomain}
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 </VirtualHost>
 <VirtualHost *:443>
     ServerName ${subdomain}
@@ -360,10 +364,9 @@ export const rapidDeployCommand = new Command("rapid:deploy")
     ProxyPass / http://127.0.0.1:3100/
     ProxyPassReverse / http://127.0.0.1:3100/
     SSLEngine on
-    SSLCertificateFile /etc/ssl/virtualmin/17798083781525566/ssl.cert
-    SSLCertificateKeyFile /etc/ssl/virtualmin/17798083781525566/ssl.key
-    SSLCACertificateFile /etc/ssl/virtualmin/17798083781525566/ssl.ca
-    SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1
+    SSLCertificateFile /etc/letsencrypt/live/alexawebservers.com/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/alexawebservers.com/privkey.pem
+    Include /etc/letsencrypt/options-ssl-apache.conf
     ErrorLog /var/log/apache2/rake-cms-${slug}-error.log
     CustomLog /var/log/apache2/rake-cms-${slug}-access.log combined
 </VirtualHost>`;
@@ -379,6 +382,19 @@ export const rapidDeployCommand = new Command("rapid:deploy")
           execSync(`sudo a2ensite ${subdomain}.conf 2>&1`, { timeout: 10000, encoding: "utf-8" });
           execSync(`sudo systemctl reload apache2 2>&1`, { timeout: 15000, encoding: "utf-8" });
           console.log(`   ✓ Apache vhost enabled and reloaded`);
+
+          // Extend Let's Encrypt cert to include this subdomain
+          try {
+            console.log(`   🔐 Adding ${subdomain} to Let's Encrypt cert...`);
+            execSync(
+              `sudo certbot certonly --apache --non-interactive --cert-name alexawebservers.com --expand -d alexawebservers.com,www.alexawebservers.com,admin.alexawebservers.com,mail.alexawebservers.com,webmail.alexawebservers.com,mario-viajes.alexawebservers.com,${subdomain} 2>&1`,
+              { timeout: 30000, encoding: "utf-8" }
+            );
+            console.log(`   ✓ SSL cert updated for ${subdomain}`);
+          } catch (certError: any) {
+            console.log(`   ⚠️  Certbot: ${certError.message || "cert update failed — HTTPS may not work"}`);
+            console.log(`   ℹ️  Run manually: sudo certbot certonly --apache --cert-name alexawebservers.com --expand -d alexawebservers.com,www.alexawebservers.com,admin.alexawebservers.com,mail.alexawebservers.com,webmail.alexawebservers.com,mario-viajes.alexawebservers.com,${subdomain}`);
+          }
         }
 
         deploySpinner.stop(`✅ Subdomain ready: https://${subdomain}`);

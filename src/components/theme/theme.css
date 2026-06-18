@@ -1,16 +1,16 @@
 /* Rake CMS — Theme: Blue Oasis Restaurant Tenerife - MAXIMUM WOW EDITION */
 
 :root {
-  --color-primary: #3b82f6;
-  --color-primary-rgb: 59, 130, 246;
-  --color-secondary: #6b7280;
-  --color-secondary-rgb: 107, 114, 128;
-  --color-accent: #f9fafb;
+  --color-primary: #8B1A1A;
+  --color-primary-rgb: 139, 26, 26;
+  --color-secondary: #D4A017;
+  --color-secondary-rgb: 212, 160, 23;
+  --color-accent: #1a1a2e;
   --color-gold: #D4A017;
   --color-gold-rgb: 212, 160, 23;
   --color-glow: rgba(212, 160, 23, 0.3);
   --color-glow-intense: rgba(212, 160, 23, 0.6);
-  --gradient-main: linear-gradient(135deg, #3b82f6, #6b7280);
+  --gradient-main: linear-gradient(135deg, #8B1A1A, #D4A017);
   --gradient-glow: radial-gradient(circle at 50% 50%, rgba(212, 160, 23, 0.15), transparent 70%);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
@@ -108,7 +108,7 @@
 
 /* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #3b82f6, #6b7280, #3b82f6, #6b7280);
+  background: linear-gradient(135deg, #8B1A1A, #D4A017, #8B1A1A, #D4A017);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -199,7 +199,7 @@
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #3b82f6, #6b7280); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #8B1A1A, #D4A017); border-radius: 3px; }
 
 /* ── Selection ── */
-::selection { background: #3b82f655; color: white; }
+::selection { background: #8B1A1A55; color: white; }
