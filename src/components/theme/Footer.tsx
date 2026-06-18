@@ -45,7 +45,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Blue Oasis Restaurant Tenerife</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              We are Blue Oasis Restaurant Tenerife, serving the local area.
+              Bienvenido a Churrasquería Rodeo Grill, donde el auténtico rodizio brasileño cobra vida en Costa Adeje. Déjese llevar por el incesante desfile de carnes premium asadas a la perfección por nuestros gauchos.
             </p>
             {/* Social / Watermark link with Glow Hover */}
             <div className="mt-6 flex gap-4">

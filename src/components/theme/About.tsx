@@ -71,31 +71,31 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/80"
             >
-              We are Blue Oasis Restaurant Tenerife
+              CARNE SIN FIN
             </motion.span>
             <motion.h2
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              About Blue Oasis Restaurant Tenerife
+              La Experiencia Rodizio
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Blue Oasis Restaurant Tenerife has been proudly serving our community. We&#x27;re committed to quality, reliability, and building lasting relationships with every customer.
+              En Churrasquería Rodeo Grill hemos traído la esencia más pura del rodizio brasileño hasta el sur de Tenerife. Nuestra parrilla trabaja sin descanso para ofrecerle un festín de carnes seleccionadas, asadas lentamente sobre brasas naturales. Cada corte es preparado con el respeto y la maestría que la tradición gaucha exige, garantizando una experiencia que despierta todos los sentidos.
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              We believe in doing things right. Quality, integrity, and customer satisfaction guide every decision we make.
+              El servicio continuo es el alma de nuestra propuesta: nuestros passadores recorren las mesas con espetos humeantes de picanha, alcatra, costela de res, medallones de lomo y mucho más. Usted decide el ritmo, el corte y la cantidad. Cada pieza se sirve en su punto óptimo, recién salida del fuego, con ese sabor ahumado e intenso que solo el asado tradicional puede ofrecer.
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              We invite you to join us and discover what makes us special.
+              Maridamos cada bocado con una cuidada selección de vinos, cervezas artesanales y cócteles tropicales que complementan la riqueza de la carne. Nuestra guarnición incluye clásicos brasileños como la farofa crujiente, la vinagreta fresca, el arroz con frijoles negros y el plátano frito caramelizado, creando un equilibrio perfecto de sabores y texturas.
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -132,7 +132,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[#D4A017]/20 via-[#8B1A1A]/20 to-[#D4A017]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/unsplash-1781768237875-fpsnas.svg+xml" alt="About Blue Oasis Restaurant Tenerife" className="h-full w-full object-cover" />
+                <img src="/media/scraped/unsplash-1781768448894-tdfovj.svg+xml" alt="La Experiencia Rodizio" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>
