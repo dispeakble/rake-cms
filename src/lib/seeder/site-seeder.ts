@@ -17,6 +17,7 @@ import { posts, options, terms, termTaxonomy } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import type { ScrapedSite } from "@/lib/scraper/web-scraper";
 import type { BusinessData } from "@/lib/scraper/maps-scraper";
+import type { BraveSearchResult } from "@/lib/scraper/brave-scraper";
 
 export interface SeederResult {
   pagesCreated: number;
@@ -176,7 +177,9 @@ ${
 export async function seedSite(
   site: ScrapedSite | null,
   business: BusinessData | null,
-  siteId: number = 0
+  siteId: number = 0,
+  /** Optional Brave Search enrichment data */
+  braveData?: BraveSearchResult | null
 ): Promise<SeederResult> {
   const name = business?.name || site?.businessName || "My Business";
   const description = site?.pages[0]?.metaDescription || business?.description || `Welcome to ${name}`;
@@ -288,29 +291,45 @@ export async function seedSite(
   }
 
   // 4. Create homepage from combined data
-  if (site || business) {
+  if (site || business || braveData) {
+    const braveFallback: ScrapedSite = {
+      businessName: name,
+      pages: [{
+        url: "/",
+        title: name,
+        metaDescription: braveData?.description || description,
+        headings: [{ level: 1, text: `Welcome to ${name}` }],
+        paragraphs: braveData?.snippets.slice(0, 3) || [description],
+        images: [],
+        links: [],
+        contactInfo: {
+          phone: [],
+          email: [],
+          address: [],
+          socialLinks: braveData?.socialLinks || [],
+        },
+      }],
+      colorPalette: [],
+      logoUrl: null,
+      businessType: "other",
+      allText: braveData?.snippets.join(" ") || description,
+      homepageUrl: "/",
+    };
+
     const homeContent = generateHomepageContent(
-      site || ({
-        businessName: business!.name,
-        pages: [{
-          url: "/",
-          title: business!.name,
-          metaDescription: business!.description,
-          headings: [{ level: 1, text: `Welcome to ${business!.name}` }],
-          paragraphs: [business!.description],
-          images: [],
-          links: [],
-          contactInfo: { phone: [], email: [], address: [], socialLinks: [] },
-        }],
-        colorPalette: [],
-        logoUrl: null,
-        businessType: "other",
-        allText: business!.description,
-        homepageUrl: "/",
-      } as ScrapedSite),
+      site || braveFallback!,
       business
     );
-    await createPage("Home", "home", homeContent, description, "page", "publish", siteId);
+
+    // Append Brave reviews if available (not already in Maps data)
+    const reviewSection = braveData?.reviews && braveData.reviews.length > 0 && (!business?.reviews || business.reviews.length === 0)
+      ? `\n\n## Reviews from Around the Web\n\n${braveData.reviews.map((r) => {
+          const rating = r.rating ? `${"⭐".repeat(Math.round(r.rating))}` : "⭐";
+          return `> ${rating} — *via [${r.source}](${r.sourceUrl})*\n> ${r.snippet}`;
+        }).join("\n\n")}`
+      : "";
+
+    await createPage("Home", "home", homeContent + reviewSection, description, "page", "publish", siteId);
   }
 
   console.log(`\n✅ CMS seeded: ${pagesCreated} pages created/updated`);

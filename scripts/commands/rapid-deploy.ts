@@ -19,6 +19,7 @@ import { intro, text, select, confirm, isCancel, cancel, outro, spinner } from "
 import { scrapeWebsite } from "@/lib/scraper/web-scraper";
 import { searchBusiness } from "@/lib/scraper/maps-scraper";
 import { scrapePhotos } from "@/lib/scraper/photo-scraper";
+import { searchBusinessWithBrave } from "@/lib/scraper/brave-scraper";
 import { generateTheme } from "@/lib/theme-generator/index";
 import { seedSite } from "@/lib/seeder/site-seeder";
 import { slugify } from "@/lib/site-context";
@@ -136,6 +137,27 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       console.log("\n⚠️  No data could be scraped. Using generated content instead.");
     }
 
+    // Phase 1c: Brave Search — discover images, reviews, and content from web
+    console.log("\n" + "=".repeat(50));
+    console.log("  PHASE 1c: Brave Search Enrichment");
+    console.log("=".repeat(50));
+
+    let braveData = null;
+    const braveName = options.name || business?.name || site?.businessName || businessQuery?.split(",")[0]?.trim() || rawName;
+    const braveLocation = business?.city || site?.pages[0]?.contactInfo?.address?.[0] || (businessQuery ? businessQuery.split(",").slice(1).join(",").trim() : "");
+    try {
+      braveData = await searchBusinessWithBrave(
+        braveName,
+        braveLocation || undefined,
+        site?.businessType || undefined
+      );
+      if (braveData.description && !business?.description && !site?.pages[0]?.metaDescription) {
+        console.log(`   📝 Using Brave search description`);
+      }
+    } catch (error) {
+      console.log(`   ⚠️ Brave Search: ${(error as Error).message}`);
+    }
+
     // Phase 2: Create Site in DB
     console.log("\n" + "=".repeat(50));
     console.log("  PHASE 2: Creating Site in Database");
@@ -214,7 +236,9 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       photos = await scrapePhotos(
         site,
         business,
-        effectiveType
+        effectiveType,
+        braveName,
+        braveLocation
       );
       photoSpinner.stop(`✅ ${photos.length} photos collected`);
       if (photos.length > 0) {
@@ -265,7 +289,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       seedSpinner.start("Populating CMS with content...");
 
       try {
-        const result = await seedSite(site, business, siteId);
+        const result = await seedSite(site, business, siteId, braveData);
         seedSpinner.stop(`✅ CMS seeded: ${result.pagesCreated} pages created for site ${slug}`);
 
         if (site || business) {
