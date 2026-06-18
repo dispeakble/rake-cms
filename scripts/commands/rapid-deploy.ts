@@ -432,7 +432,26 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
     // Phase 8: Verification
     if (options.build !== false) {
       console.log("\n" + "=".repeat(50));
-      console.log("  PHASE 8: Verifying Deployment");
+      console.log("  PHASE 8: Restarting Server");
+      console.log("=".repeat(50));
+
+      const restartSpinner = spinner();
+      try {
+        // Kill any existing server on port 3100
+        execSync(`lsof -ti:3100 | xargs -r kill 2>/dev/null || true`, { timeout: 5000 });
+        // Wait for port to be free
+        execSync(`sleep 1 && while lsof -ti:3100 >/dev/null 2>&1; do sleep 1; done`, { timeout: 10000 });
+        // Start new server in background
+        execSync(`cd ${outputDir} && nohup npx next start -p 3100 > /tmp/rake-cms-server.log 2>&1 &`, { timeout: 10000 });
+        // Wait for it to be ready
+        execSync(`sleep 3`, { timeout: 10000 });
+        restartSpinner.stop("✅ Server restarted on port 3100");
+      } catch (error: any) {
+        restartSpinner.stop(`⚠️ Server restart: ${(error as Error).message}`);
+      }
+
+      console.log("\n" + "=".repeat(50));
+      console.log("  PHASE 9: Verifying Deployment");
       console.log("=".repeat(50));
 
       const verifySpinner = spinner();

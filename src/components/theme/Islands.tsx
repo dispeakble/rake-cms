@@ -11,17 +11,17 @@ const ISLANDS = [
   {
     title: "Sobre Tenerife",
     description: "Tenerife es considerada como la isla de la 'primavera eterna' con un clima suave durante todo el ao. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España.",
-    image: "/images/grancanaria.jpeg",
+    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife",
   },
   {
     title: "Sobre Gran Canaria",
     description: "Si usted deja ir su imaginación durante su visita a Gran Canaria, tendr la sensación de que en lugar de una isla, en realidad visitar tres continentes: frica, Europa y América. Es la tercera isla más grande del archipiélago canario.",
-    image: "/images/grancanaria.jpeg",
+    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife",
   },
   {
     title: "Otras Islas Canarias",
     description: "La Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro no son sólo nombres. Son 5 islas hermosas y vale la pena visitar. Cada uno tiene características diferentes: La Gomera es considerada como la última selva en Europa.",
-    image: "/images/img2.jpg",
+    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Canarias",
   },
 ];
 
