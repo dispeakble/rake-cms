@@ -642,38 +642,14 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	    ctaMobile = `<a href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Contactar</a>`;
 	  }
 
-	  // Extra nav items: Inicio (home), CTA, EN/ES (language toggle)
+	  // Extra nav items: Inicio (home), CTA (desktop & mobile)
 	  const extraDesktopLinks = [
 	    `<Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Inicio</Link>`,
 	    ctaDesktop,
-	    // Interactive EN/ES language toggle
-	    `<span className="relative text-sm font-medium cursor-pointer text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors" onClick={() => {
-	      const html = document.documentElement;
-	      const current = html.getAttribute("lang") || "es";
-	      const next = current === "es" ? "en" : "es";
-	      html.setAttribute("lang", next);
-	      const labels = document.querySelectorAll("[data-lang]");
-	      labels.forEach((el) => {
-	        const elCasted = el as HTMLElement;
-	        elCasted.style.display = elCasted.getAttribute("data-lang") === next ? "" : "none";
-	      });
-	    }}>ES/EN</span>`,
 	  ];
 	  const extraMobileLinks = [
 	    `<Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Inicio</Link>`,
 	    ctaMobile,
-	    `<span className="text-base font-medium text-[var(--color-gold)] cursor-pointer hover:text-[var(--color-gold-light)] transition-colors" onClick={() => {
-	      const html = document.documentElement;
-	      const current = html.getAttribute("lang") || "es";
-	      const next = current === "es" ? "en" : "es";
-	      html.setAttribute("lang", next);
-	      const labels = document.querySelectorAll("[data-lang]");
-	      labels.forEach((el) => {
-	        const elCasted = el as HTMLElement;
-	        elCasted.style.display = elCasted.getAttribute("data-lang") === next ? "" : "none";
-	      });
-	      setOpen(false);
-	    }}>ES/EN</span>`,
 	  ];
 
 	  return `// ============================================================
@@ -697,13 +673,21 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	  const blurAmount = useTransform(scrollY, [0, 80], [12, 24]);
 	  const borderOpacity = useTransform(scrollY, [0, 80], [0.08, 0.15]);
 
+	  // ─── Language dropdown state ───
+	  const [langOpen, setLangOpen] = useState(false);
+
 	  useEffect(() => {
 	    document.documentElement.setAttribute("lang", lang);
 	  }, [lang]);
 
-	  const toggleLang = () => {
-	    const next = lang === "es" ? "en" : "es";
+	  const switchLang = (next: string) => {
 	    setLang(next);
+	    setLangOpen(false);
+	    document.documentElement.setAttribute("lang", next);
+	    // Show/hide content by language
+	    document.querySelectorAll("[data-lang]").forEach(el => {
+	      (el as HTMLElement).style.display = el.getAttribute("data-lang") === next ? "" : "none";
+	    });
 	  };
 
 	  return (
@@ -736,12 +720,35 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	            ${extraDesktopLinks[0]}
 	            ${desktopLinks}
 	            ${extraDesktopLinks[1]}
-	            <button
-	              onClick={toggleLang}
-	              className="relative text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer bg-transparent border-none"
-	            >
-	              {lang === "es" ? "EN" : "ES"}
-	            </button>
+	            {/* ─── Language Dropdown ─── */}
+	            <div className="relative">
+	              <button
+	                onClick={() => setLangOpen(!langOpen)}
+	                onBlur={() => setTimeout(() => setLangOpen(false), 200)}
+	                className="flex items-center gap-1 relative text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer bg-transparent border-none"
+	              >
+	                {lang === "es" ? "ES" : "EN"}
+	                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+	                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+	                </svg>
+	              </button>
+	              {langOpen && (
+	                <div className="absolute right-0 mt-1 w-20 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden z-50">
+	                  <button
+	                    onClick={() => switchLang("es")}
+	                    className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "es" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
+	                  >
+	                    🇪🇸 ES
+	                  </button>
+	                  <button
+	                    onClick={() => switchLang("en")}
+	                    className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "en" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
+	                  >
+	                    🇬🇧 EN
+	                  </button>
+	                </div>
+	              )}
+	            </div>
 	          </nav>
 
 	          {/* Mobile Hamburger */}
@@ -789,12 +796,33 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	                ${extraMobileLinks[0]}
 	                ${mobileLinks.split("\\\\n").map(l => l.trim()).join("\\\\n")}
 	                ${extraMobileLinks[1]}
-	                <button
-	                  onClick={() => { toggleLang(); setOpen(false); }}
-	                  className="text-base font-medium text-[var(--color-gold)] cursor-pointer hover:text-[var(--color-gold-light)] transition-colors bg-transparent border-none text-left"
-	                >
-	                  {lang === "es" ? "EN" : "ES"}
-	                </button>
+	                <div className="relative">
+	                  <button
+	                    onClick={() => setLangOpen(!langOpen)}
+	                    className="flex items-center gap-1 text-base font-medium text-[var(--color-gold)] cursor-pointer hover:text-[var(--color-gold-light)] transition-colors bg-transparent border-none text-left"
+	                  >
+	                    {lang === "es" ? "ES" : "EN"}
+	                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+	                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+	                    </svg>
+	                  </button>
+	                  {langOpen && (
+	                    <div className="mt-1 w-20 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden">
+	                      <button
+	                        onClick={() => { switchLang("es"); setOpen(false); }}
+	                        className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "es" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
+	                      >
+	                        🇪🇸 ES
+	                      </button>
+	                      <button
+	                        onClick={() => { switchLang("en"); setOpen(false); }}
+	                        className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "en" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
+	                      >
+	                        🇬🇧 EN
+	                      </button>
+	                    </div>
+	                  )}
+	                </div>
 	              </motion.div>
 	            </div>
 	          </motion.div>
