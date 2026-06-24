@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "@/components/theme/theme.css";
+import { auth } from "@/auth";
+import AdminToolbar from "@/components/admin/AdminToolbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,23 +15,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Default metadata — per-site titles are set via generateMetadata on the home page
 export const metadata: Metadata = {
   title: {
-    default: "Rake CMS",
-    template: "%s | Rake CMS",
+    default: "Mario Viajes, Tenerife",
+    template: "%s",
   },
   description: "A modern CMS like WordPress built with Next.js",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+  const isLoggedIn = !!session?.user;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {isLoggedIn && <AdminToolbar />}
         {children}
       </body>
     </html>

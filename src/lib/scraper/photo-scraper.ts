@@ -196,7 +196,7 @@ async function downloadImage(
 
     const contentType = response.headers.get("content-type") || "image/jpeg";
     const extRaw = contentType.split("/").pop() || "jpg";
-    const ext = extRaw.split(";")[0].trim(); // Strip charset params like "svg+xml; charset=utf-8"
+    const ext = extRaw.split(";")[0].trim().replace(/\+xml$/i, "").replace(/[^a-z0-9]/gi, ""); // Strip charset params and sanitize
     const buffer = Buffer.from(await response.arrayBuffer());
 
     if (buffer.length < 100) return null; // Too small to be useful

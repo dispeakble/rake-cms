@@ -1,0 +1,130 @@
+# Rake CMS — WordPress Parity Tracker
+
+## Instructions
+1. Open this CSV in any spreadsheet app (Google Sheets, Excel, LibreOffice)
+2. Use filters by Status column to group by ✅ 🟡 ❌
+3. Update Status column as features are completed
+
+## Features
+
+Category,Feature,Status,Notes
+Database,wp_posts,✅,Full parity
+Database,wp_postmeta,✅,Full parity
+Database,wp_users,✅,Full parity
+Database,wp_usermeta,❌,Not implemented yet
+Database,wp_comments,✅,Full parity
+Database,wp_commentmeta,❌,Not implemented yet
+Database,wp_terms,✅,Full parity
+Database,wp_term_taxonomy,✅,Full parity
+Database,wp_term_relationships,✅,Full parity
+Database,wp_options,✅,Full parity
+Database,wp_revisions,✅,Full parity
+Database,wp_links,❌,Deprecated in WP 3.5
+Database,wp_sites (multitenant),✅,Custom - WP multisite is different
+Content,Posts,✅,
+Content,Pages,✅,Hierarchical via postParent
+Content,Custom Post Types,✅,registerPostType() + admin UI
+Content,Post Formats,❌,No post_format taxonomy
+Content,Categories,✅,Hierarchical taxonomy
+Content,Tags,✅,Non-hierarchical taxonomy
+Content,Custom Taxonomies,✅,registerTaxonomy() API
+Content,Category/Tag Count Sync,✅,On post save/delete
+Admin,Dashboard,🟡,Basic screen no widgets
+Admin,Posts List,✅,Type status date trash
+Admin,Post Editor,🟡,Text-based not rich
+Admin,Block Editor (Gutenberg),🟡,BlockNote imported not wired
+Admin,Media Library,🟡,Grid + upload S3 no editing
+Admin,Comments,✅,List approve delete
+Admin,Categories/Tags,✅,List add delete
+Admin,Navigation Menus,✅,Create edit delete items
+Admin,Users,✅,List edit profile
+Admin,User Editor,✅,Username email password
+Admin,Settings,✅,Title tagline posts_per_page
+Admin,Admin Toolbar,❌,No frontend bar
+Admin,Bulk Actions,❌,Single item only
+Admin,Quick Edit,❌,No inline editing
+Admin,Screen Options,❌,No per-screen settings
+Theming,Theme Generator,✅,Auto Tailwind framer-motion
+Theming,Header glass,✅,Matte blur business-aware
+Theming,Hero Section,✅,Industry-aware
+Theming,About/Services/Contact,✅,Dynamic per business
+Theming,Reviews,✅,Scraped or placeholder
+Theming,Footer,✅,Business info watermark
+Theming,Theme Colors,✅,Photo-extracted+palettes
+Theming,Language Toggle EN/ES,✅,Interactive React
+Theming,Navigation Menus API,✅,getMenu() renderMenuHtml()
+Theming,Template Hierarchy,❌,Single layout only
+Theming,Theme Customizer,❌,No live preview
+Theming,Widget Areas,❌,No register_sidebar
+Theming,Theme.json FSE,❌,No block themes
+Theming,Child Themes,❌,No inheritance
+Editor,BlockNote Editor,🟡,Imported placeholder
+Editor,Rich Text Toolbar,🟡,Placeholder only
+Editor,HTML Editor,🟡,Textarea accepts HTML
+Editor,Markdown,❌,Not supported
+Editor,Media Embedding,❌,No inline insertion
+Editor,Slash Commands,❌,Not wired
+Editor,Reusable Blocks,❌,No pattern saving
+Users,Auth.js v5,✅,Credentials session
+Users,Login Page,✅,/login
+Users,Registration,✅,/register
+Users,Password Reset,✅,Forgot→email→token
+Users,Roles Admin/Editor/Author/Contributor/Subscriber,✅,5 roles defined
+Users,Role Capabilities,✅,40+ capabilities
+Users,Permission Checks,✅,canEditPost canPublish etc
+Users,User Listing,✅,Admin users page
+Users,User Meta,❌,No wp_usermeta table
+Users,Application Passwords,❌,No API tokens
+API,REST Posts,✅,CRUD + status
+API,REST Comments,✅,CRUD + approve
+API,REST Media,✅,Upload and list
+API,REST Tags,✅,Create delete
+API,REST Settings,✅,Update settings
+API,REST Users,✅,CRUD
+API,REST Auth,✅,Register login reset
+API,Hooks/Actions System,✅,addAction doAction priority
+API,Filters System,✅,addFilter applyFilters
+API,Shortcodes,✅,Gallery audio video caption embed
+API,Plugin System,❌,No plugin infrastructure yet
+API,REST Schema,❌,No discovery endpoint
+Security,Rate Limiting,✅,Per-IP limiter
+Security,Input Validation,✅,Zod schema
+Security,XSS Headers,✅,Security headers middleware
+Security,Password Hashing,✅,bcryptjs
+Security,Nonce CSRF,✅,createNonce verifyNonce 24h
+Security,Role-based Access,✅,Capability checks
+Security,SQL Injection,✅,Drizzle ORM
+Security,Nonce Integration Forms,❌,System exists not wired
+Comments,Comment Submission,✅,Via API
+Comments,Comment Approval,✅,Admin approve reject
+Comments,Auto-approve,✅,If email provided
+Comments,Rate Limiting,✅,IP-based
+Comments,Comment Notifications,✅,Email to post author
+Comments,Threaded Comments,❌,No nesting
+Comments,Spam Detection,❌,No Akismet
+Comments,Pingbacks/Trackbacks,❌,Not supported
+Multitenant,Subdomain Routing,✅,slug.aws.com proxy
+Multitenant,Site Registry,✅,wp_sites table
+Multitenant,Business Types,✅,12 industry types
+Multitenant,Virtualmin Integration,✅,Per-site Unix user
+Multitenant,Rapid Deploy CLI,✅,One-command deploy
+Scraping,Web Scraper,✅,Cheerio-based
+Scraping,Google Maps Scraper,✅,Places API
+Scraping,Brave Search,✅,Fallback enrichment
+Scraping,Photo Scraper,✅,Downloads business photos
+Scraping,Color Extraction,✅,Sharp dominant colors
+Cron,Scheduled Publishing,🟡,Future date no cron trigger
+Cron,Post Lifecycle Hooks,✅,save_post publish_post etc
+Cron,WP-Cron Equivalent,❌,No internal cron
+i18n,Spanish Auto-detection,✅,Business name/location
+i18n,English Default,✅,Default language
+i18n,Bilingual Toggle,✅,EN/ES interactive
+i18n,MO/PO Files,❌,No gettext system
+Import,WordPress DB Import,✅,import-wp.ts
+Import,WordPress File Import,✅,import-files.ts
+Import,Schema Introspection,✅,schema-introspector.ts
+Import,PHP Template Parsing,✅,php-parser.ts
+Deploy,Rapid Deploy,✅,Scrape→theme→deploy
+Deploy,Apache Reverse Proxy,✅,Wildcard vhost
+Deploy,Let's Encrypt SSL,✅,Wildcard cert
+Deploy,Database Migrations,🟡,Drizzle Kit configured

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { users, usermeta } from "@/db/schema";
 import { auth } from "@/auth";
 
 export async function POST(request: Request) {
@@ -45,6 +45,33 @@ export async function POST(request: Request) {
     }
 
     await db.update(users).set(updateData).where(eq(users.id, userId));
+
+    // Save user meta fields
+    const metaFields = ["first_name", "last_name", "nickname", "description", "phone", "location"];
+    for (const field of metaFields) {
+      const value = formData.get(field) as string;
+      if (value !== null) {
+        const existing = await db
+          .select()
+          .from(usermeta)
+          .where(and(eq(usermeta.userId, userId), eq(usermeta.metaKey, field)))
+          .limit(1)
+          .then((r) => r[0]);
+
+        if (existing) {
+          await db
+            .update(usermeta)
+            .set({ metaValue: value })
+            .where(eq(usermeta.id, existing.id));
+        } else {
+          await db.insert(usermeta).values({
+            userId,
+            metaKey: field,
+            metaValue: value,
+          });
+        }
+      }
+    }
 
     return NextResponse.redirect(new URL("/profile", request.url));
   } catch (error) {

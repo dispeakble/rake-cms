@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { users, posts, comments } from "@/db/schema";
+import { users, usermeta, posts, comments } from "@/db/schema";
 import { eq, and, desc, count } from "drizzle-orm";
 import Link from "next/link";
 
@@ -9,14 +9,27 @@ export default async function ProfilePage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const userId = parseInt(session.user.id as string);
+
   const user = await db
     .select()
     .from(users)
-    .where(eq(users.id, parseInt(session.user.id as string)))
+    .where(eq(users.id, userId))
     .limit(1)
     .then((r) => r[0]);
 
   if (!user) redirect("/login");
+
+  // Fetch user meta
+  const userMetaRows = await db
+    .select()
+    .from(usermeta)
+    .where(eq(usermeta.userId, userId));
+
+  const userMeta: Record<string, string> = {};
+  for (const m of userMetaRows) {
+    if (m.metaKey) userMeta[m.metaKey] = m.metaValue || "";
+  }
 
   const [postCount] = await db
     .select({ value: count() })
@@ -101,6 +114,62 @@ export default async function ProfilePage() {
                 type="email"
                 name="email"
                 defaultValue={user.userEmail}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium mb-1">First Name</label>
+                <input
+                  type="text"
+                  name="first_name"
+                  defaultValue={userMeta.first_name || ""}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Last Name</label>
+                <input
+                  type="text"
+                  name="last_name"
+                  defaultValue={userMeta.last_name || ""}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Nickname</label>
+              <input
+                type="text"
+                name="nickname"
+                defaultValue={userMeta.nickname || ""}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">About / Bio</label>
+              <textarea
+                name="description"
+                defaultValue={userMeta.description || ""}
+                rows={3}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-none"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Phone</label>
+              <input
+                type="text"
+                name="phone"
+                defaultValue={userMeta.phone || ""}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Location</label>
+              <input
+                type="text"
+                name="location"
+                defaultValue={userMeta.location || ""}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               />
             </div>

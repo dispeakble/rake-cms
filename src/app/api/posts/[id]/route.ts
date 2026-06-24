@@ -3,6 +3,8 @@ import { eq, and } from "drizzle-orm";
 import { db } from "@/db";
 import { posts, termRelationships, postmeta, revisions, comments } from "@/db/schema";
 import { auth } from "@/auth";
+import { doAction } from "@/lib/hooks";
+import { requirePostNonce, NONCE_ACTIONS } from "@/lib/security/nonce-middleware";
 
 /**
  * PUT /api/posts/[id] — Update a post
@@ -18,6 +20,11 @@ export async function PUT(
 
   const { id } = await params;
   const postId = parseInt(id);
+
+  // Verify nonce
+  const userId = parseInt(session.user.id as string) || 0;
+  const nonceError = await requirePostNonce(request, NONCE_ACTIONS.SAVE_POST, userId);
+  if (nonceError) return nonceError;
 
   try {
     const formData = await request.formData();
@@ -107,9 +114,27 @@ export async function PUT(
       }
     }
 
+    // Fire hooks
+    const updatedPost = await db
+      .select()
+      .from(posts)
+      .where(eq(posts.id, postId))
+      .limit(1)
+      .then((r) => r[0]);
+
+    if (updatedPost) {
+      await doAction("save_post", updatedPost.id, updatedPost, false);
+      await doAction("post_updated", updatedPost.id, updatedPost, oldPost);
+
+      // If status changed to "publish", fire publish hook
+      if (updatedPost.postStatus === "publish" && oldPost?.postStatus !== "publish") {
+        await doAction("publish_post", updatedPost.id, updatedPost);
+      }
+    }
+
     return NextResponse.json({
       success: true,
-      redirect: `/admin/posts/${postId}/edit`,
+      redirect: `/admin/${updatedPost?.postType || "posts"}/${postId}/edit`,
     });
   } catch (error) {
     console.error("Update post error:", error);
@@ -132,23 +157,31 @@ export async function DELETE(
   const { id } = await params;
   const postId = parseInt(id);
 
+  // Verify nonce
+  const userId = parseInt(session.user.id as string) || 0;
+  const nonceError = await requirePostNonce(request, NONCE_ACTIONS.DELETE_POST, userId);
+  if (nonceError) return nonceError;
+
   try {
     const { searchParams } = new URL(request.url);
     const force = searchParams.get("force") === "true";
 
     if (force) {
       // Permanently delete
+      await doAction("before_delete_post", postId);
       await db.delete(comments).where(eq(comments.commentPostId, postId));
       await db.delete(postmeta).where(eq(postmeta.postId, postId));
       await db.delete(termRelationships).where(eq(termRelationships.objectId, postId));
       await db.delete(revisions).where(eq(revisions.postId, postId));
       await db.delete(posts).where(eq(posts.id, postId));
+      await doAction("delete_post", postId);
     } else {
       // Move to trash
       await db
         .update(posts)
         .set({ postStatus: "trash" })
         .where(eq(posts.id, postId));
+      await doAction("trash_post", postId);
     }
 
     return NextResponse.json({ success: true });

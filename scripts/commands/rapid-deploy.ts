@@ -319,22 +319,48 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       try {
         deploySpinner.start("Creating Virtualmin virtual server...");
 
+        // Generate a unique short Linux username from the slug
+        // Max 8 chars, alphanumeric, starting with a letter
+        const rawUser = slug
+          .replace(/[^a-z0-9]/g, "")
+          .replace(/^[0-9]+/, "")
+          .substring(0, 8);
+        // Ensure it starts with a letter
+        const vmUser = /^[a-z]/.test(rawUser) ? rawUser : "s" + rawUser;
+        const vmPass = execSync("openssl rand -base64 12", { encoding: "utf-8" }).trim();
+
         // Create the Virtualmin virtual server for the subdomain
-        // The parent domain is alexawebservers.com, so we create it as a sub-server
-        const createCmd = `sudo virtualmin create-domain --domain ${subdomain} --parent alexawebservers.com --user admin.alexa --pass $(openssl rand -base64 12) --dir --webmin --unix 2>&1`;
+        // This creates a proper Unix user with its own home dir, FTP, email, etc.
+        // Then we overwrite the Apache vhost to reverse-proxy to port 3100
+        const createCmd = `sudo virtualmin create-domain --domain ${subdomain} --parent alexawebservers.com --user ${vmUser} --pass '${vmPass}' --dir --webmin 2>&1`;
         
         if (options.dryRun) {
           console.log(`   [DRY RUN] Would run: ${createCmd}`);
+          console.log(`   [DRY RUN] User: ${vmUser}, Password: ${vmPass}`);
         } else {
           try {
             const output = execSync(createCmd, { timeout: 30000, encoding: "utf-8" });
-            console.log(`   ✓ Virtualmin domain created`);
+            console.log(`   ✓ Virtualmin sub-server created`);
+            console.log(`   👤 User: ${vmUser}`);
+            console.log(`   🔑 Password: ${vmPass}`);
           } catch (vmError: any) {
-            // Virtualmin domain might already exist — that's fine
-            if (vmError.stdout?.includes("already exists") || vmError.stderr?.includes("already exists")) {
-              console.log(`   ✓ Domain already exists, updating config...`);
+            const vmOut = (vmError.stdout || "") + (vmError.stderr || "");
+            if (vmOut.includes("already exists") || vmError.message?.includes("already exists")) {
+              console.log(`   ✓ Sub-server already exists (updating vhost only)`);
+              // Look up existing user for this domain
+              try {
+                const existingUser = execSync(
+                  `sudo virtualmin list-domains --domain ${subdomain} --name-only 2>/dev/null | head -1`,
+                  { encoding: "utf-8", timeout: 5000 }
+                ).trim();
+                if (existingUser) console.log(`   👤 Existing user: ${existingUser}`);
+              } catch { /* ignore */ }
+            } else if (vmOut.includes("make no sense") || vmOut.includes("--unix")) {
+              console.log(`   ⚠️  Virtualmin command syntax issue: ${vmError.message}`);
+              console.log(`   ℹ️  Falling back to manual Apache vhost only`);
             } else {
-              console.log(`   ⚠️  Virtualmin: ${vmError.message || "domain may already exist"}`);
+              console.log(`   ⚠️  Virtualmin: ${vmError.message || "domain creation issue"}`);
+              console.log(`   ℹ️  Continuing with Apache vhost setup...`);
             }
           }
         }
@@ -361,9 +387,15 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
     UseCanonicalName Off
     ProxyRequests Off
     ProxyPreserveHost On
+    SSLEngine on
+    # Serve Next.js static files directly (avoids 404s on chunks Next.js 16 won't serve)
+    Alias /_next/static "${outputDir}/.next/static"
+    <Directory "${outputDir}/.next/static">
+        Require all granted
+    </Directory>
+    ProxyPass /_next/static !
     ProxyPass / http://127.0.0.1:3100/
     ProxyPassReverse / http://127.0.0.1:3100/
-    SSLEngine on
     SSLCertificateFile /etc/letsencrypt/live/alexawebservers.com/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/alexawebservers.com/privkey.pem
     Include /etc/letsencrypt/options-ssl-apache.conf

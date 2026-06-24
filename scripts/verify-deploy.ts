@@ -42,6 +42,11 @@ async function verifyDeployment(
     const issues: string[] = [];
     if (bodySize < 1000) issues.push(`body too small (${bodySize}b)`);
     if (expectedName && !html.includes(expectedName)) issues.push(`missing business name "${expectedName}"`);
+    // Check for content contamination — other businesses' names should NOT appear
+    const contaminants = ["Rodeo Grill", "Mario Viajes", "Churrasquería"];
+    for (const c of contaminants) {
+      if (html.includes(c)) issues.push(`contains foreign content: "${c}"`);
+    }
     // Check only visible content — exclude RSC payload and script tags
     const visibleHtml = html.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<div hidden[^>]*>[\s\S]*?<\/div>/g, "");
     if (visibleHtml.includes("Page not found") || visibleHtml.includes("Not Found")) issues.push("contains 'Not Found'");
@@ -68,6 +73,11 @@ async function verifyDeployment(
       const issues: string[] = [];
       if (bodySize < 500) issues.push(`body too small (${bodySize}b)`);
       if (expectedName && !html.includes(expectedName)) issues.push(`missing name "${expectedName}"`);
+      // Check for content contamination on each page
+      const contaminants = ["Rodeo Grill", "Mario Viajes", "Churrasquería"];
+      for (const c of contaminants) {
+        if (html.includes(c)) issues.push(`contains foreign content: "${c}"`);
+      }
 
       checks.push({
         name: `Page (/${slug})`,
