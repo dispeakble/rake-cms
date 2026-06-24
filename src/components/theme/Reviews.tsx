@@ -6,8 +6,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
-const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"María G.","text":"Contratamos una excursión a Tenerife con Mario Viajes, Tenerife y fue una experiencia increíble. El guía conocía todos los rincones del Teide y nos llevó a sitios espectaculares que nunca habríamos encontrado solos. Muy recomendable.","rating":5,"source":"Google"},{"author":"Carlos R.","text":"Excelente servicio para organizar nuestro viaje a Gran Canaria. Los traslados fueron puntuales, el alojamiento perfecto y las excursiones muy bien organizadas. Repetiremos sin duda.","rating":5,"source":"Tripadvisor"},{"author":"Ana & Pedro","text":"Hicimos la ruta interinsular de 10 días y fue perfecta. Todo estaba coordinado al detalle, los hoteles excelentes y las excursiones muy variadas. Una forma maravillosa de conocer Canarias.","rating":5,"source":"Google"},{"author":"James T.","text":"Booked the Tenerife and La Gomera tour package with Mario Viajes, Tenerife. Absolutely stunning! The guide was knowledgeable and passionate about the islands. The boat trip to La Gomera was unforgettable.","rating":5,"source":"Tripadvisor"},{"author":"Laura S.","text":"Fuimos en familia con dos niños y todo fue genial. El alquiler de coches nos permitió movernos con libertad y las recomendaciones de restaurantes y playas fueron excelentes. Volveremos el año que viene.","rating":4,"source":"Restaurant Guru"},{"author":"David M.","text":"Increíble variedad de excursiones para elegir. Desde rutas de senderismo por el Teide hasta paseos en barco avistando delfines. La atención al cliente es excepcional, siempre dispuestos a ayudar.","rating":5,"source":"Google"}];
+const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"María G.","text":"Contratamos una excursión a Tenerife con Mario Viajes y fue una experiencia increíble. El guía conocía todos los rincones del Teide y nos llevó a sitios espectaculares que nunca habríamos encontrado solos. Muy recomendable.","rating":5,"source":"Google"},{"author":"Carlos R.","text":"Excelente servicio para organizar nuestro viaje a Gran Canaria. Los traslados fueron puntuales, el alojamiento perfecto y las excursiones muy bien organizadas. Repetiremos sin duda.","rating":5,"source":"Tripadvisor"},{"author":"Ana & Pedro","text":"Hicimos la ruta interinsular de 10 días y fue perfecta. Todo estaba coordinado al detalle, los hoteles excelentes y las excursiones muy variadas. Una forma maravillosa de conocer Canarias.","rating":5,"source":"Google"},{"author":"James T.","text":"Booked the Tenerife and La Gomera tour package with Mario Viajes. Absolutely stunning! The guide was knowledgeable and passionate about the islands. The boat trip to La Gomera was unforgettable.","rating":5,"source":"Tripadvisor"},{"author":"Laura S.","text":"Fuimos en familia con dos niños y todo fue genial. El alquiler de coches nos permitió movernos con libertad y las recomendaciones de restaurantes y playas fueron excelentes. Volveremos el año que viene.","rating":4,"source":"Restaurant Guru"},{"author":"David M.","text":"Increíble variedad de excursiones para elegir. Desde rutas de senderismo por el Teide hasta paseos en barco avistando delfines. La atención al cliente es excepcional, siempre dispuestos a ayudar.","rating":5,"source":"Google"}];
 
 function SparkleStar({ filled, delay }: { filled: boolean; delay: number }) {
   return (
@@ -15,7 +16,7 @@ function SparkleStar({ filled, delay }: { filled: boolean; delay: number }) {
       className={`relative inline-block text-lg ${
         filled ? "text-[var(--color-gold)]" : "text-gray-600"
       }`}
-      initial={{ opacity: 1, scale: 1, rotate: 0 }}
+      initial={{ opacity: 0, scale: 0, rotate: -180 }}
       whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
       viewport={{ once: true }}
       transition={{ delay, type: "spring", stiffness: 200, damping: 10 }}
@@ -57,7 +58,7 @@ export default function Reviews() {
 
       <div className="relative z-10 container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -72,7 +73,7 @@ export default function Reviews() {
           {REVIEWS.map((review, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
+              initial={{ opacity: 0, y: 40, rotateX: 10, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{
