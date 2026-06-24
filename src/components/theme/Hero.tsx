@@ -8,8 +8,10 @@
 import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Hero() {
+  const { t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -20,7 +22,7 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Carousel State ───
-  const slides = [{"src":"/media/marioviajes/c-img-1.jpg","caption":"Explora, sueña, descubre — Islas Canarias"},{"src":"/media/marioviajes/c-img-2.jpg","caption":"Explora, sueña, descubre — Islas Canarias"},{"src":"/media/marioviajes/c-img-3.jpg","caption":"Contact us today"}];
+  const slides = [{"src":"/media/marioviajes/c-img-1.jpg","caption":"Tu aventura en Canarias empieza aquí"},{"src":"/media/marioviajes/c-img-2.jpg","caption":"Tu aventura en Canarias empieza aquí"},{"src":"/media/marioviajes/c-img-3.jpg","caption":"Contact us today"}];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -209,7 +211,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          Explora, sueña, descubre — Islas Canarias
+          Tu aventura en Canarias empieza aquí
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -217,7 +219,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"Explora, sueña, descubre — Islas Canarias".split("").map((char, i) => (
+          {"Tu aventura en Canarias empieza aquí".split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
@@ -239,13 +241,13 @@ export default function Hero() {
             href="/#menu"
             className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-gold)] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(var(--color-gold-rgb), 0.5)] hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span className="relative z-10">Explora nuestros servicios</span>
+            <span className="relative z-10">{t("hero.cta_services")}</span>
           </Link>
           <Link
             href="/#contact"
             className="shimmer-btn relative inline-flex items-center rounded-xl border-2 border-white/30 px-10 py-4 font-bold text-white transition-all duration-300 hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 hover:shadow-[0_0_30px_rgba(var(--color-gold-rgb), 0.3)] hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span className="relative z-10">Contacta con nosotros</span>
+            <span className="relative z-10">{t("hero.cta_contact")}</span>
           </Link>
         </motion.div>
       </motion.div>
@@ -257,7 +259,7 @@ export default function Hero() {
         transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-xs uppercase tracking-[0.2em] text-white/30">Scroll</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-white/30">{t("hero.scroll")}</span>
           <div className="h-8 w-[1px] bg-gradient-to-b from-[var(--color-gold)] to-transparent" />
         </div>
       </motion.div>

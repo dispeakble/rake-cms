@@ -7,6 +7,8 @@
 
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 
 const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"María G.","text":"Contratamos una excursión a Tenerife con Mario Viajes y fue una experiencia increíble. El guía conocía todos los rincones del Teide y nos llevó a sitios espectaculares que nunca habríamos encontrado solos. Muy recomendable.","rating":5,"source":"Google"},{"author":"Carlos R.","text":"Excelente servicio para organizar nuestro viaje a Gran Canaria. Los traslados fueron puntuales, el alojamiento perfecto y las excursiones muy bien organizadas. Repetiremos sin duda.","rating":5,"source":"Tripadvisor"},{"author":"Ana & Pedro","text":"Hicimos la ruta interinsular de 10 días y fue perfecta. Todo estaba coordinado al detalle, los hoteles excelentes y las excursiones muy variadas. Una forma maravillosa de conocer Canarias.","rating":5,"source":"Google"},{"author":"James T.","text":"Booked the Tenerife and La Gomera tour package with Mario Viajes. Absolutely stunning! The guide was knowledgeable and passionate about the islands. The boat trip to La Gomera was unforgettable.","rating":5,"source":"Tripadvisor"},{"author":"Laura S.","text":"Fuimos en familia con dos niños y todo fue genial. El alquiler de coches nos permitió movernos con libertad y las recomendaciones de restaurantes y playas fueron excelentes. Volveremos el año que viene.","rating":4,"source":"Restaurant Guru"},{"author":"David M.","text":"Increíble variedad de excursiones para elegir. Desde rutas de senderismo por el Teide hasta paseos en barco avistando delfines. La atención al cliente es excepcional, siempre dispuestos a ayudar.","rating":5,"source":"Google"}];
 
@@ -46,6 +48,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function Reviews() {
+  const { t } = useLanguage();
   return (
     <section id="reviews" className="relative px-4 py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
@@ -65,7 +68,7 @@ export default function Reviews() {
           className="mb-12 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Testimonios</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Lo que dicen nuestros clientes</h2>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("reviews.title")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">Opiniones reales de clientes reales.</p>
         </motion.div>
 

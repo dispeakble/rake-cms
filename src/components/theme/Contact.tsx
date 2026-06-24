@@ -7,8 +7,11 @@
 
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Contact() {
+  const { t } = useLanguage();
   useEffect(() => {
     if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
       const script = document.createElement("script");
@@ -42,8 +45,8 @@ export default function Contact() {
           className="mb-14 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Contacto</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Contacto</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Para más informacin, rellene el siguiente formulario.</p>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("contact.subtitle")}</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -88,9 +91,9 @@ export default function Contact() {
                 <span className="text-[var(--color-gold)]">📋</span> Información
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
-                <p>Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestros servicios, no dude en contactarnos.</p>
+                <p>{t(&quot;contact.info_text&quot;)}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">Le responderemos en un plazo de 24 horas.</p>
+                  <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
                 </div>
               </div>
             </motion.div>
@@ -110,7 +113,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Nombre</label>
                 <motion.input
                   type="text"
-                  placeholder="Su nombre"
+                  placeholder={t("contact.form_name")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -119,7 +122,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Apellido</label>
                 <motion.input
                   type="text"
-                  placeholder="Su apellido"
+                  placeholder={t("contact.form_lastname")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -128,7 +131,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrónico</label>
                 <motion.input
                   type="email"
-                  placeholder="email@ejemplo.com"
+                  placeholder={t("contact.form_email_placeholder")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -137,7 +140,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Teléfono</label>
                 <motion.input
                   type="tel"
-                  placeholder="+34 123 456 789"
+                  placeholder={t("contact.form_phone_placeholder")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -145,7 +148,7 @@ export default function Contact() {
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Mensaje</label>
                 <motion.textarea
-                  placeholder="Escriba su mensaje..."
+                  placeholder={t("contact.form_message_placeholder")}
                   rows={4}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"

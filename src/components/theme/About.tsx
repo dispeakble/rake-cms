@@ -7,6 +7,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -39,6 +40,7 @@ function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string })
 }
 
 export default function About() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const springUp = {
@@ -71,7 +73,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              Explora
+              Tu aventura en Canarias empieza aquí
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -104,9 +106,9 @@ export default function About() {
               className="mt-8 grid grid-cols-3 gap-4"
             >
               {[
-                { value: 500, label: "Happy Clients", suffix: "+" },
-                { value: 15, label: "Years Experience", suffix: "+" },
-                { value: 99, label: "Satisfaction", suffix: "%" },
+                { value: 500, label: t("about.stats.clients"), suffix: "+" },
+                { value: 15, label: t("about.stats.experience"), suffix: "+" },
+                { value: 99, label: t("about.stats.satisfaction"), suffix: "%" },
               ].map((stat) => (
                 <div
                   key={stat.label}
@@ -132,7 +134,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1782304005737-v866ge.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1782304633327-1aorw0.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>
