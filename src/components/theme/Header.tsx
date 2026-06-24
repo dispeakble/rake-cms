@@ -6,39 +6,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@/lib/i18n";
+import type { Lang } from "@/lib/i18n";
 
 export default function Header() {
+  const { lang, switchLang, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
+  const langs: {code: Lang; flag: string; label: string}[] = [{code:"es" as Lang,flag:"🇪🇸",label:"ES"},{code:"en" as Lang,flag:"🇬🇧",label:"EN"}];
 
-  // Detect language from URL path on load
-  const [lang, setLang] = useState(() => {
-    if (typeof window !== "undefined") {
-      const path = window.location.pathname;
-      for (const l of langs) {
-        if (path === "/" + l.code || path.startsWith("/" + l.code + "/")) return l.code;
-      }
-    }
-    return langs[0]?.code || "es";
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute("lang", lang);
-  }, [lang]);
-
-  const switchLang = (next: string) => {
-    setLang(next);
+  const doSwitchLang = (next: Lang) => {
     setLangOpen(false);
-    document.documentElement.setAttribute("lang", next);
-    // Show/hide sections by data-lang
-    document.querySelectorAll("[data-lang]").forEach(el => {
-      (el as HTMLElement).style.display = el.getAttribute("data-lang") === next ? "" : "none";
-    });
-    // Update URL without reload
-    window.history.pushState({}, "", "/" + next);
+    switchLang(next);
   };
 
   // ─── B2B Link ───
@@ -61,7 +42,7 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-8 md:flex">
-            <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Inicio</Link>
+            <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.home")}</Link>
             <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Sobre nosotros</Link>
           <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Qué ofrecemos</Link>
           <Link href="/#excursions" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Excursiones</Link>
@@ -88,7 +69,7 @@ export default function Header() {
                   {langs.map(l => (
                     <button
                       key={l.code}
-                      onClick={() => switchLang(l.code)}
+                      onClick={() => doSwitchLang(l.code)}
                       className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer ${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
                       style={{cursor:'pointer'}}
                     >
@@ -143,7 +124,7 @@ export default function Header() {
                 }}
                 className="flex flex-col gap-4"
               >
-                <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Inicio</Link>
+                <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.home")}</Link>
                 <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Sobre nosotros</Link>
           <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Qué ofrecemos</Link>
           <Link href="/#excursions" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Excursiones</Link>
@@ -170,7 +151,7 @@ export default function Header() {
                       {langs.map(l => (
                         <button
                           key={l.code}
-                          onClick={() => { switchLang(l.code); setOpen(false); }}
+                          onClick={() => { doSwitchLang(l.code); setOpen(false); }}
                           className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer ${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
                           style={{cursor:'pointer'}}
                         >

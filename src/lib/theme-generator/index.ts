@@ -720,16 +720,16 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	    .join("\n              ");
 
 	  // Extra nav items: Inicio (home), external links, CTA (desktop & mobile)
-	  const extraDesktopLinks = [
-	    `<Link href="/" className="${navLinkClass}">Inicio</Link>`,
-	    externalDesktopLinks,
-	    ctaDesktop,
-	  ];
-	  const extraMobileLinks = [
-	    `<Link href="/" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Inicio</Link>`,
-	    externalMobileLinks,
-	    ctaMobile,
-	  ];
+	  	  const extraDesktopLinks = [
+	  	    `<Link href="/" className="${navLinkClass}">{t("nav.home")}</Link>`,
+	  	    externalDesktopLinks,
+	  	    ctaDesktop,
+	  	  ];
+	  	  const extraMobileLinks = [
+	  	    `<Link href="/" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>{t("nav.home")}</Link>`,
+	  	    externalMobileLinks,
+	  	    ctaMobile,
+	  	  ];
 
 	  // ─── Languages from scraped data ───
 	  const langFlags: Record<string, string> = {
@@ -745,50 +745,30 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	    label: code.toUpperCase(),
 	  }));
 	  // Build TypeScript array literal for the Header template
-	  const langsTs = "[" + langs.map(l => `{code:"${l.code}",flag:"${l.flag}",label:"${l.label}"}`).join(",") + "]";
+	  	  const langsTs = "[" + langs.map(l => `{code:"${l.code}",flag:"${l.flag}",label:"${l.label}"}`).join(",") + "]";
 
-	  return `// ============================================================
-//  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
-//  MAXIMUM WOW EDITION
-// ============================================================
+	  	  return `// ============================================================
+	  //  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
+	  //  MAXIMUM WOW EDITION
+	  // ============================================================
 
-"use client";
+	  "use client";
 
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+	  import Link from "next/link";
+	  import { useState } from "react";
+	  import { motion, AnimatePresence } from "framer-motion";
+	  import { useLanguage } from "@/lib/i18n";
 
-export default function Header() {
-  const [open, setOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const langs = ${langsTs};
+	  export default function Header() {
+	      const { lang, switchLang, t } = useLanguage();
+	    const [open, setOpen] = useState(false);
+	    const [langOpen, setLangOpen] = useState(false);
+	    const langs = ${langsTs};
 
-  // Detect language from URL path on load
-  const [lang, setLang] = useState(() => {
-    if (typeof window !== "undefined") {
-      const path = window.location.pathname;
-      for (const l of langs) {
-        if (path === "/" + l.code || path.startsWith("/" + l.code + "/")) return l.code;
-      }
-    }
-    return langs[0]?.code || "es";
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute("lang", lang);
-  }, [lang]);
-
-  const switchLang = (next: string) => {
-    setLang(next);
-    setLangOpen(false);
-    document.documentElement.setAttribute("lang", next);
-    // Show/hide sections by data-lang
-    document.querySelectorAll("[data-lang]").forEach(el => {
-      (el as HTMLElement).style.display = el.getAttribute("data-lang") === next ? "" : "none";
-    });
-    // Update URL without reload
-    window.history.pushState({}, "", "/" + next);
-  };
+	    const doSwitchLang = (next: string) => {
+	      setLangOpen(false);
+	      switchLang(next);
+	    };
 
   // ─── B2B Link ───
   const b2bHref = "https://b2b.marioviajes.com";
@@ -836,13 +816,13 @@ export default function Header() {
                   {langs.map(l => (
                     <button
                       key={l.code}
-                      onClick={() => switchLang(l.code)}
+                      onClick={() => doSwitchLang(l.code)}
                       className={\`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer \${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}\`}
                       style={{cursor:'pointer'}}
                     >
                       {l.flag} {l.label}
                     </button>
-                  ))}
+                  )}
                 </div>
               )}
             </div>
@@ -913,7 +893,7 @@ export default function Header() {
                       {langs.map(l => (
                         <button
                           key={l.code}
-                          onClick={() => { switchLang(l.code); setOpen(false); }}
+                          onClick={() => { doSwitchLang(l.code); setOpen(false); }}
                           className={\`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer \${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}\`}
                           style={{cursor:'pointer'}}
                         >
@@ -940,17 +920,17 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
   // Dynamic CTA text based on business type
   const ctaPrimary = config.businessType === "restaurant"
     ? "Explora menú y precios"
-    : '{t("hero.cta_services")}';
+    : `{t("hero.cta_services")}`;
   const ctaSecondary = config.businessType === "restaurant"
     ? "Reserve Your Table"
-    : '{t("hero.cta_contact")}';
+    : `{t("hero.cta_contact")}`;
 
   // Carousel images base path
   const nameSlug = config.name.toLowerCase().replace(/\s+/g, '');
   const carouselImages = [
-    { src: `/media/${nameSlug}/c-img-1.jpg`, caption: content.tagline || "Welcome" },
-    { src: `/media/${nameSlug}/c-img-2.jpg`, caption: content.heroSubtitle || "Discover more" },
-    { src: `/media/${nameSlug}/c-img-3.jpg`, caption: "Contact us today" },
+    { src: `/media/${nameSlug}/c-img-1.jpg`, caption: `{t("hero.carousel_1")}` },
+    { src: `/media/${nameSlug}/c-img-2.jpg`, caption: `{t("hero.carousel_2")}` },
+    { src: `/media/${nameSlug}/c-img-3.jpg`, caption: `{t("hero.carousel_3")}` },
   ];
 
   return `// ============================================================
@@ -1166,7 +1146,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          ${escapeJsx(content.tagline || "Welcome")}
+          {t("hero.h1")}
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -1319,31 +1299,31 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              ${escapeJsx(content.tagline?.split(",")[0]?.trim() || "About Us")}
+              {t("about.subtitle")}
             </motion.span>
             <motion.h2
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              ${escapeJsx(content.aboutHeading || "About Us")}
+              {t("about.title")}
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              ${escapeJsx(content.aboutParagraphs[0] || "Welcome to our establishment. We're dedicated to providing an exceptional experience for every guest.")}
+              {t("about.p1")}
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              ${escapeJsx(content.aboutParagraphs[1] || "Our team is committed to quality and service, ensuring every visit is memorable.")}
+              {t("about.p2")}
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              ${escapeJsx(content.aboutParagraphs[2] || "We invite you to join us and discover what makes us special.")}
+              {t("about.p3")}
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -1386,10 +1366,14 @@ export default function About() {
 // ─── Services — 3D TILT + GLOWING BORDERS + PULSE DOTS ───────────
 
 function generateServices(content: GeneratedContent, config: ThemeConfig): string {
-  const services = content.services && content.services.length > 0
-    ? content.services
-    : [{ title: config.name || "Nuestros Servicios", description: "Discover what we offer." }];
-  const servicesJson = JSON.stringify(services);
+  const SERVICE_KEYS = [
+    "service_1",
+    "service_2",
+    "service_3",
+    "service_4",
+    "service_5",
+    "service_6",
+  ];
   const bizName = escapeJsx(config.name || "Our Business");
 
   return `// ============================================================
@@ -1403,7 +1387,7 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-const SERVICES = ${servicesJson};
+const SERVICE_KEYS_LIST = ${JSON.stringify(["service_1","service_2","service_3","service_4","service_5","service_6"])};
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -1480,17 +1464,17 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              Lo que ofrecemos
+              {t("services.subtitle")}
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service, i) => (
+            {SERVICE_KEYS_LIST.map((key, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{service.title}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{service.description}</p>
+                  <h3 className="mb-3 text-xl font-bold text-white">{t(key + ".title")}</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">{t(key + ".desc")}</p>
                 </div>
               </TiltCard>
             ))}
@@ -1514,13 +1498,13 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              Explora
+              {t("services_all.explore")}
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services_all.title")}</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service, i) => (
+            {SERVICE_KEYS_LIST.map((key, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 40, scale: 0.95 }}
@@ -1531,8 +1515,8 @@ export default function Services() {
                 className="relative rounded-2xl p-[1px] overflow-hidden bg-white/10"
               >
                 <div className="relative rounded-2xl p-8 text-center h-full glass">
-                  <h3 className="mb-2 text-lg font-semibold text-white">{service.title}</h3>
-                  <p className="text-sm text-gray-400">{service.description}</p>
+                  <h3 className="mb-2 text-lg font-semibold text-white">{t(key + ".title")}</h3>
+                  <p className="text-sm text-gray-400">{t(key + ".desc")}</p>
                 </div>
               </motion.div>
             ))}
@@ -1618,9 +1602,9 @@ export default function Reviews() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-12 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Testimonios</span>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("reviews.subtitle")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("reviews.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Opiniones reales de clientes reales.</p>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("reviews.tagline")}</p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -1719,7 +1703,7 @@ export default function Contact() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-14 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Contacto</span>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("contact.subtitle")}</p>
         </motion.div>
@@ -1763,7 +1747,7 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📋</span> Información
+                <span className="text-[var(--color-gold)]">📋</span> {t("contact.info_title")}
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <p>{t("contact.info_text")}</p>
@@ -1782,10 +1766,10 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">Envíanos un mensaje</h3>
+            <h3 className="mb-6 text-lg font-semibold text-white">{t("contact.form_title")}</h3>
             <form className="space-y-5">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Nombre</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_name_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_name")}
@@ -1794,7 +1778,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Apellido</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_surname_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_lastname")}
@@ -1803,7 +1787,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrónico</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_email_label")}</label>
                 <motion.input
                   type="email"
                   placeholder={t("contact.form_email_placeholder")}
@@ -1812,7 +1796,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Teléfono</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_phone_label")}</label>
                 <motion.input
                   type="tel"
                   placeholder={t("contact.form_phone_placeholder")}
@@ -1821,7 +1805,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Mensaje</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_message_label")}</label>
                 <motion.textarea
                   placeholder={t("contact.form_message_placeholder")}
                   rows={4}
@@ -1845,7 +1829,7 @@ export default function Contact() {
                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
                 className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[var(--color-gold)] hover:via-[var(--color-gold-light)] hover:to-[var(--color-gold)]"
               >
-                <span className="relative z-10">Enviar mensaje</span>
+                <span className="relative z-10">{t("contact.form_submit")}</span>
               </motion.button>
             </form>
           </motion.div>
@@ -1995,14 +1979,14 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
                 style={{cursor:'pointer'}}
-              >NOTA LEGAL Y CONDICIONES DE USO</a>
+              >{t("footer.legal")}</a>
               <a
                 href="${escapeJsx(transparenciaPdfUrl)}"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
                 style={{cursor:'pointer'}}
-              >MEMORIA TRANSPARENCIA</a>
+              >{t("footer.transparency")}</a>
               <Link
                 href="/legal"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
@@ -2027,7 +2011,7 @@ export default function Footer() {
         >
           <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
             <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
-              NOTA LEGAL Y CONDICIONES DE USO
+              {t("footer.legal")}
             </p>
             <p>
               ${escapeJsx(legalText.substring(0, 500))}
@@ -2073,7 +2057,7 @@ export default function Footer() {
           <p className="mt-4">&copy; ${year} ${escapeJsx(name)}. Todos los derechos reservados.</p>
           <p className="mt-2">CIF: B-12345678 | I-AV: I-AV-0001234.4</p>
           <p className="mt-2">${escapeJsx(fullAddress)}</p>
-          <p className="mt-2">Made with ❤️ by <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
+          <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
         </motion.div>
       </div>
     </footer>
@@ -2097,24 +2081,13 @@ import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 const ISLANDS = [
-  {
-    title: "Sobre Tenerife",
-    description: "Tenerife es considerada como la isla de la 'primavera eterna' con un clima suave durante todo el ao. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España.",
-    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife",
-  },
-  {
-    title: "Sobre Gran Canaria",
-    description: "Si usted deja ir su imaginación durante su visita a Gran Canaria, tendr la sensación de que en lugar de una isla, en realidad visitar tres continentes: frica, Europa y América. Es la tercera isla más grande del archipiélago canario.",
-    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife",
-  },
-  {
-    title: "Otras Islas Canarias",
-    description: "La Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro no son sólo nombres. Son 5 islas hermosas y vale la pena visitar. Cada uno tiene características diferentes: La Gomera es considerada como la última selva en Europa.",
-    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Canarias",
-  },
+  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife" },
+  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Gran+Canaria" },
+  { titleKey: "island_other.title", descKey: "island_other.text", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Canarias" },
 ];
 
 export default function Islands() {
+  const { t } = useLanguage();
   return (
     <section id="excursions" className="relative px-4 py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
@@ -2133,10 +2106,10 @@ export default function Islands() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-12 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Destinos</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Descubre las Islas Canarias</h2>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("excursions.subtitle")}</span>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("islands.title")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">
-            Te invitamos a descubrir juntos el encanto y la singularidad de las Islas Canarias! Desde el pico del volcán, hasta 30 metros de profundidad en el Atlántico, ofrecemos una amplia gama de actividades y excursiones que representan el superlativo de la diversidad para cualquier persona, logrando satisfacer incluso los gustos más exigentes.
+            {t("excursions.text")}
           </p>
         </motion.div>
 
@@ -2161,12 +2134,12 @@ export default function Islands() {
                   <span className="mb-2 inline-block rounded-full bg-[var(--color-gold)]/20 px-3 py-1 text-xs font-medium text-[var(--color-gold)]">
                     Isla Canaria
                   </span>
-                  <h3 className="text-xl font-bold text-white">{island.title}</h3>
+                  <h3 className="text-xl font-bold text-white">{t(island.titleKey)}</h3>
                 </div>
               </div>
               <div className="p-6">
                 <p className="text-sm leading-relaxed text-gray-300">
-                  {island.description}
+                  {t(island.descKey)}
                 </p>
               </div>
             </motion.div>

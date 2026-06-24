@@ -59,6 +59,18 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // I18n: rewrite /en, /es, /ro, /hu to / so the LanguageProvider
+  // reads the language from URL path client-side
+  const langMatch = url.pathname.match(/^\/(en|es|ro|hu)(\/|$)/);
+  if (langMatch) {
+    const lang = langMatch[1];
+    response.headers.set("x-lang", lang);
+    // Rewrite to / so the same page serves all languages
+    const rewriteUrl = new URL(request.url);
+    rewriteUrl.pathname = "/";
+    return NextResponse.rewrite(rewriteUrl, { headers: response.headers });
+  }
+
   return response;
 }
 
