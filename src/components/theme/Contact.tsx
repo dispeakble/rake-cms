@@ -43,7 +43,7 @@ export default function Contact() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-14 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Contacto</span>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("contact.subtitle")}</p>
         </motion.div>
@@ -87,7 +87,7 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📋</span> Información
+                <span className="text-[var(--color-gold)]">📋</span> {t("contact.info_title")}
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <p>{t("contact.info_text")}</p>
@@ -106,10 +106,10 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">Envíanos un mensaje</h3>
+            <h3 className="mb-6 text-lg font-semibold text-white">{t("contact.form_title")}</h3>
             <form className="space-y-5">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Nombre</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_name_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_name")}
@@ -118,7 +118,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Apellido</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_surname_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_lastname")}
@@ -127,7 +127,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrónico</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_email_label")}</label>
                 <motion.input
                   type="email"
                   placeholder={t("contact.form_email_placeholder")}
@@ -136,7 +136,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Teléfono</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_phone_label")}</label>
                 <motion.input
                   type="tel"
                   placeholder={t("contact.form_phone_placeholder")}
@@ -145,7 +145,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Mensaje</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_message_label")}</label>
                 <motion.textarea
                   placeholder={t("contact.form_message_placeholder")}
                   rows={4}
@@ -169,7 +169,7 @@ export default function Contact() {
                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
                 className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[var(--color-gold)] hover:via-[var(--color-gold-light)] hover:to-[var(--color-gold)]"
               >
-                <span className="relative z-10">Enviar mensaje</span>
+                <span className="relative z-10">{t("contact.form_submit")}</span>
               </motion.button>
             </form>
           </motion.div>

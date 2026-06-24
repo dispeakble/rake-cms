@@ -9,7 +9,7 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-const SERVICES = [{"title":"Paquetes Vacacionales a Medida","description":"Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos. Desde escapadas románticas hasta aventuras familiares, diseñamos sus vacaciones soñadas."},{"title":"Eventos MICE","description":"Organizamos eventos de MICE (Meetings, Incentives, Conferences, Exhibitions) para empresas y grupos. Gestión integral de eventos corporativos en las Islas Canarias con servicios profesionales llave en mano."},{"title":"Asistencia Turística","description":"Asistencia turstica en varios idiomas. Nuestro equipo multilingüe est a su disposición para hacer de su estancia en Canarias una experiencia sin preocupaciones."},{"title":"Traslados Locales","description":"Traslados locales privados o colectivos desde el aeropuerto a su alojamiento y a cualquier punto de la isla. Comodidad y puntualidad garantizadas."},{"title":"Excursiones en Tenerife","description":"Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera."},{"title":"Alquiler de Coches","description":"Alquiler de coches con las mejores condiciones para que se mueva con total libertad por las Islas Canarias. Amplia flota de vehículos para todos los presupuestos."}];
+const SERVICE_KEYS_LIST = ["service_1","service_2","service_3","service_4","service_5","service_6"];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -86,17 +86,17 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              Lo que ofrecemos
+              {t("services.subtitle")}
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service, i) => (
+            {SERVICE_KEYS_LIST.map((key, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{service.title}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{service.description}</p>
+                  <h3 className="mb-3 text-xl font-bold text-white">{t(key + ".title")}</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">{t(key + ".desc")}</p>
                 </div>
               </TiltCard>
             ))}
@@ -120,13 +120,13 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              Explora
+              {t("services_all.explore")}
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services_all.title")}</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service, i) => (
+            {SERVICE_KEYS_LIST.map((key, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 40, scale: 0.95 }}
@@ -137,8 +137,8 @@ export default function Services() {
                 className="relative rounded-2xl p-[1px] overflow-hidden bg-white/10"
               >
                 <div className="relative rounded-2xl p-8 text-center h-full glass">
-                  <h3 className="mb-2 text-lg font-semibold text-white">{service.title}</h3>
-                  <p className="text-sm text-gray-400">{service.description}</p>
+                  <h3 className="mb-2 text-lg font-semibold text-white">{t(key + ".title")}</h3>
+                  <p className="text-sm text-gray-400">{t(key + ".desc")}</p>
                 </div>
               </motion.div>
             ))}

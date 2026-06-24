@@ -22,7 +22,7 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Carousel State ───
-  const slides = [{"src":"/media/marioviajes/c-img-1.jpg","caption":"Explora, sueña, descubre — Islas Canarias"},{"src":"/media/marioviajes/c-img-2.jpg","caption":"Explora, sueña, descubre — Islas Canarias"},{"src":"/media/marioviajes/c-img-3.jpg","caption":"Contact us today"}];
+  const slides = [{"src":"/media/marioviajes/c-img-1.jpg","caption":"{t(\"hero.carousel_1\")}"},{"src":"/media/marioviajes/c-img-2.jpg","caption":"{t(\"hero.carousel_2\")}"},{"src":"/media/marioviajes/c-img-3.jpg","caption":"{t(\"hero.carousel_3\")}"}];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -211,7 +211,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          Explora, sueña, descubre — Islas Canarias
+          {t("hero.h1")}
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -219,7 +219,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"Explora, sueña, descubre — Islas Canarias".split("").map((char, i) => (
+          {"DESCUBRE LAS ISLAS CANARIAS CON NOSOTROS".split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}

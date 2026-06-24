@@ -48,7 +48,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Mario Viajes</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              Explora, sueña, descubre — Islas Canarias
+              DESCUBRE LAS ISLAS CANARIAS CON NOSOTROS
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
@@ -94,7 +94,6 @@ export default function Footer() {
               <Link href="/#about" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Sobre nosotros</Link>
           <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Qué ofrecemos</Link>
           <Link href="/#excursions" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Excursiones</Link>
-          <Link href="/#contact" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Contactar</Link>
             </div>
           </div>
           <div>
@@ -106,14 +105,14 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
                 style={{cursor:'pointer'}}
-              >NOTA LEGAL Y CONDICIONES DE USO</a>
+              >{t("footer.legal")}</a>
               <a
                 href="https://marioviajes.com/docs/MEMORIA-TRANSPARENCIA-MARIO-VIAJES.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
                 style={{cursor:'pointer'}}
-              >MEMORIA TRANSPARENCIA</a>
+              >{t("footer.transparency")}</a>
               <Link
                 href="/legal"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
@@ -138,7 +137,7 @@ export default function Footer() {
         >
           <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
             <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
-              NOTA LEGAL Y CONDICIONES DE USO
+              {t("footer.legal")}
             </p>
             <p>
               NOTA LEGAL Y CONDICIONES DE USO. Mario Viajes (en adelante, &quot;la Empresa&quot;) con CIF/NIF correspondiente y domicilio social en la dirección registrada, pone a disposición de los usuarios del presente sitio web el presente documento con el que pretende dar cumplimiento a las obligaciones dispuestas en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), así como informar a todos los usuarios acerca de las condiciones de uso del sitio web.
@@ -184,7 +183,7 @@ export default function Footer() {
           <p className="mt-4">&copy; 2026 Mario Viajes. Todos los derechos reservados.</p>
           <p className="mt-2">CIF: B-12345678 | I-AV: I-AV-0001234.4</p>
           <p className="mt-2">Mario Viajes, Calle Montana Clara nr.6, C.C. Laurisilva Local 6 I, 38679, Adeje, Tenerife</p>
-          <p className="mt-2">Made with ❤️ by <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
+          <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
         </motion.div>
       </div>
     </footer>

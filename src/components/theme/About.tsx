@@ -73,31 +73,31 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              Explora
+              {t("about.subtitle")}
             </motion.span>
             <motion.h2
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              About Mario Viajes
+              {t("about.title")}
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Tenerife es considerada como la isla de la &quot;primavera eterna&quot; con un clima suave durante todo el año. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España. [...]
+              {t("about.p1")}
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Tenerife es el lugar donde se puede estar en la altura más alta de España rodeado de nieve y dos horas más tarde para broncearse a la playa.
+              {t("about.p2")}
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              Si usted deja ir su imaginación durante su visita a Gran Canaria, tendrá la sensación de que en lugar de una isla, en realidad visitará tres continentes: África, Europa y América. Es la tercera isla más grande del archipiélago canario. [...]
+              {t("about.p3")}
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -128,15 +128,10 @@ export default function About() {
             variants={springUp}
           >
             <motion.div
-              className="relative overflow-hidden rounded-2xl"
+              className="aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-gold)]/30 via-[var(--color-primary)]/20 to-black animate-[spin-slow_10s_linear_infinite]"
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            >
-              <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
-              <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1782305242051-lhnk5u.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
-              </div>
-            </motion.div>
+            />
           </motion.div>
         </motion.div>
       </div>
