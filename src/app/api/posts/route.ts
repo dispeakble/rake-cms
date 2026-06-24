@@ -6,6 +6,8 @@ import { posts, terms, termTaxonomy, termRelationships, postmeta, revisions } fr
 import { auth } from "@/auth";
 import { getClientIp } from "@/lib/security/validation";
 import { apiLimiter } from "@/lib/security/rate-limiter";
+import { doAction } from "@/lib/hooks";
+import { requirePostNonce, NONCE_ACTIONS } from "@/lib/security/nonce-middleware";
 
 function slugify(text: string): string {
   return text
@@ -49,6 +51,11 @@ export async function POST(request: Request) {
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
+  // Verify nonce
+  const userId = parseInt(session.user.id as string) || 0;
+  const nonceError = await requirePostNonce(request, NONCE_ACTIONS.SAVE_POST, userId);
+  if (nonceError) return nonceError;
 
   const ip = getClientIp(request);
   const limitCheck = apiLimiter.check(`api:${ip}`);
@@ -98,6 +105,10 @@ export async function POST(request: Request) {
       });
     }
 
+    // Fire hooks
+    await doAction("wp_insert_post", post.id, post, true);
+    await doAction("save_post", post.id, post, true);
+
     // Connect categories
     for (const catId of categoryIds) {
       await db.insert(termRelationships).values({
@@ -139,7 +150,7 @@ export async function POST(request: Request) {
       }
     }
 
-    return NextResponse.json({ post, redirect: `/admin/posts/${post.id}/edit` });
+    return NextResponse.json({ post, redirect: `/admin/${post.postType}/${post.id}/edit` });
   } catch (error) {
     console.error("Create post error:", error);
     return NextResponse.json({ error: "Failed to create post" }, { status: 500 });

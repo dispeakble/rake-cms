@@ -42,7 +42,7 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const springUp = {
-    hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
+    hidden: { opacity: 1, y: 0, scale: 1 } as const,
     visible: {
       opacity: 1,
       y: 0,
@@ -55,7 +55,7 @@ export default function About() {
     <section id="about" ref={sectionRef} className="relative px-4 py-24 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-[#1a0a0a] to-black opacity-90" />
-      <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, rgba(212,160,23,0.05), transparent 50%)" }} />
+      <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, rgba(var(--color-gold-rgb), 0.05), transparent 50%)" }} />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
         <motion.div
@@ -69,33 +69,33 @@ export default function About() {
             {/* ── 5. Gradient Text on Heading ── */}
             <motion.span
               variants={springUp}
-              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/80"
+              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              CARNE SIN FIN
+              Mario Viajes. Crea tu tipo de vacaciones.
             </motion.span>
             <motion.h2
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              La Experiencia Rodizio
+              Sobre nosotros
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              En Churrasquería Rodeo Grill hemos traído la esencia más pura del rodizio brasileño hasta el sur de Tenerife. Nuestra parrilla trabaja sin descanso para ofrecerle un festín de carnes seleccionadas, asadas lentamente sobre brasas naturales. Cada corte es preparado con el respeto y la maestría que la tradición gaucha exige, garantizando una experiencia que despierta todos los sentidos.
+              Con la ayuda de nuestra competencia en turismo de calidad y también, de los aos pasados en Canarias, podemos garantizarle unas vacaciones inolvidables.
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              El servicio continuo es el alma de nuestra propuesta: nuestros passadores recorren las mesas con espetos humeantes de picanha, alcatra, costela de res, medallones de lomo y mucho más. Usted decide el ritmo, el corte y la cantidad. Cada pieza se sirve en su punto óptimo, recién salida del fuego, con ese sabor ahumado e intenso que solo el asado tradicional puede ofrecer.
+              Mario Viajes SLU es una empresa joven, desarrollado a partir de nuestro deseo para proporcionar a los turistas con la ayuda responsable y la información exacta. La disposición, la sobriedad y la dedicación que ponemos en nuestro servicio, nos permiten garantizar a nuestros clientes unas vacaciones inolvidables.
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              Maridamos cada bocado con una cuidada selección de vinos, cervezas artesanales y cócteles tropicales que complementan la riqueza de la carne. Nuestra guarnición incluye clásicos brasileños como la farofa crujiente, la vinagreta fresca, el arroz con frijoles negros y el plátano frito caramelizado, creando un equilibrio perfecto de sabores y texturas.
+              Estamos aquí para escuchar sus deseos y organizar sus vacaciones tan soñadas. Ofrecemos servicios turísticos individuales y de grupo para cualquiera de las 7 islas del Archipiélago Canario. Le estamos esperando para escribir juntos la historia de unas vacaciones ideales
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -112,7 +112,7 @@ export default function About() {
                   key={stat.label}
                   className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
                 >
-                  <div className="text-2xl font-black text-[#D4A017]">
+                  <div className="text-2xl font-black text-[var(--color-gold)]">
                     <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                   </div>
                   <div className="mt-1 text-xs text-gray-400">{stat.label}</div>
@@ -130,9 +130,9 @@ export default function About() {
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
             >
-              <div className="absolute -inset-4 bg-gradient-to-r from-[#D4A017]/20 via-[#8B1A1A]/20 to-[#D4A017]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
+              <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/unsplash-1781768448894-tdfovj.svg+xml" alt="La Experiencia Rodizio" className="h-full w-full object-cover" />
+                <img src="/media/scraped/unsplash-1781801695282-vt0r6i.svg+xml" alt="Sobre nosotros" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>

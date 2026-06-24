@@ -1,23 +1,23 @@
-/* Rake CMS — Theme: Blue Oasis Restaurant Tenerife - MAXIMUM WOW EDITION */
+/* Rake CMS — Theme: Mario Viajes, Tenerife - MAXIMUM WOW EDITION */
 
 :root {
-  --color-primary: #8B1A1A;
-  --color-primary-rgb: 139, 26, 26;
-  --color-secondary: #D4A017;
-  --color-secondary-rgb: 212, 160, 23;
+  --color-primary: #0d9488;
+  --color-primary-rgb: 13, 148, 136;
+  --color-secondary: #d97706;
+  --color-secondary-rgb: 217, 119, 6;
   --color-accent: #1a1a2e;
-  --color-gold: #D4A017;
-  --color-gold-rgb: 212, 160, 23;
-  --color-glow: rgba(212, 160, 23, 0.3);
-  --color-glow-intense: rgba(212, 160, 23, 0.6);
-  --gradient-main: linear-gradient(135deg, #8B1A1A, #D4A017);
-  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(212, 160, 23, 0.15), transparent 70%);
+  --color-gold: #d97706;
+  --color-gold-rgb: 217, 119, 6;
+  --color-gold-light: #ff9f2e;
+  --color-glow: rgba(217, 119, 6, 0.3);
+  --color-glow-intense: rgba(217, 119, 6, 0.6);
+  --gradient-main: linear-gradient(135deg, #0d9488, #d97706);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.15), transparent 70%);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --border-angle: 0deg;
 }
 
-/* ── Gradient Text Utility ── */
 .gradient-text {
   background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-gold));
   -webkit-background-clip: text;
@@ -27,7 +27,7 @@
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #D4A017, #F5D061, #D4A017);
+  background: linear-gradient(135deg, var(--color-gold), var(--color-gold-light), var(--color-gold));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -36,12 +36,11 @@
   animation: gradient 4s ease infinite;
 }
 
-/* ── Glassmorphism Utility ── */
 .glass {
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-strong {
@@ -51,7 +50,6 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* ── Glow Card Utility ── */
 .glow-card {
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -65,7 +63,7 @@
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: conic-gradient(from var(--border-angle), transparent, rgba(212, 160, 23, 0.3), transparent, rgba(212, 160, 23, 0.5), transparent);
+  background: conic-gradient(from var(--border-angle), transparent, rgba(var(--color-gold-rgb), 0.3), transparent, rgba(var(--color-gold-rgb), 0.5), transparent);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -81,11 +79,10 @@
 .glow-card:hover {
   border-color: transparent;
   background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 0 30px rgba(212, 160, 23, 0.15), 0 0 60px rgba(212, 160, 23, 0.05);
+  box-shadow: 0 0 30px rgba(var(--color-gold-rgb), 0.15), 0 0 60px rgba(var(--color-gold-rgb), 0.05);
   transform: translateY(-4px);
 }
 
-/* ── Shimmer Button Utility ── */
 .shimmer-btn {
   position: relative;
   overflow: hidden;
@@ -103,22 +100,19 @@
 }
 
 .shimmer-btn-gold::before {
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--color-gold-rgb), 0.35), transparent);
 }
 
-/* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #8B1A1A, #D4A017, #8B1A1A, #D4A017);
+  background: linear-gradient(135deg, #0d9488, #d97706, #0d9488, #d97706);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
 
-/* ── Pulse Glow ── */
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* ── Floating Animation ── */
 .float {
   animation: float 3s ease-in-out infinite;
 }
@@ -129,7 +123,6 @@
   animation: float 5s ease-in-out 0.5s infinite;
 }
 
-/* ── Keyframes ── */
 @keyframes gradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -147,8 +140,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(212, 160, 23, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(212, 160, 23, 0.6); }
+  0%, 100% { box-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.3); }
+  50% { box-shadow: 0 0 40px rgba(var(--color-gold-rgb), 0.6); }
 }
 
 @keyframes spin-slow {
@@ -170,8 +163,8 @@
 }
 
 @keyframes border-rotate {
-  0% { --border-angle: 0deg; }
-  100% { --border-angle: 360deg; }
+  from { --border-angle: 0deg; }
+  to { --border-angle: 360deg; }
 }
 
 @keyframes sparkle {
@@ -191,15 +184,11 @@
   100% { transform: translate(0, 0) rotate(360deg); }
 }
 
-/* ── Legacy CSS utility classes ── */
 .bg-theme-primary { background-color: var(--color-primary); }
 .text-theme-primary { color: var(--color-primary); }
 .border-theme-primary { border-color: var(--color-primary); }
 
-/* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #8B1A1A, #D4A017); border-radius: 3px; }
-
-/* ── Selection ── */
-::selection { background: #8B1A1A55; color: white; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--color-primary), var(--color-secondary)); border-radius: 3px; }
+::selection { background: rgba(var(--color-primary-rgb), 0.33); color: #fff; }

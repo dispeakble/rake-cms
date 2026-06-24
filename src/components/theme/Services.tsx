@@ -8,7 +8,7 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-const SERVICES = [{"title":"Picanha Premium","description":"El corte estrella de nuestra casa. Picanha brasileña seleccionada, asada a la perfección en nuestros espetos verticales. Jugosa por dentro, crocante por fuera, servida en su punto exacto directamente de la parrilla a su mesa."},{"title":"Alcatra","description":"Tierno corte de contrafilet bañado en una salsa de ajo y aceite de oliva que realza su sabor natural. Una experiencia que combina la tradición gaucha con un toque de sofisticación."},{"title":"Costela de Res","description":"Nuestra costilla de res se cocina lentamente durante horas hasta que la carne se desprende del hueso. Ahumada y caramelizada de forma natural, es uno de los platos más aclamados por nuestros comensales."},{"title":"Medallones de Lomo","description":"Jugosos medallones de lomo de ternera envueltos en panceta, asados a la parrilla hasta conseguir ese punto perfecto. Una delicia que combina textura y sabor en cada bocado."},{"title":"Entraña y Solomillo","description":"Dos cortes emblemáticos de la parrilla argentina y brasileña. La entraña, tierna y sabrosa, junto al solomillo más selecto, servidos con chimichurri casero y farofa crujiente."},{"title":"Postres y Carta de Vinos","description":"Una cuidada selección de vinos españoles y sudamericanos para maridar cada corte. Nuestros postres caseros, como la tradicional delicia de maracuyá y el pudim de leche condensada, ponen el broche de oro a la experiencia."}];
+const SERVICES = [{"title":"Paquetes Vacacionales a Medida","description":"Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos. Desde escapadas románticas hasta aventuras familiares, diseñamos sus vacaciones soñadas."},{"title":"Eventos MICE","description":"Organizamos eventos de MICE (Meetings, Incentives, Conferences, Exhibitions) para empresas y grupos. Gestión integral de eventos corporativos en las Islas Canarias con servicios profesionales llave en mano."},{"title":"Asistencia Turística","description":"Asistencia turstica en varios idiomas. Nuestro equipo multilingüe est a su disposición para hacer de su estancia en Canarias una experiencia sin preocupaciones."},{"title":"Traslados Locales","description":"Traslados locales privados o colectivos desde el aeropuerto a su alojamiento y a cualquier punto de la isla. Comodidad y puntualidad garantizadas."},{"title":"Excursiones en Tenerife","description":"Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera."},{"title":"Alquiler de Coches","description":"Alquiler de coches con las mejores condiciones para que se mueva con total libertad por las Islas Canarias. Amplia flota de vehículos para todos los presupuestos."}];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -57,9 +57,9 @@ export default function Services() {
         className="absolute inset-0 opacity-20"
         style={{
           backgroundImage: `
-            radial-gradient(circle at 20% 30%, rgba(139,26,26,0.3), transparent 40%),
-            radial-gradient(circle at 80% 70%, rgba(212,160,23,0.2), transparent 40%),
-            radial-gradient(circle at 50% 50%, rgba(139,26,26,0.15), transparent 50%)
+            radial-gradient(circle at 20% 30%, rgba(var(--color-primary-rgb), 0.3), transparent 40%),
+            radial-gradient(circle at 80% 70%, rgba(var(--color-gold-rgb), 0.2), transparent 40%),
+            radial-gradient(circle at 50% 50%, rgba(var(--color-primary-rgb), 0.15), transparent 50%)
           `,
           backgroundSize: "100% 100%",
           animation: "breathe 6s ease-in-out infinite",
@@ -70,7 +70,7 @@ export default function Services() {
         {/* ── Nuestros Servicios ── */}
         <motion.div
           id="locations"
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -78,11 +78,11 @@ export default function Services() {
         >
           <div className="mb-12 text-center">
             <motion.span
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
+              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
               Lo que ofrecemos
             </motion.span>
@@ -92,7 +92,7 @@ export default function Services() {
             {SERVICES.map((service, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
-                  <span className="mb-2 inline-block rounded bg-[#D4A017]/20 px-2 py-0.5 text-xs font-medium text-[#D4A017]">#{(i + 1).toString().padStart(2, "0")}</span>
+                  <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
                   <h3 className="mb-3 text-xl font-bold text-white">{service.title}</h3>
                   <p className="text-sm leading-relaxed text-gray-300">{service.description}</p>
                 </div>
@@ -104,7 +104,7 @@ export default function Services() {
         {/* ── Menu / More Services ── */}
         <motion.div
           id="menu"
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -112,11 +112,11 @@ export default function Services() {
         >
           <div className="mb-12 text-center">
             <motion.span
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 1, y: 0 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60"
+              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
               Explora
             </motion.span>
@@ -127,7 +127,7 @@ export default function Services() {
             {SERVICES.map((service, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                initial={{ opacity: 1, y: 0, scale: 1 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, type: "spring", stiffness: 100, damping: 15 }}

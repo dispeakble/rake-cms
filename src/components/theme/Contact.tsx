@@ -15,8 +15,8 @@ export default function Contact() {
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, #D4A017 1px, transparent 1px),
-            radial-gradient(circle at 75% 75%, #8B1A1A 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(circle at 25% 25%, var(--color-gold) 1px, transparent 1px),
+            radial-gradient(circle at 75% 75%, var(--color-primary) 1px, transparent 1px)`,
           backgroundSize: "60px 60px",
           animation: "drift 20s linear infinite",
         }}
@@ -24,13 +24,13 @@ export default function Contact() {
 
       <div className="relative z-10 container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 1, y: 0 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-14 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[#D4A017]/60">Contacto</span>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Contacto</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Contacto</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">Para más informacin, rellene el siguiente formulario.</p>
         </motion.div>
@@ -38,7 +38,7 @@ export default function Contact() {
         <div className="grid gap-10 md:grid-cols-2">
           {/* Contact Details */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 1, x: 0 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -46,38 +46,38 @@ export default function Contact() {
           >
             {/* Business location — Hover Lift Card */}
             <motion.div
-              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
+              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[#D4A017]">📍</span> Blue Oasis Restaurant Tenerife
+                <span className="text-[var(--color-gold)]">📍</span> Mario Viajes, Tenerife
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>Calle Montana Clara nr.6, C.C. Laurisilva Local 6 I, 38679, Adeje, Tenerife</span>
+                  <span>Dirección disponible próximamente</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:+34922724642" className="text-[#D4A017] transition hover:text-[#F5D061]">0034-922724642</a>
+                  <a href="tel:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:office@marioviajes.com" className="text-[#D4A017] transition hover:text-[#F5D061]">office@marioviajes.com</a>
+                  <a href="mailto:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
                 </div>
               </div>
             </motion.div>
 
             {/* Additional contact info — Hover Lift Card */}
             <motion.div
-              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(212,160,23,0.1)" }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#D4A017]/30"
+              whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[#D4A017]">📋</span> Informacin
+                <span className="text-[var(--color-gold)]">📋</span> Informacin
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
-                <p>Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestros servicios o necesita ayuda para planificar sus vacaciones, no dude en contactarnos.</p>
+                <p>Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestros servicios, no dude en contactarnos.</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
                   <p className="text-xs text-gray-400">Le responderemos en un plazo de 24 horas.</p>
                 </div>
@@ -87,7 +87,7 @@ export default function Contact() {
 
           {/* Contact form */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 1, x: 0 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
@@ -101,7 +101,7 @@ export default function Contact() {
                   type="text"
                   placeholder="Su nombre"
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -110,7 +110,7 @@ export default function Contact() {
                   type="text"
                   placeholder="Su apellido"
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -119,7 +119,7 @@ export default function Contact() {
                   type="email"
                   placeholder="email@ejemplo.com"
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -128,7 +128,7 @@ export default function Contact() {
                   type="tel"
                   placeholder="+34 123 456 789"
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -137,17 +137,17 @@ export default function Contact() {
                   placeholder="Escriba su mensaje..."
                   rows={4}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[#D4A017] focus:outline-none focus:ring-[3px] focus:ring-[#D4A017]/20 focus:shadow-[0_0_20px_rgba(212,160,23,0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               {/* reCAPTCHA placeholder */}
               <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-black/30 px-4 py-3">
                 <div className="flex h-6 w-6 items-center justify-center rounded border border-white/20 bg-white/5">
-                  <input type="checkbox" className="h-4 w-4 accent-[#D4A017]" />
+                  <input type="checkbox" className="h-4 w-4 accent-[var(--color-gold)]" />
                 </div>
                 <span className="text-xs text-gray-400">No soy un robot</span>
                 <div className="ml-auto flex items-center gap-1 text-xs text-gray-500">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[#D4A017]">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[var(--color-gold)]">
                     <rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="2"/>
                     <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                   </svg>
@@ -156,11 +156,11 @@ export default function Contact() {
               </div>
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.03, boxShadow: "0 0 30px rgba(212,160,23,0.4)" }}
+                whileHover={{ scale: 1.03, boxShadow: "0 0 30px rgba(var(--color-gold-rgb), 0.4)" }}
                 whileTap={{ scale: 0.97 }}
-                animate={{ boxShadow: ["0 0 15px rgba(212,160,23,0.2)", "0 0 25px rgba(212,160,23,0.4)", "0 0 15px rgba(212,160,23,0.2)"] }}
+                animate={{ boxShadow: ["0 0 15px rgba(var(--color-gold-rgb), 0.2)", "0 0 25px rgba(var(--color-gold-rgb), 0.4)", "0 0 15px rgba(var(--color-gold-rgb), 0.2)"] }}
                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[#8B1A1A] via-[#D4A017] to-[#8B1A1A] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[#D4A017] hover:via-[#F5D061] hover:to-[#D4A017]"
+                className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[var(--color-gold)] hover:via-[var(--color-gold-light)] hover:to-[var(--color-gold)]"
               >
                 <span className="relative z-10">Enviar mensaje</span>
               </motion.button>

@@ -31,3 +31,6 @@ export type { Revision, NewRevision } from "./revisions";
 
 export { sites } from "./sites";
 export type { Site, NewSite } from "./sites";
+
+export { usermeta } from "./usermeta";
+export type { UserMeta, NewUserMeta } from "./usermeta";

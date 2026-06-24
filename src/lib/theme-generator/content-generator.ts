@@ -18,6 +18,114 @@ export interface GeneratedContent {
 }
 
 /**
+ * Detect if the business is likely Spanish-speaking based on name + location.
+ */
+export function isSpanish(name: string, location?: string): boolean {
+  const combined = `${name} ${location || ""}`.toLowerCase();
+  // Spanish-specific accented characters
+  if (/[ñáéíóúü]/.test(combined)) return true;
+  // Spanish common stop words
+  const spanishWords = [
+    " de ", " del ", " la ", " las ", " los ", " el ", " en ", " un ", " una ",
+    " por ", " para ", " con ", " sin ", " entre ", " sobre ", " tras ",
+    " calle ", " avenida ", " plaza ", " barrio ", " municipio ",
+  ];
+  for (const word of spanishWords) {
+    if (combined.includes(word)) return true;
+  }
+  // Spanish-speaking locations
+  const spanishLocations = [
+    "tenerife", "canaria", "españa", "spain", "madrid", "barcelona",
+    "valencia", "sevilla", "málaga", "bilbao", "alicante", "granada",
+    "murcia", "palma", "ibiza", "menorca", "costa", "adeje",
+    "argentina", "méxico", "colombia", "chile", "perú", "uruguay",
+    "santiago", "buenos aires", "ciudad de méxico", "lima", "bogotá",
+  ];
+  for (const loc of spanishLocations) {
+    if (combined.includes(loc)) return true;
+  }
+  return false;
+}
+
+/**
+ * Spanish tagline templates for all business types.
+ */
+const ES_TAGLINES: Record<BusinessType, string[]> = {
+  restaurant: [
+    "CARNE SIN FIN, SABOR SIN LÍMITE",
+    "El auténtico rodizio brasileño en Tenerife",
+    "Cortes premium, tradición gaucha, sabor inigualable",
+    "Déjate llevar por la tradición del asado brasileño",
+  ],
+  retail: [
+    "Descubre productos que amarás",
+    "Tu destino para calidad y estilo",
+    "Compra lo mejor, olvida el resto",
+    "Encuentra todo lo que necesitas en un solo lugar",
+  ],
+  service: [
+    "Servicio profesional en el que puedes confiar",
+    "Trabajo de calidad, resultados garantizados",
+    "Nosotros lo cuidamos, tú disfruta",
+    "Servicio confiable a tu alcance",
+  ],
+  professional: [
+    "Asesoría experta cuando más importa",
+    "Soluciones estratégicas para tu éxito",
+    "Guía de confianza en cada paso del camino",
+    "Tus metas, nuestra experiencia",
+  ],
+  healthcare: [
+    "Tu salud es nuestra máxima prioridad",
+    "Cuidando de ti y tu familia",
+    "Atención compasiva, medicina avanzada",
+    "Tu bienestar empieza aquí",
+  ],
+  education: [
+    "Desarrolla tu máximo potencial",
+    "Aprende, crece y prospera con nosotros",
+    "Construyendo futuros brillantes juntos",
+    "Educación que inspira",
+  ],
+  technology: [
+    "Innovación que impulsa resultados",
+    "Transformando ideas en realidad digital",
+    "Tecnología construida para el mañana",
+    "Soluciones inteligentes para negocios modernos",
+  ],
+  "real-estate": [
+    "Encuentra tu lugar perfecto",
+    "Más que un hogar, es un estilo de vida",
+    "Tu propiedad soñada te espera",
+    "Asesoría experta en bienes raíces",
+  ],
+  construction: [
+    "Construyendo tu visión desde cero",
+    "Construcción de calidad, valor duradero",
+    "Convirtiendo planos en realidad",
+    "Construido para durar, diseñado para impresionar",
+  ],
+  creative: [
+    "Donde la creatividad se encuentra con la estrategia",
+    "Dando vida a tu marca",
+    "Diseño que habla por sí solo",
+    "Soluciones creativas que destacan",
+  ],
+  travel: [
+    "DESCUBRE LAS ISLAS CANARIAS CON NOSOTROS",
+    "Crea tu tipo de vacaciones",
+    "Tu aventura en Canarias empieza aquí",
+    "Explora, sueña, descubre — Islas Canarias",
+  ],
+  other: [
+    "Servicio excepcional, siempre",
+    "Tu socio local de confianza",
+    "Calidad en la que puedes confiar",
+    "Dedicados a tu satisfacción",
+  ],
+};
+
+/**
  * Industry-specific tagline templates.
  */
 const TAGLINES: Record<BusinessType, string[]> = {
@@ -187,6 +295,76 @@ const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: stri
 };
 
 /**
+ * Spanish service offerings by business type.
+ */
+const ES_SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: string }[]> = {
+  restaurant: [
+    { title: "Pescados y Mariscos", description: "Los mejores pescados frescos del Atlántico, seleccionados diariamente. Nuestra lubina salvaje, el rodaballo y el pulpo a la brasa son los favoritos de nuestros comensales." },
+    { title: "Arroces y Paellas", description: "Arroces mediterráneos cocinados a fuego lento con caldos naturales. Nuestra paella de mariscos y el arroz meloso de bogavante son auténticas obras maestras." },
+    { title: "Carnes Seleccionadas", description: "Cortes de carne de primera calidad, desde nuestro solomillo de ternera gallega hasta el cochinillo confitado." },
+    { title: "Ensaladas y Entrantes", description: "Entrantes mediterráneos que despiertan el apetito: tartar de atún rojo, burrata con tomates heirloom y carpaccio de calabacín." },
+    { title: "Postres Caseros", description: "Nuestra repostería casera incluye tiramisú tradicional, tarta de queso y el exquisito coulant de chocolate belga." },
+    { title: "Vinos y Cócteles", description: "Carta de vinos con más de 50 referencias nacionales e internacionales, con especial atención a los caldos canarios." },
+  ],
+  retail: [
+    { title: "Selección de Productos", description: "Explore nuestra colección cuidadosamente seleccionada. Nos enorgullecemos de ofrecer solo artículos de la más alta calidad." },
+    { title: "Compra Personalizada", description: "¿No sabe lo que busca? Nuestro equipo está siempre dispuesto a ayudarle a encontrar exactamente lo que necesita." },
+    { title: "Tienda Online", description: "Compre desde la comodidad de su hogar. Entrega rápida y devoluciones sencillas en todas las compras online." },
+  ],
+  service: [
+    { title: "Consulta Profesional", description: "¿No está seguro de lo que necesita? Empezamos cada proyecto con una consulta exhaustiva para entender sus requisitos." },
+    { title: "Servicio Profesional", description: "Nuestro equipo experimentado ofrece un servicio fiable y de alta calidad en cada ocasión." },
+    { title: "Soporte de Emergencia", description: "¿Necesita ayuda urgente? Ofrecemos servicios de respuesta rápida para solucionar cualquier imprevisto." },
+  ],
+  professional: [
+    { title: "Consultoría Estratégica", description: "Le ayudamos a superar desafíos complejos con estrategias claras y adaptadas a su situación única." },
+    { title: "Soporte Continuo", description: "Manténgase a la vanguardia con nuestros servicios continuos de asesoría y apoyo." },
+    { title: "Formación y Talleres", description: "Capacite a su equipo con conocimientos. Ofrecemos sesiones de formación personalizadas." },
+  ],
+  healthcare: [
+    { title: "Revisiones Generales", description: "Los chequeos regulares son la base de la medicina preventiva. Nuestros exámenes completos cubren todo lo esencial." },
+    { title: "Atención Especializada", description: "Desde procedimientos rutinarios hasta tratamientos especializados, ofrecemos una atención integral." },
+    { title: "Programas de Bienestar", description: "Adopte un enfoque proactivo para su salud. Nuestros programas de bienestar le ayudan a vivir mejor." },
+  ],
+  education: [
+    { title: "Cursos y Programas", description: "Explore nuestra gama de cursos diseñados para estudiantes de todos los niveles. Horarios flexibles." },
+    { title: "Tutoría Personalizada", description: "Reciba atención personalizada con nuestras sesiones de tutoría privada. Alcance sus metas más rápido." },
+    { title: "Talleres y Seminarios", description: "Profundice sus conocimientos con nuestros talleres intensivos. Aprenda de profesionales experimentados." },
+  ],
+  technology: [
+    { title: "Desarrollo de Software", description: "Soluciones de software personalizadas construidas con tecnologías modernas. Desde aplicaciones web hasta plataformas móviles." },
+    { title: "Consultoría TI", description: "Asesoramiento tecnológico estratégico para ayudar a su negocio a crecer. Evaluamos, recomendamos e implementamos." },
+    { title: "Transformación Digital", description: "Prepare su negocio para el futuro con nuestros servicios de transformación digital. Modernice sus flujos de trabajo." },
+  ],
+  "real-estate": [
+    { title: "Listados de Propiedades", description: "Acceda a nuestra extensa base de datos de propiedades. Le ayudamos a encontrar la opción perfecta." },
+    { title: "Gestión de Propiedades", description: "Deje que nosotros nos encarguemos de la gestión diaria de su propiedad. Tranquilidad desde el primer día." },
+    { title: "Asesoría de Inversión", description: "Tome decisiones informadas con nuestro análisis experto del mercado inmobiliario." },
+  ],
+  construction: [
+    { title: "Nueva Construcción", description: "Desde los cimientos hasta los acabados, gestionamos cada aspecto de los proyectos de nueva construcción." },
+    { title: "Reformas y Remodelaciones", description: "Transforme su espacio con nuestros servicios de renovación. Diseños modernos que respetan su estructura actual." },
+    { title: "Gestión de Proyectos", description: "Mantenga su proyecto de construcción dentro del plazo y presupuesto. Nuestros gestores supervisan cada detalle." },
+  ],
+  creative: [
+    { title: "Identidad de Marca", description: "Destaque con una identidad de marca coherente. Desde logotipos hasta guías de marca completas." },
+    { title: "Diseño Gráfico", description: "Diseños impactantes para medios impresos y digitales. Materiales de marketing que captan la atención." },
+    { title: "Fotografía y Video", description: "Contenido visual profesional que muestra su marca bajo la mejor luz." },
+  ],
+  travel: [
+    { title: "Paquetes Vacacionales a Medida", description: "Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos." },
+    { title: "Eventos MICE", description: "Organizamos eventos corporativos en las Islas Canarias con servicios profesionales llave en mano." },
+    { title: "Asistencia Turística", description: "Asistencia turística en varios idiomas. Nuestro equipo multilingüe está a su disposición." },
+    { title: "Excursiones en Tenerife", description: "Descubra Tenerife con nuestras excursiones guiadas. Desde el Teide hasta Los Gigantes." },
+  ],
+  other: [
+    { title: "Servicio de Calidad", description: "Nos comprometemos a ofrecer el más alto nivel de servicio a cada cliente, en cada visita." },
+    { title: "Atención al Cliente", description: "¿Tiene una pregunta? Nuestro equipo está siempre dispuesto a ayudarle con atención rápida y cortés." },
+    { title: "Soluciones Personalizadas", description: "Cada cliente es único. Trabajamos con usted para encontrar la solución que mejor se adapte a sus necesidades." },
+  ],
+};
+
+/**
  * Generate all content for a business based on type + scraped data.
  */
 export function generateContent(
@@ -199,8 +377,11 @@ export function generateContent(
   const rawDescription = business?.description || site?.pages[0]?.metaDescription || "";
   const rawParagraphs = site?.pages.flatMap((p) => p.paragraphs) || [];
 
-  // For travel type (Mario Viajes), use curated Spanish content from original site
-  if (businessType === "travel" && rawParagraphs.length < 3) {
+  // Detect language from business name + location
+  const spanish = isSpanish(name, location);
+
+  // For travel type (Mario Viajes) with no scraped paragraphs, use curated content
+  if (businessType === "travel" && rawParagraphs.length < 3 && spanish) {
     const tagline = "Mario Viajes. Crea tu tipo de vacaciones.";
     const heroSubtitle = "Crea tu tipo de vacaciones. Descubra las Islas Canarias con nosotros.";
     const aboutHeading = "Sobre nosotros";
@@ -247,16 +428,18 @@ export function generateContent(
   }
 
   // Pick tagline — use scraped or random from industry templates
-  const industryTaglines = TAGLINES[businessType] || TAGLINES.other;
+  const industryTaglines = spanish ? (ES_TAGLINES[businessType] || ES_TAGLINES.other) : (TAGLINES[businessType] || TAGLINES.other);
   const tagline = rawDescription || industryTaglines[Math.floor(Math.random() * industryTaglines.length)];
 
   // Hero subtitle — short, punchy
   const heroSubtitle = tagline;
 
-  // About heading — location-aware if available
-  const aboutHeading = location
-    ? `About ${name} in ${location}`
-    : `About ${name}`;
+  // About heading — Spanish-aware
+  const aboutHeading = spanish
+    ? `Sobre ${name}`
+    : (location
+      ? `About ${name} in ${location}`
+      : `About ${name}`);
 
   // About paragraphs — blend scraped content with generated copy
   const aboutParagraphs: string[] = [];
@@ -267,19 +450,19 @@ export function generateContent(
     if (rawParagraphs[2]) aboutParagraphs.push(rawParagraphs[2]);
   } else if (rawParagraphs.length === 1) {
     aboutParagraphs.push(rawParagraphs[0]);
-    aboutParagraphs.push(generateAboutParagraph(name, businessType, location));
+    aboutParagraphs.push(generateAboutParagraph(name, businessType, location, spanish));
   } else {
-    aboutParagraphs.push(generateAboutParagraph(name, businessType, location));
-    aboutParagraphs.push(generateSecondParagraph(name, businessType, location));
+    aboutParagraphs.push(generateAboutParagraph(name, businessType, location, spanish));
+    aboutParagraphs.push(generateSecondParagraph(name, businessType, location, spanish));
   }
 
   // Services — try to extract from scraped page, fall back to templates
-  const services = getServices(site, businessType);
+  const services = getServices(site, businessType, spanish);
 
   // SEO description
   const seoDescription = business?.description
     ? `${name} — ${business.description.substring(0, 160)}`
-    : `${name} — ${tagline}. ${generateSeoDescription(name, businessType, location)}`;
+    : `${name} — ${tagline}. ${generateSeoDescription(name, businessType, location, spanish)}`;
 
   return {
     tagline,
@@ -294,7 +477,25 @@ export function generateContent(
 /**
  * Generate a realistic "about" paragraph based on business type.
  */
-function generateAboutParagraph(name: string, type: BusinessType, location: string): string {
+function generateAboutParagraph(name: string, type: BusinessType, location: string, spanish: boolean = false): string {
+  if (spanish) {
+    const loc = location ? ` en ${location}` : "";
+    const esTemplates: Record<BusinessType, string> = {
+      restaurant: `${name} es un destino gastronómico de referencia${loc}. Nos enorgullecemos de servir platos frescos y llenos de sabor elaborados con ingredientes de origen local. Nuestro ambiente acogedor y nuestro equipo hacen que cada visita sea especial.`,
+      retail: `${name} es su destino comercial de referencia${loc}. Seleccionamos cuidadosamente nuestros productos para ofrecerle la mejor calidad a precios competitivos.`,
+      service: `${name} lleva años ofreciendo un servicio de primera calidad${loc}. Nuestro equipo experimentado se dedica a ofrecer resultados fiables y profesionales.`,
+      professional: `${name} ofrece servicios profesionales expertos${loc}. Nuestro equipo aporta años de experiencia y un profundo conocimiento del sector.`,
+      healthcare: `${name} se dedica a ofrecer una atención sanitaria compasiva y de alta calidad${loc}. Nuestras instalaciones modernas garantizan la mejor atención.`,
+      education: `${name} está comprometido con la excelencia educativa${loc}. Proporcionamos un entorno de aprendizaje donde los estudiantes pueden desarrollar todo su potencial.`,
+      technology: `${name} ofrece soluciones tecnológicas innovadoras${loc}. Combinamos experiencia técnica con pensamiento creativo.`,
+      "real-estate": `${name} es su socio inmobiliario de confianza${loc}. Con conocimiento local y compromiso con el servicio excepcional.`,
+      construction: `${name} aporta décadas de experiencia en construcción${loc}. Somos conocidos por la calidad artesanal y la atención al detalle.`,
+      creative: `${name} es un estudio creativo${loc} dedicado a dar vida a ideas audaces. Combinamos visión artística con pensamiento estratégico.`,
+      travel: `${name} es su agencia de viajes de confianza en el sur de Tenerife${loc}. Con años de experiencia en el sector turístico de Canarias.`,
+      other: `${name} se dedica a servir a nuestra comunidad${loc} con calidad y compromiso. La satisfacción del cliente guía cada decisión que tomamos.`,
+    };
+    return esTemplates[type] || esTemplates.other;
+  }
   const loc = location ? ` in the ${location} area` : "";
   const templates: Record<BusinessType, string> = {
     restaurant: `${name} is a beloved dining destination${loc}. We take pride in serving fresh, flavorful dishes made with locally sourced ingredients. Our welcoming atmosphere and friendly staff make every visit special.`,
@@ -313,7 +514,25 @@ function generateAboutParagraph(name: string, type: BusinessType, location: stri
   return templates[type] || templates.other;
 }
 
-function generateSecondParagraph(name: string, type: BusinessType, location: string): string {
+function generateSecondParagraph(name: string, type: BusinessType, location: string, spanish: boolean = false): string {
+  if (spanish) {
+    const loc = location ? ` en ${location}` : "";
+    const esTemplates: Record<BusinessType, string> = {
+      restaurant: `Ya sea para una comida informal, una cena romántica o una celebración especial${loc}, nuestro equipo está aquí para hacer de su visita una experiencia inolvidable.`,
+      retail: `Nuestro equipo${loc} está siempre dispuesto a ayudarle a encontrar exactamente lo que busca. Creemos en crear una experiencia de compra agradable.`,
+      service: `La satisfacción del cliente es nuestra prioridad${loc}. Nos esforzamos al máximo para garantizar los más altos estándares de calidad.`,
+      professional: `Creemos en construir relaciones duraderas con nuestros clientes${loc}. Su éxito es nuestro éxito.`,
+      healthcare: `Su salud y bienestar son nuestras máximas prioridades. Nos esforzamos por crear una experiencia positiva para cada paciente.`,
+      education: `Nuestros educadores apasionados crean experiencias de aprendizaje efectivas que preparan a los estudiantes para el éxito.`,
+      technology: `Nos mantenemos a la vanguardia de las tecnologías emergentes para ofrecer soluciones que dan ventaja a nuestros clientes.`,
+      "real-estate": `Ya sea comprando, vendiendo o alquilando, nuestro equipo experimentado le guía en todo el proceso.`,
+      construction: `Desde el concepto inicial hasta la inspección final, trabajamos estrechamente con los clientes para garantizar que cada detalle cumpla sus expectativas.`,
+      creative: `Creemos que un buen diseño cuenta una historia. Cada proyecto es una oportunidad para crear algo significativo.`,
+      travel: `Estamos aquí para escuchar sus deseos y organizar sus vacaciones soñadas${loc}. Le esperamos para escribir juntos la historia de unas vacaciones ideales.`,
+      other: `Creemos en hacer las cosas bien. La calidad, la integridad y la satisfacción del cliente guían cada decisión.`,
+    };
+    return esTemplates[type] || esTemplates.other;
+  }
   const loc = location ? ` in ${location}` : "";
   const templates: Record<BusinessType, string> = {
     restaurant: `Whether you're joining us for a casual lunch, romantic dinner, or special celebration,${loc} our team is here to make your experience unforgettable.`,
@@ -335,7 +554,25 @@ function generateSecondParagraph(name: string, type: BusinessType, location: str
 /**
  * Generate SEO description.
  */
-function generateSeoDescription(name: string, type: BusinessType, location: string): string {
+function generateSeoDescription(name: string, type: BusinessType, location: string, spanish: boolean = false): string {
+  if (spanish) {
+    const loc = location ? ` en ${location}` : "";
+    const esIntros: Record<BusinessType, string> = {
+      restaurant: `Visite ${name}${loc} para disfrutar de la mejor experiencia gastronómica. Deliciosos platos preparados con ingredientes frescos y un servicio excepcional.`,
+      retail: `Compre en ${name}${loc} productos de calidad a precios excelentes. Visite nuestra tienda o explore nuestro catálogo online.`,
+      service: `¿Necesita un servicio fiable${loc}? Confíe en ${name} para obtener resultados profesionales. Contáctenos hoy.`,
+      professional: `${name} ofrece servicios profesionales expertos${loc}. Solicite una consulta y permítanos ayudarle a tener éxito.`,
+      healthcare: `${name} ofrece servicios sanitarios de calidad${loc}. Reserve su cita hoy y reciba una atención compasiva.`,
+      education: `Descubra programas y cursos en ${name}${loc}. Comience hoy su viaje de aprendizaje.`,
+      technology: `${name} ofrece soluciones tecnológicas innovadoras${loc}. Construyamos algo grande juntos.`,
+      "real-estate": `Encuentre su propiedad soñada con ${name}${loc}. Explore listados o contacte a nuestros agentes expertos.`,
+      construction: `${name} ofrece servicios de construcción de calidad${loc}. Solicite un presupuesto gratuito.`,
+      creative: `${name} ofrece servicios creativos de diseño${loc}. Démos vida a su visión.`,
+      travel: `Visite ${name}${loc} y descubra las Islas Canarias como nunca antes. Excursiones guiadas y paquetes vacacionales personalizados.`,
+      other: `${name} ofrece un servicio de calidad${loc}. Contáctenos hoy para obtener más información.`,
+    };
+    return esIntros[type] || esIntros.other;
+  }
   const loc = location ? ` in ${location}` : "";
   const intros: Record<BusinessType, string> = {
     restaurant: `Visite ${name}${loc} para disfrutar del mejor rodizio brasileño. Cortes premium como picanha, alcatra y costela asados a la perfección. Disfrute de nuestra experiencia gastronómica en Costa Adeje, Tenerife. Reserve su mesa y déjese conquistar por el sabor sin límite de nuestras parrillas.`,
@@ -359,7 +596,8 @@ function generateSeoDescription(name: string, type: BusinessType, location: stri
  */
 function getServices(
   site: ScrapedSite | null,
-  businessType: BusinessType
+  businessType: BusinessType,
+  spanish: boolean = false
 ): { title: string; description: string }[] {
   // Prefer scraped headings as service names
   if (site) {
@@ -380,13 +618,33 @@ function getServices(
   }
 
   // Fall back to industry templates
-  return SERVICE_TEMPLATES[businessType] || SERVICE_TEMPLATES.other;
+  return spanish
+    ? (ES_SERVICE_TEMPLATES[businessType] || ES_SERVICE_TEMPLATES.other)
+    : (SERVICE_TEMPLATES[businessType] || SERVICE_TEMPLATES.other);
 }
 
 /**
  * Generate a description for a scraped service heading.
  */
-function generateServiceDescription(serviceName: string, businessType: BusinessType): string {
+function generateServiceDescription(serviceName: string, businessType: BusinessType, spanish: boolean = false): string {
+  if (spanish) {
+    const esTemplates: Record<BusinessType, string[]> = {
+      restaurant: [`Nuestro servicio de ${serviceName.toLowerCase()} le ofrece una experiencia única con ingredientes frescos y preparación artesanal.`, `Descubra nuestro ${serviceName.toLowerCase()} — una especialidad elaborada con los mejores ingredientes.`],
+      retail: [`Explore nuestra colección de ${serviceName.toLowerCase()}. Productos de calidad, precios justos.`, `${serviceName} — una de las muchas formas en que servimos a nuestros clientes.`],
+      service: [`Nuestro servicio de ${serviceName.toLowerCase()} es realizado por profesionales experimentados.`, `¿Necesita ${serviceName.toLowerCase()}? Le tenemos cubierto.`],
+      professional: [`Nuestros servicios de ${serviceName.toLowerCase()} se adaptan a sus necesidades únicas.`, `Asesoría experta en ${serviceName.toLowerCase()} de profesionales que entienden su sector.`],
+      healthcare: [`Servicios completos de ${serviceName.toLowerCase()} en un entorno cómodo y acogedor.`, `Su salud es importante. Nuestros servicios están diseñados pensando en su bienestar.`],
+      education: [`Nuestros programas de ${serviceName.toLowerCase()} están diseñados para un aprendizaje efectivo.`, `Logre más con nuestra oferta de ${serviceName.toLowerCase()}.`],
+      technology: [`Soluciones innovadoras de ${serviceName.toLowerCase()} adaptadas a su negocio.`, `Transforme sus operaciones con nuestra experiencia en ${serviceName.toLowerCase()}.`],
+      "real-estate": [`Servicios expertos de ${serviceName.toLowerCase()} para ayudarle a tomar la decisión correcta.`, `Navegue el mercado de ${serviceName.toLowerCase()} con confianza.`],
+      construction: [`Servicios profesionales de ${serviceName.toLowerCase()} respaldados por años de experiencia.`, `${serviceName.toLowerCase()} de calidad que cumple con los más altos estándares.`],
+      creative: [`Nuestros servicios de ${serviceName.toLowerCase()} combinan creatividad con pensamiento estratégico.`, `Destaque con nuestra experiencia en ${serviceName.toLowerCase()}.`],
+      travel: [`Nuestro servicio de ${serviceName.toLowerCase()} le ofrece una experiencia única en las Islas Canarias.`, `Descubra las Islas Canarias con nuestro ${serviceName.toLowerCase()}.`],
+      other: [`Nuestro servicio de ${serviceName.toLowerCase()} está diseñado para satisfacer sus necesidades con calidad y cuidado.`, `Ofrecemos un servicio excepcional de ${serviceName.toLowerCase()} en cada visita.`],
+    };
+    const esOptions = esTemplates[businessType] || esTemplates.other;
+    return esOptions[Math.floor(Math.random() * esOptions.length)];
+  }
   const templates: Record<BusinessType, string[]> = {
     restaurant: [
       `Nuestro servicio de ${serviceName.toLowerCase()} ofrece una experiencia única que captura la esencia de la parrilla tradicional brasileña, preparada con cortes seleccionados y el toque auténtico de nuestros gauchos.`,

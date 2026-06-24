@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rake CMS — WordPress Parity Tracker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; padding: 24px; }
+  h1 { font-size: 24px; margin-bottom: 4px; color: #f8fafc; }
+  .subtitle { color: #94a3b8; margin-bottom: 24px; font-size: 14px; }
+  .stats { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px 20px; text-align: center; min-width: 100px; }
+  .stat .num { font-size: 28px; font-weight: 700; }
+  .stat .label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .stat.done .num { color: #22c55e; }
+  .stat.partial .num { color: #eab308; }
+  .stat.missing .num { color: #ef4444; }
+  .progress-bar { background: #1e293b; border-radius: 999px; height: 8px; margin: 8px 0 20px; overflow: hidden; }
+  .progress-bar .fill { height: 100%; border-radius: 999px; transition: width 0.5s; background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filters button { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.15s; }
+  .filters button:hover { background: #334155; color: #f8fafc; }
+  .filters button.active { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+  .search-box input { background: #1e293b; border: 1px solid #334155; color: #e2e8f0; padding: 6px 12px; border-radius: 6px; font-size: 13px; width: 240px; }
+  .search-box input::placeholder { color: #64748b; }
+  .category { margin-bottom: 24px; }
+  .category h2 { font-size: 15px; font-weight: 600; color: #f8fafc; padding: 8px 12px; background: #1e293b; border-radius: 6px 6px 0 0; border: 1px solid #334155; border-bottom: none; display: flex; justify-content: space-between; }
+  .category h2 .cat-stat { font-size: 11px; color: #94a3b8; font-weight: 400; }
+  table { width: 100%; border-collapse: collapse; border: 1px solid #334155; border-radius: 0 0 6px 6px; overflow: hidden; }
+  th { background: #1e293b; padding: 8px 12px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; border-bottom: 1px solid #334155; cursor: pointer; user-select: none; }
+  th:hover { color: #f8fafc; }
+  td { padding: 7px 12px; font-size: 13px; border-bottom: 1px solid #1e293b; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1e293b; }
+  .status { display: inline-flex; align-items: center; gap: 5px; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .status-dot.done { background: #22c55e; }
+  .status-dot.partial { background: #eab308; }
+  .status-dot.missing { background: #ef4444; }
+  .note { color: #64748b; font-size: 12px; }
+  .footer { margin-top: 32px; text-align: center; color: #475569; font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>📊 Rake CMS — WordPress Parity Tracker</h1>
+<p class="subtitle">Last updated: June 18, 2026 &middot; Auto-generated from codebase audit</p>
+
+<div class="stats" id="stats"></div>
+<div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+
+<div class="filters">
+  <button data-filter="all" class="active" onclick="setFilter('all')">All</button>
+  <button data-filter="done" onclick="setFilter('done')">✅ Done</button>
+  <button data-filter="partial" onclick="setFilter('partial')">🟡 Partial</button>
+  <button data-filter="missing" onclick="setFilter('missing')">❌ Missing</button>
+  <span style="flex:1"></span>
+  <span class="search-box"><input type="text" id="search" placeholder="Search features..." oninput="renderTable()"></span>
+</div>
+
+<div id="tableContainer"></div>
+
+<div class="footer">Rake CMS parity tracker &middot; Open index.html in any browser &middot; Data from wordpress-parity-analysis.md</div>
+
+<script>
+const DATA = [
+  {cat:"Database", feat:"wp_posts", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_postmeta", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_users", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_usermeta", st:"missing", note:"Not implemented"},
+  {cat:"Database", feat:"wp_comments", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_commentmeta", st:"missing", note:"Not implemented"},
+  {cat:"Database", feat:"wp_terms", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_term_taxonomy", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_term_relationships", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_options", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_revisions", st:"done", note:"Full parity"},
+  {cat:"Database", feat:"wp_links", st:"missing", note:"Deprecated WP 3.5"},
+  {cat:"Database", feat:"wp_sites (multitenant)", st:"done", note:"Custom table"},
+
+  {cat:"Content", feat:"Posts", st:"done", note:""},
+  {cat:"Content", feat:"Pages", st:"done", note:"Hierarchical via postParent"},
+  {cat:"Content", feat:"Custom Post Types", st:"done", note:"registerPostType() + admin"},
+  {cat:"Content", feat:"Post Formats", st:"missing", note:"No post_format taxonomy"},
+  {cat:"Content", feat:"Categories", st:"done", note:"Hierarchical taxonomy"},
+  {cat:"Content", feat:"Tags", st:"done", note:"Non-hierarchical"},
+  {cat:"Content", feat:"Custom Taxonomies", st:"done", note:"registerTaxonomy() API"},
+  {cat:"Content", feat:"Category/Tag Count", st:"done", note:"Auto-sync on save"},
+
+  {cat:"Admin Panel", feat:"Dashboard", st:"partial", note:"Basic, no widgets"},
+  {cat:"Admin Panel", feat:"Posts List", st:"done", note:"Type status date trash"},
+  {cat:"Admin Panel", feat:"Post Editor", st:"partial", note:"Text-based, not rich"},
+  {cat:"Admin Panel", feat:"Block Editor", st:"partial", note:"BlockNote placeholder"},
+  {cat:"Admin Panel", feat:"Media Library", st:"partial", note:"Grid + upload, no editing"},
+  {cat:"Admin Panel", feat:"Comments", st:"done", note:"List approve delete"},
+  {cat:"Admin Panel", feat:"Categories/Tags", st:"done", note:"List add delete"},
+  {cat:"Admin Panel", feat:"Navigation Menus", st:"done", note:"Full admin UI"},
+  {cat:"Admin Panel", feat:"Users", st:"done", note:"List edit profile"},
+  {cat:"Admin Panel", feat:"User Editor", st:"done", note:"Username email password"},
+  {cat:"Admin Panel", feat:"Settings", st:"done", note:"Title tagline posts per page"},
+  {cat:"Admin Panel", feat:"Admin Toolbar", st:"missing", note:"No frontend bar"},
+  {cat:"Admin Panel", feat:"Bulk Actions", st:"missing", note:"Single item only"},
+  {cat:"Admin Panel", feat:"Quick Edit", st:"missing", note:"No inline editing"},
+  {cat:"Admin Panel", feat:"Screen Options", st:"missing", note:"No per-screen settings"},
+
+  {cat:"Theming", feat:"Theme Generator", st:"done", note:"Auto Tailwind framer-motion"},
+  {cat:"Theming", feat:"Header (glass)", st:"done", note:"Matte blur, business-aware"},
+  {cat:"Theming", feat:"Hero Section", st:"done", note:"Industry-aware"},
+  {cat:"Theming", feat:"About/Services/Contact", st:"done", note:"Dynamic"},
+  {cat:"Theming", feat:"Reviews", st:"done", note:"Scraped/placeholder"},
+  {cat:"Theming", feat:"Footer", st:"done", note:"Business info watermark"},
+  {cat:"Theming", feat:"Theme Colors", st:"done", note:"Photo-extracted+palettes"},
+  {cat:"Theming", feat:"Language Toggle", st:"done", note:"EN/ES interactive"},
+  {cat:"Theming", feat:"Nav Menus API", st:"done", note:"getMenu() renderMenuHtml()"},
+  {cat:"Theming", feat:"Template Hierarchy", st:"missing", note:"Single layout"},
+  {cat:"Theming", feat:"Theme Customizer", st:"missing", note:"No live preview"},
+  {cat:"Theming", feat:"Widget Areas", st:"missing", note:"No register_sidebar"},
+  {cat:"Theming", feat:"Theme.json FSE", st:"missing", note:"No block themes"},
+  {cat:"Theming", feat:"Child Themes", st:"missing", note:"No inheritance"},
+
+  {cat:"Editor", feat:"BlockNote Editor", st:"partial", note:"Imported placeholder"},
+  {cat:"Editor", feat:"Rich Text Toolbar", st:"partial", note:"Placeholder"},
+  {cat:"Editor", feat:"HTML Editor", st:"partial", note:"Textarea"},
+  {cat:"Editor", feat:"Markdown", st:"missing", note:"Not supported"},
+  {cat:"Editor", feat:"Media Embedding", st:"missing", note:"No inline insertion"},
+  {cat:"Editor", feat:"Slash Commands", st:"missing", note:"Not wired"},
+  {cat:"Editor", feat:"Reusable Blocks", st:"missing", note:"No pattern saving"},
+
+  {cat:"Users & Auth", feat:"Auth.js v5", st:"done", note:"Credentials + session"},
+  {cat:"Users & Auth", feat:"Login Page", st:"done", note:""},
+  {cat:"Users & Auth", feat:"Registration", st:"done", note:""},
+  {cat:"Users & Auth", feat:"Password Reset", st:"done", note:"Forgot → email → token"},
+  {cat:"Users & Auth", feat:"Roles (5)", st:"done", note:"Admin/Editor/Author/Contributor/Subscriber"},
+  {cat:"Users & Auth", feat:"Capabilities (40+)", st:"done", note:"WordPress-compatible"},
+  {cat:"Users & Auth", feat:"Permission Checks", st:"done", note:"canEditPost, canPublish, etc"},
+  {cat:"Users & Auth", feat:"User Meta", st:"missing", note:"No wp_usermeta"},
+
+  {cat:"API & Extensibility", feat:"REST Posts", st:"done", note:"CRUD + status"},
+  {cat:"API & Extensibility", feat:"REST Comments", st:"done", note:"CRUD + approve"},
+  {cat:"API & Extensibility", feat:"REST Media", st:"done", note:"Upload and list"},
+  {cat:"API & Extensibility", feat:"REST Tags/Settings", st:"done", note:"CRUD"},
+  {cat:"API & Extensibility", feat:"REST Auth", st:"done", note:"Register login reset"},
+  {cat:"API & Extensibility", feat:"Hooks/Actions", st:"done", note:"addAction, doAction, priority"},
+  {cat:"API & Extensibility", feat:"Filters", st:"done", note:"addFilter, applyFilters"},
+  {cat:"API & Extensibility", feat:"Shortcodes", st:"done", note:"Gallery audio video caption"},
+  {cat:"API & Extensibility", feat:"Plugin System", st:"missing", note:"No plugin infrastructure"},
+  {cat:"API & Extensibility", feat:"REST Schema", st:"missing", note:"No discovery"},
+
+  {cat:"Security", feat:"Rate Limiting", st:"done", note:"Per-IP"},
+  {cat:"Security", feat:"Input Validation", st:"done", note:"Zod schema"},
+  {cat:"Security", feat:"XSS Headers", st:"done", note:"Middleware"},
+  {cat:"Security", feat:"Password Hashing", st:"done", note:"bcryptjs"},
+  {cat:"Security", feat:"Nonce CSRF", st:"done", note:"createNonce verifyNonce"},
+  {cat:"Security", feat:"Role-based Access", st:"done", note:"Capability checks"},
+  {cat:"Security", feat:"Nonce in Forms", st:"missing", note:"System exists not wired"},
+
+  {cat:"Comments", feat:"Submission", st:"done", note:"Via API"},
+  {cat:"Comments", feat:"Approval", st:"done", note:"Admin approve/reject"},
+  {cat:"Comments", feat:"Rate Limiting", st:"done", note:"IP-based"},
+  {cat:"Comments", feat:"Notifications", st:"done", note:"Email to author"},
+  {cat:"Comments", feat:"Threaded", st:"missing", note:"No nesting"},
+  {cat:"Comments", feat:"Spam Detection", st:"missing", note:"No Akismet"},
+
+  {cat:"Multi-tenant & Deploy", feat:"Subdomain Routing", st:"done", note:"slug.aws.com proxy"},
+  {cat:"Multi-tenant & Deploy", feat:"Site Registry", st:"done", note:"wp_sites table"},
+  {cat:"Multi-tenant & Deploy", feat:"Business Types (12)", st:"done", note:"Industry-aware"},
+  {cat:"Multi-tenant & Deploy", feat:"Virtualmin Integration", st:"done", note:"Per-site Unix user"},
+  {cat:"Multi-tenant & Deploy", feat:"Rapid Deploy CLI", st:"done", note:"One-command"},
+  {cat:"Multi-tenant & Deploy", feat:"Web Scraper", st:"done", note:"Cheerio"},
+  {cat:"Multi-tenant & Deploy", feat:"Google Maps Scraper", st:"done", note:"Places API"},
+  {cat:"Multi-tenant & Deploy", feat:"Photo/Color Extraction", st:"done", note:"Sharp dominant colors"},
+  {cat:"Multi-tenant & Deploy", feat:"Apache + SSL", st:"done", note:"Wildcard vhost + cert"},
+
+  {cat:"Cron & Scheduling", feat:"Scheduled Publishing", st:"partial", note:"Future date, no cron trigger"},
+  {cat:"Cron & Scheduling", feat:"Post Lifecycle Hooks", st:"done", note:"save_post, publish_post, etc"},
+  {cat:"Cron & Scheduling", feat:"WP-Cron Equivalent", st:"missing", note:"No internal cron"},
+
+  {cat:"i18n", feat:"Spanish Detection", st:"done", note:"Auto per name/location"},
+  {cat:"i18n", feat:"Bilingual Toggle", st:"done", note:"EN/ES interactive"},
+
+  {cat:"Import/Migration", feat:"WP DB Import", st:"done", note:"MySQL → PostgreSQL"},
+  {cat:"Import/Migration", feat:"WP File Import", st:"done", note:"wp-content sync"},
+  {cat:"Import/Migration", feat:"Schema Introspection", st:"done", note:"Reads MySQL schema"},
+  {cat:"Import/Migration", feat:"PHP Template Parsing", st:"done", note:"Analyzes theme files"},
+];
+
+let currentFilter = 'all';
+
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filters button').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  renderTable();
+}
+
+function getStats() {
+  const total = DATA.length;
+  const done = DATA.filter(d => d.st === 'done').length;
+  const partial = DATA.filter(d => d.st === 'partial').length;
+  const missing = DATA.filter(d => d.st === 'missing').length;
+  return { total, done, partial, missing };
+}
+
+function renderStats() {
+  const s = getStats();
+  const pct = Math.round((s.done / s.total) * 100);
+  document.getElementById('stats').innerHTML = `
+    <div class="stat done"><div class="num">${s.done}</div><div class="label">Done ✅</div></div>
+    <div class="stat partial"><div class="num">${s.partial}</div><div class="label">Partial 🟡</div></div>
+    <div class="stat missing"><div class="num">${s.missing}</div><div class="label">Missing ❌</div></div>
+    <div class="stat" style="border-color:#3b82f6"><div class="num" style="color:#3b82f6">${s.total}</div><div class="label">Total Features</div></div>
+  `;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function renderTable() {
+  const search = document.getElementById('search').value.toLowerCase();
+  
+  let filtered = DATA;
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(d => d.st === currentFilter);
+  }
+  if (search) {
+    filtered = filtered.filter(d => 
+      d.feat.toLowerCase().includes(search) || 
+      d.cat.toLowerCase().includes(search) ||
+      d.note.toLowerCase().includes(search)
+    );
+  }
+
+  // Group by category
+  const groups = {};
+  for (const d of filtered) {
+    if (!groups[d.cat]) groups[d.cat] = [];
+    groups[d.cat].push(d);
+  }
+
+  let html = '';
+  for (const [cat, items] of Object.entries(groups)) {
+    const catDone = items.filter(i => i.st === 'done').length;
+    const catPct = Math.round((catDone / items.length) * 100);
+    html += `<div class="category"><h2>${cat} <span class="cat-stat">${catDone}/${items.length} (${catPct}%)</span></h2><table><thead><tr><th style="width:40%">Feature</th><th style="width:80px">Status</th><th>Notes</th></tr></thead><tbody>`;
+    for (const d of items) {
+      const statusLabel = d.st === 'done' ? '✅ Done' : d.st === 'partial' ? '🟡 Partial' : '❌ Missing';
+      html += `<tr><td>${d.feat}</td><td><span class="status"><span class="status-dot ${d.st}"></span>${statusLabel}</span></td><td class="note">${d.note}</td></tr>`;
+    }
+    html += '</tbody></table></div>';
+  }
+
+  if (filtered.length === 0) {
+    html = '<div style="text-align:center;padding:40px;color:#64748b">No features match your filter.</div>';
+  }
+
+  document.getElementById('tableContainer').innerHTML = html;
+  renderStats();
+}
+
+renderTable();
+</script>
+</body>
+</html>

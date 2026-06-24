@@ -1,20 +1,43 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { initializePostTypes, getMenuPostTypes } from "@/lib/cpt";
+import { createNonce } from "@/lib/security/nonce";
+import { NONCE_ACTIONS, generateNonceScript } from "@/lib/security/nonce-middleware";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session) redirect("/login");
 
+  // Initialize post types for menu
+  initializePostTypes();
+  const menuPostTypes = getMenuPostTypes();
+
+  // Generate global nonce for admin actions
+  const userId = parseInt(session.user?.id as string) || 0;
+  const globalNonce = createNonce("admin_actions", userId);
+  const nonceScript = generateNonceScript(globalNonce, "admin_actions");
+
   return (
     <div className="flex min-h-screen">
+      {/* Inject nonce for client-side fetch calls */}
+      <script dangerouslySetInnerHTML={{ __html: nonceScript }} />
       <aside className="w-64 border-r bg-card">
         <div className="flex h-16 items-center border-b px-6">
           <Link href="/admin" className="text-lg font-bold">Rake CMS</Link>
         </div>
         <nav className="space-y-1 p-4">
           <NavItem href="/admin" label="Dashboard" icon="H" />
-          <NavItem href="/admin/posts" label="Posts" icon="P" />
+          {/* Dynamic post type menu items */}
+          {menuPostTypes.map(([name, args]) => (
+            <NavItem
+              key={name}
+              href={`/admin/${name}`}
+              label={args.label}
+              icon={name === "post" ? "P" : name === "page" ? "⿻" : args.menuIcon?.[0] || "•"}
+            />
+          ))}
+          <NavItem href="/admin/nav-menus" label="Menus" icon="N" />
           <NavItem href="/admin/media" label="Media" icon="M" />
           <NavItem href="/admin/comments" label="Comments" icon="C" />
           <NavItem href="/admin/categories" label="Categories" icon="T" />

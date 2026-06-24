@@ -19,9 +19,10 @@ interface PostEditorProps {
   tags?: { id: number; name: string; slug: string }[];
   pages?: { id: number; postTitle: string; postParent: number }[];
   media?: { url: string; path: string }[];
+  defaultType?: string;
 }
 
-export default function PostEditor({ initialData, categories = [], tags = [], pages = [], media = [] }: PostEditorProps) {
+export default function PostEditor({ initialData, categories = [], tags = [], pages = [], media = [], defaultType }: PostEditorProps) {
   const router = useRouter();
   const isEditing = !!initialData;
 
@@ -30,7 +31,7 @@ export default function PostEditor({ initialData, categories = [], tags = [], pa
   const [content, setContent] = useState(initialData?.postContent || "");
   const [excerpt, setExcerpt] = useState(initialData?.postExcerpt || "");
   const [status, setStatus] = useState(initialData?.postStatus || "draft");
-  const [type, setType] = useState(initialData?.postType || "post");
+  const [type, setType] = useState(initialData?.postType || defaultType || "post");
   const [parentId, setParentId] = useState(initialData?.postParent || 0);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
@@ -58,6 +59,8 @@ export default function PostEditor({ initialData, categories = [], tags = [], pa
     setLoading(true);
     setError("");
 
+    const nonce = typeof window !== "undefined" ? (window as any)._wpnonce : "";
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
@@ -79,6 +82,7 @@ export default function PostEditor({ initialData, categories = [], tags = [], pa
       const res = await fetch(url, {
         method,
         body: formData,
+        headers: nonce ? { "X-WP-Nonce": nonce } : undefined,
       });
 
       if (res.ok) {
@@ -86,7 +90,8 @@ export default function PostEditor({ initialData, categories = [], tags = [], pa
         if (data.redirect) {
           router.push(data.redirect);
         } else {
-          router.push("/admin/posts");
+          const basePath = type === "post" ? "/admin/posts" : `/admin/${type}`;
+          router.push(basePath);
         }
         router.refresh();
       } else {
@@ -104,8 +109,13 @@ export default function PostEditor({ initialData, categories = [], tags = [], pa
     if (!confirm("Move this post to trash?")) return;
 
     try {
-      await fetch(`/api/posts/${initialData!.id}`, { method: "DELETE" });
-      router.push("/admin/posts");
+      const nonce = typeof window !== "undefined" ? (window as any)._wpnonce : "";
+      await fetch(`/api/posts/${initialData!.id}`, {
+        method: "DELETE",
+        headers: nonce ? { "X-WP-Nonce": nonce } : undefined,
+      });
+      const basePath = type === "post" ? "/admin/posts" : `/admin/${type}`;
+      router.push(basePath);
       router.refresh();
     } catch {
       setError("Failed to trash post");
