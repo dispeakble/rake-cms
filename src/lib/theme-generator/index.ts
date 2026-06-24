@@ -624,7 +624,7 @@ function buildNavLinks(_pageSlugs: SitePage[], businessType?: BusinessType): Sit
 	  const sectionLinks: SitePage[] = [
 	    { slug: "/#about", label: "Sobre nosotros" },
 	    { slug: "/#services", label: "Qué ofrecemos" },
-	    { slug: "/#contact", label: "Contacto" },
+	    { slug: "/#contact", label: "Contactar" },
 	  ];
 
 	  // Add business-type-specific middle link
@@ -934,10 +934,10 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
   // Dynamic CTA text based on business type
   const ctaPrimary = config.businessType === "restaurant"
     ? "Explora menú y precios"
-    : "Explora nuestros servicios";
+    : '{t("hero.cta_services")}';
   const ctaSecondary = config.businessType === "restaurant"
     ? "Reserve Your Table"
-    : "Contacta con nosotros";
+    : '{t("hero.cta_contact")}';
 
   // Carousel images base path
   const nameSlug = config.name.toLowerCase().replace(/\s+/g, '');
@@ -957,8 +957,10 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
 import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Hero() {
+  const { t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -1206,7 +1208,7 @@ export default function Hero() {
         transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="text-xs uppercase tracking-[0.2em] text-white/30">Scroll</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-white/30">{t("hero.scroll")}</span>
           <div className="h-8 w-[1px] bg-gradient-to-b from-[var(--color-gold)] to-transparent" />
         </div>
       </motion.div>
@@ -1245,6 +1247,7 @@ function generateAbout(content: GeneratedContent, photo: string | null): string 
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -1277,6 +1280,7 @@ function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string })
 }
 
 export default function About() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const springUp = {
@@ -1342,9 +1346,9 @@ export default function About() {
               className="mt-8 grid grid-cols-3 gap-4"
             >
               {[
-                { value: 500, label: "Happy Clients", suffix: "+" },
-                { value: 15, label: "Years Experience", suffix: "+" },
-                { value: 99, label: "Satisfaction", suffix: "%" },
+                { value: 500, label: t("about.stats.clients"), suffix: "+" },
+                { value: 15, label: t("about.stats.experience"), suffix: "+" },
+                { value: 99, label: t("about.stats.satisfaction"), suffix: "%" },
               ].map((stat) => (
                 <div
                   key={stat.label}
@@ -1391,6 +1395,7 @@ function generateServices(content: GeneratedContent, config: ThemeConfig): strin
 
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 const SERVICES = ${servicesJson};
 
@@ -1433,6 +1438,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 }
 
 export default function Services() {
+  const { t } = useLanguage();
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
@@ -1470,7 +1476,7 @@ export default function Services() {
             >
               Lo que ofrecemos
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Nuestros Servicios</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((service, i) => (
@@ -1504,7 +1510,7 @@ export default function Services() {
             >
               Explora
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Todo lo que ofrecemos</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services_all.title")}</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -1547,6 +1553,8 @@ function generateReviews(reviews: Review[]): string {
 
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 
 const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = ${reviewsJson};
 
@@ -1586,6 +1594,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function Reviews() {
+  const { t } = useLanguage();
   return (
     <section id="reviews" className="relative px-4 py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
@@ -1605,7 +1614,7 @@ export default function Reviews() {
           className="mb-12 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Testimonios</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Lo que dicen nuestros clientes</h2>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("reviews.title")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">Opiniones reales de clientes reales.</p>
         </motion.div>
 
@@ -1662,7 +1671,7 @@ function generateContact(site: ScrapedSite | null, business: BusinessData | null
   const email = site?.pages?.[0]?.contactInfo?.email?.[0] || "";
   const infoText = config.businessType === "restaurant"
     ? "Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestro menú, reservas o eventos especiales, no dude en contactarnos."
-    : "Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestros servicios, no dude en contactarnos.";
+    : '{t("contact.info_text")}';
   return `// ============================================================
 //  Contact — Animated Gradient Fields + Pulse Button + Hover Lift
 //  MAXIMUM WOW EDITION
@@ -1672,8 +1681,11 @@ function generateContact(site: ScrapedSite | null, business: BusinessData | null
 
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Contact() {
+  const { t } = useLanguage();
   useEffect(() => {
     if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
       const script = document.createElement("script");
@@ -1707,8 +1719,8 @@ export default function Contact() {
           className="mb-14 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Contacto</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Contacto</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Para más informacin, rellene el siguiente formulario.</p>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("contact.subtitle")}</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -1755,7 +1767,7 @@ export default function Contact() {
               <div className="space-y-3 text-sm text-gray-300">
                 <p>${escapeJsx(infoText)}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">Le responderemos en un plazo de 24 horas.</p>
+                  <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
                 </div>
               </div>
             </motion.div>
@@ -1775,7 +1787,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Nombre</label>
                 <motion.input
                   type="text"
-                  placeholder="Su nombre"
+                  placeholder={t("contact.form_name")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -1784,7 +1796,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Apellido</label>
                 <motion.input
                   type="text"
-                  placeholder="Su apellido"
+                  placeholder={t("contact.form_lastname")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -1793,7 +1805,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrónico</label>
                 <motion.input
                   type="email"
-                  placeholder="email@ejemplo.com"
+                  placeholder={t("contact.form_email_placeholder")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -1802,7 +1814,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Teléfono</label>
                 <motion.input
                   type="tel"
-                  placeholder="+34 123 456 789"
+                  placeholder={t("contact.form_phone_placeholder")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -1810,7 +1822,7 @@ export default function Contact() {
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Mensaje</label>
                 <motion.textarea
-                  placeholder="Escriba su mensaje..."
+                  placeholder={t("contact.form_message_placeholder")}
                   rows={4}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
@@ -1887,8 +1899,12 @@ function generateFooter(business: BusinessData | null, name: string, pageSlugs: 
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="relative px-4 py-16 overflow-hidden">
       {/* Animated Gradient Background */}
@@ -2079,6 +2095,8 @@ function generateIslands(): string {
 
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 
 const ISLANDS = [
   {

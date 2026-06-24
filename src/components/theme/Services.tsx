@@ -7,6 +7,7 @@
 
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 const SERVICES = [{"title":"Paquetes Vacacionales a Medida","description":"Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos. Desde escapadas románticas hasta aventuras familiares, diseñamos sus vacaciones soñadas."},{"title":"Eventos MICE","description":"Organizamos eventos de MICE (Meetings, Incentives, Conferences, Exhibitions) para empresas y grupos. Gestión integral de eventos corporativos en las Islas Canarias con servicios profesionales llave en mano."},{"title":"Asistencia Turística","description":"Asistencia turstica en varios idiomas. Nuestro equipo multilingüe est a su disposición para hacer de su estancia en Canarias una experiencia sin preocupaciones."},{"title":"Traslados Locales","description":"Traslados locales privados o colectivos desde el aeropuerto a su alojamiento y a cualquier punto de la isla. Comodidad y puntualidad garantizadas."},{"title":"Excursiones en Tenerife","description":"Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera."},{"title":"Alquiler de Coches","description":"Alquiler de coches con las mejores condiciones para que se mueva con total libertad por las Islas Canarias. Amplia flota de vehículos para todos los presupuestos."}];
 
@@ -49,6 +50,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 }
 
 export default function Services() {
+  const { t } = useLanguage();
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
@@ -86,7 +88,7 @@ export default function Services() {
             >
               Lo que ofrecemos
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Nuestros Servicios</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((service, i) => (
@@ -120,7 +122,7 @@ export default function Services() {
             >
               Explora
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Todo lo que ofrecemos</h2>
+            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services_all.title")}</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

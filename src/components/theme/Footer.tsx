@@ -8,8 +8,12 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Footer() {
+  const { t } = useLanguage();
   return (
     <footer className="relative px-4 py-16 overflow-hidden">
       {/* Animated Gradient Background */}
@@ -46,7 +50,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Mario Viajes</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              Explora, sueña, descubre — Islas Canarias
+              Tu aventura en Canarias empieza aquí
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
@@ -92,7 +96,7 @@ export default function Footer() {
               <Link href="/#about" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Sobre nosotros</Link>
           <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Qué ofrecemos</Link>
           <Link href="/#excursions" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Excursiones</Link>
-          <Link href="/#contact" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Contacto</Link>
+          <Link href="/#contact" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Contactar</Link>
             </div>
           </div>
           <div>
