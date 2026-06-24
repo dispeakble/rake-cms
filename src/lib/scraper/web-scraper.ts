@@ -45,6 +45,18 @@ export interface ScrapedSite {
   languages: string[];
   /** Every image found across all pages, classified by role/type */
   allImages: { src: string; alt: string; type: string }[];
+  /** Per-language scraped text content keyed by language code */
+  languageContent?: Record<string, {
+    paragraphs: string[];
+    headings: { level: number; text: string }[];
+    heroTagline?: string;
+    heroSubtitle?: string;
+    aboutHeading?: string;
+    services: { title: string; description: string }[];
+    tagline?: string;
+    footerText?: string;
+    contactTagline?: string;
+  }>;
 }
 
 export type BusinessType =
@@ -673,6 +685,69 @@ function extractLanguageLinks($: cheerio.CheerioAPI, baseUrl: string): { href: s
     }
   }
 
+  // 5. Look for dropdown-item links with known language names or indexXX.html URLs
+  //    (common pattern on sites like marioviajes.com)
+  if (links.length === 0) {
+    const langPatterns: Record<string, string[]> = {
+      en: ["english", "inglés", "ingles", "angielski", "englanti"],
+      es: ["español", "spanish", "espagnol", "spanisch", "hiszpański"],
+      ro: ["română", "romanian", "rumano", "roumain", "rumänisch"],
+      hu: ["magyar", "hungarian", "húngaro", "hongrois", "ungarisch"],
+      fr: ["français", "french", "francés", "französisch"],
+      de: ["deutsch", "german", "alemán", "allemand"],
+      it: ["italiano", "italian", "italien", "italienisch"],
+      pt: ["português", "portuguese", "portugués"],
+    };
+
+    // Look for links in dropdown menus with matching language names
+    $(".dropdown-menu a, .dropdown-item, [class*=dropdown] a, [class*=drop-down] a").each((_, el) => {
+      const href = $(el).attr("href") || "";
+      const text = $(el).text().trim().toLowerCase();
+
+      // Check if text matches a known language name
+      for (const [code, names] of Object.entries(langPatterns)) {
+        if (names.includes(text)) {
+          let resolvedHref = href;
+          try { resolvedHref = new URL(href, baseUrl).href; } catch { /* keep as-is */ }
+          const key = resolvedHref + "|" + code;
+          if (seen.has(key)) return;
+          seen.add(key);
+          links.push({ href: resolvedHref, lang: code, label: code.toUpperCase() });
+          break;
+        }
+      }
+    });
+
+    // Also look for indexXX.html patterns in ANY link (e.g. indexEN.html, indexRO.html)
+    if (links.length === 0) {
+      const codePatterns: Record<string, RegExp> = {
+        en: /indexEN\.html/i,
+        es: /indexES\.html/i,
+        ro: /indexRO\.html/i,
+        hu: /indexHU\.html/i,
+        fr: /indexFR\.html/i,
+        de: /indexDE\.html/i,
+        it: /indexIT\.html/i,
+        pt: /indexPT\.html/i,
+      };
+      $("a[href]").each((_, el) => {
+        const href = $(el).attr("href") || "";
+        for (const [code, pattern] of Object.entries(codePatterns)) {
+          if (pattern.test(href)) {
+            let resolvedHref = href;
+            try { resolvedHref = new URL(href, baseUrl).href; } catch { /* keep as-is */ }
+            const key = resolvedHref + "|" + code;
+            if (seen.has(key)) return;
+            seen.add(key);
+            const text = $(el).text().trim();
+            links.push({ href: resolvedHref, lang: code, label: text || code.toUpperCase() });
+            break;
+          }
+        }
+      });
+    }
+  }
+
   return links;
 }
 
@@ -772,6 +847,156 @@ async function scrapePage(url: string): Promise<ScrapedPage> {
     footerText,
     externalLinks,
     languageLinks,
+  };
+}
+
+/**
+ * Scrape structured content from a specific language version of a website.
+ * Extracts paragraphs, headings, hero elements, about section, services, footer, and contact tagline.
+ */
+async function scrapeLanguageContent(
+  languageUrl: string,
+  baseUrl: string,
+): Promise<{
+  paragraphs: string[];
+  headings: { level: number; text: string }[];
+  heroTagline?: string;
+  heroSubtitle?: string;
+  aboutHeading?: string;
+  services: { title: string; description: string }[];
+  tagline?: string;
+  footerText?: string;
+  contactTagline?: string;
+}> {
+  const response = await fetchWithRetry(languageUrl, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (compatible; RakeCMS-Scraper/1.0)",
+      Accept: "text/html",
+    },
+    timeoutMs: 15000,
+    maxAttempts: 3,
+    logger: (msg) => console.log(`   ⚠️  ${msg}`),
+  });
+
+  const html = await response.text();
+  const $ = cheerio.load(html);
+
+  // --- Paragraphs ---
+  const paragraphs: string[] = [];
+  $("p").each((_, el) => {
+    const text = $(el).text().trim();
+    if (text.length > 20) paragraphs.push(sanitizeScrapedContent(text));
+  });
+  if (paragraphs.length < 3) {
+    $("div.paragraph, div.content, div.text, section.content, article").each((_, el) => {
+      const text = $(el).text().trim();
+      if (text.length > 50 && !paragraphs.some(p => text.includes(p) || p.includes(text))) {
+        paragraphs.push(sanitizeScrapedContent(text));
+      }
+    });
+  }
+
+  // --- Headings ---
+  const headings: { level: number; text: string }[] = [];
+  for (let level = 1; level <= 6; level++) {
+    $(`h${level}`).each((_, el) => {
+      const text = $(el).text().trim();
+      if (text) headings.push({ level, text });
+    });
+  }
+
+  // --- Hero tagline: first <h1> on the page ---
+  const heroTagline = $("h1").first().text().trim() || undefined;
+
+  // --- Hero subtitle: first significant paragraph near the hero section ---
+  const $heroSection = $("section.hero, div.hero, [class*=hero], header").first();
+  let heroSubtitle: string | undefined;
+  if ($heroSection.length > 0) {
+    const heroPara = $heroSection.find("p").first().text().trim();
+    if (heroPara && heroPara.length > 10) heroSubtitle = sanitizeScrapedContent(heroPara);
+  }
+  if (!heroSubtitle) {
+    const firstPara = $("p").first().text().trim();
+    if (firstPara && firstPara.length > 10) heroSubtitle = sanitizeScrapedContent(firstPara);
+  }
+
+  // --- About heading: look for an h2/h3 that mentions "about", "sobre", etc. ---
+  let aboutHeading: string | undefined;
+  const aboutKeywords = ["about", "sobre", "nosotros", "quienes", "quiénes", "über", "despre", "noi", "rólunk", "about us", "about me"];
+  $("h2, h3").each((_, el) => {
+    const text = $(el).text().trim().toLowerCase();
+    if (aboutKeywords.some(k => text.includes(k))) {
+      aboutHeading = $(el).text().trim();
+      return false;
+    }
+  });
+
+  // --- Services ---
+  const services: { title: string; description: string }[] = [];
+  const serviceKeywords = ["service", "servicio", "servici", "ofrecemos", "offer", "what we do", "nuestros", "our"];
+
+  const serviceSection = $("section, div, main").filter((_, el) => {
+    const text = $(el).text().trim().toLowerCase();
+    return serviceKeywords.some(k => text.includes(k));
+  }).first();
+
+  if (serviceSection.length > 0) {
+    serviceSection.find("h3, h4, h5, .service-title, [class*=service] h3, [class*=service] h4").each((_, el) => {
+      const title = $(el).text().trim();
+      const descEl = $(el).next("p").length > 0
+        ? $(el).next("p")
+        : $(el).closest("li").find("p").first();
+      const description = descEl.length > 0 ? descEl.text().trim() : "";
+      if (title && title.length > 2) {
+        services.push({ title, description: sanitizeScrapedContent(description || "") });
+      }
+    });
+  }
+
+  if (services.length === 0) {
+    $("ul li, ol li, .service-item, [class*=service]").each((_, el) => {
+      const $el = $(el);
+      const text = $el.text().trim();
+      if (text.length > 10 && text.length < 200) {
+        services.push({ title: text.slice(0, 60), description: sanitizeScrapedContent(text) });
+      }
+    });
+  }
+
+  // --- Tagline ---
+  let tagline: string | undefined;
+  const taglineEl = $(".tagline, .subtitle, .site-tagline, header p, .header p").first().text().trim();
+  if (taglineEl && taglineEl.length > 5) tagline = sanitizeScrapedContent(taglineEl);
+
+  // --- Footer text ---
+  let footerText = "";
+  const $footer = $("footer");
+  if ($footer.length > 0) {
+    footerText = $footer.text().trim().replace(/\s+/g, " ").trim();
+  }
+
+  // --- Contact tagline ---
+  let contactTagline: string | undefined;
+  const contactKeywords = ["contact", "contacto", "kontakt", "contactează", "kapcsolat", "get in touch"];
+  const $contactSection = $("section, div").filter((_, el) => {
+    const text = $(el).text().trim().toLowerCase();
+    return contactKeywords.some(k => text.includes(k));
+  }).first();
+  if ($contactSection.length > 0) {
+    const contactPara = $contactSection.find("p").first().text().trim();
+    if (contactPara && contactPara.length > 10) contactTagline = sanitizeScrapedContent(contactPara);
+  }
+
+  return {
+    paragraphs,
+    headings,
+    heroTagline,
+    heroSubtitle,
+    aboutHeading,
+    services: services.slice(0, 20),
+    tagline,
+    footerText,
+    contactTagline,
   };
 }
 
@@ -877,12 +1102,94 @@ export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
 
   // --- Collect unique language codes from all pages ---
   const languageSet = new Set<string>();
+  const languageUrlMap = new Map<string, string>(); // lang -> full URL
   for (const page of pages) {
     for (const langLink of page.languageLinks) {
       if (langLink.lang) languageSet.add(langLink.lang);
+      // Use the first non-default homepage link for each language
+      if (langLink.href && langLink.lang && !languageUrlMap.has(langLink.lang)) {
+        languageUrlMap.set(langLink.lang, langLink.href);
+      }
     }
   }
   const languages = Array.from(languageSet).sort();
+
+  // --- Scrape per-language content for non-default languages ---
+  let languageContent: Record<string, {
+    paragraphs: string[];
+    headings: { level: number; text: string }[];
+    heroTagline?: string;
+    heroSubtitle?: string;
+    aboutHeading?: string;
+    services: { title: string; description: string }[];
+    tagline?: string;
+    footerText?: string;
+    contactTagline?: string;
+  }> | undefined;
+
+  if (languages.length > 0) {
+    languageContent = {};
+    // baseUrl is already defined above
+
+    // Detect the base page's language from content
+    const baseText = homepage.paragraphs.join(" ").toLowerCase();
+    const hasSpanishIndicators = /[ñáéíóúü]/.test(baseText) ||
+      baseText.includes(" sobre ") || baseText.includes(" nosotros ") ||
+      baseText.includes(" contacto ") || baseText.includes(" excursiones ");
+    const baseLang = hasSpanishIndicators ? "es" : (languages.includes("en") ? "en" : languages[0]);
+
+    // Add the base (default) language content from the already-scraped homepage
+    const baseServices: { title: string; description: string }[] = [];
+    homepage.paragraphs.slice(0, 10).forEach((p, i) => {
+      if (p.length < 100) {
+        baseServices.push({ title: `Service ${i + 1}`, description: p });
+      }
+    });
+    languageContent[baseLang] = {
+      paragraphs: homepage.paragraphs,
+      headings: homepage.headings,
+      heroTagline: homepage.headings.find(h => h.level === 1)?.text || "",
+      heroSubtitle: homepage.paragraphs[0] || "",
+      aboutHeading: homepage.headings.find(h => h.text.toLowerCase().includes("sobre") || h.text.toLowerCase().includes("about"))?.text || "About",
+      services: baseServices.slice(0, 6),
+      tagline: homepage.title,
+      footerText: homepage.footerText,
+      contactTagline: homepage.paragraphs.find(p => p.toLowerCase().includes("formulario") || p.toLowerCase().includes("information")) || "",
+    };
+    console.log(`   📍 Base language ${baseLang}: ${homepage.paragraphs.length} paragraphs`);
+
+    for (const lang of languages) {
+      if (lang === baseLang) continue; // Skip base language (already scraped)
+      const langUrl = languageUrlMap.get(lang);
+      if (!langUrl) {
+        console.log(`   ⚠️  No URL found for language: ${lang}`);
+        continue;
+      }
+      // Resolve relative URLs
+      let fullUrl: string;
+      try {
+        fullUrl = new URL(langUrl, baseUrl).href;
+      } catch {
+        console.log(`   ⚠️  Invalid language URL for ${lang}: ${langUrl}`);
+        continue;
+      }
+      // Skip if it's the same as the already-scraped homepage
+      if (fullUrl === baseUrl) continue;
+
+      console.log(`   🌍 Scraping language: ${lang} at ${fullUrl}`);
+      try {
+        const langContent = await scrapeLanguageContent(fullUrl, baseUrl);
+        languageContent![lang] = langContent;
+        console.log(`   ✓ Language ${lang}: ${langContent.paragraphs.length} paragraphs, ${langContent.headings.length} headings`);
+      } catch (err) {
+        console.log(`   ⚠️  Failed to scrape language ${lang}: ${err instanceof Error ? err.message : String(err)}`);
+      }
+    }
+
+    if (Object.keys(languageContent).length === 0) {
+      languageContent = undefined;
+    }
+  }
 
   const scraped: ScrapedSite = {
     homepageUrl: baseUrl,
@@ -894,6 +1201,7 @@ export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
     allText,
     languages,
     allImages,
+    languageContent,
   };
 
   console.log(`\n📊 Summary:`);
@@ -904,6 +1212,11 @@ export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
   console.log(`   Contact: ${scraped.pages[0].contactInfo.email.length > 0 ? "✓" : "—"}`);
   console.log(`   Social: ${scraped.pages[0].contactInfo.socialLinks.length > 0 ? "✓" : "—"}`);
   console.log(`   Languages: ${languages.length > 0 ? languages.join(", ") : "—"}`);
+  if (scraped.languageContent) {
+    for (const [lang, content] of Object.entries(scraped.languageContent)) {
+      console.log(`   🌐 ${lang}: ${content.paragraphs.length} paragraphs, ${content.headings.length} headings${content.services.length > 0 ? `, ${content.services.length} services` : ""}`);
+    }
+  }
   console.log(`   Images: ${allImages.length} total (${allImages.filter(i => i.type === "content").length} content, ${allImages.filter(i => i.type === "carousel").length} carousel, ${allImages.filter(i => i.type === "logo").length} logo, ${allImages.filter(i => i.type === "icon").length} icon)`);
 
   return scraped;
