@@ -736,7 +736,8 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	    flag: langFlags[code] || "🌐",
 	    label: code.toUpperCase(),
 	  }));
-	  const langsJson = escapeJsx(JSON.stringify(langs));
+	  // Build TypeScript array literal for the Header template
+	  const langsTs = "[" + langs.map(l => `{code:"${l.code}",flag:"${l.flag}",label:"${l.label}"}`).join(",") + "]";
 
 	  return `// ============================================================
 //  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
@@ -752,7 +753,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const langs = ${langsJson};
+  const langs = ${langsTs};
 
   // Detect language from URL path on load
   const [lang, setLang] = useState(() => {

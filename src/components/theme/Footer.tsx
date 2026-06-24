@@ -46,7 +46,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Mario Viajes</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              Vacaciones que mereces, experiencias que recordarás
+              Explora, sueña, descubre — Islas Canarias
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
