@@ -1,18 +1,18 @@
 /* Rake CMS — Theme: Mario Viajes - MAXIMUM WOW EDITION */
 
 :root {
-  --color-primary: #58a8d8;
-  --color-primary-rgb: 88, 168, 216;
-  --color-secondary: #d8c898;
-  --color-secondary-rgb: 216, 200, 152;
+  --color-primary: #0a7169;
+  --color-primary-rgb: 10, 113, 105;
+  --color-secondary: #af4e04;
+  --color-secondary-rgb: 175, 78, 4;
   --color-accent: #1a1a2e;
-  --color-gold: #d8c898;
-  --color-gold-rgb: 216, 200, 152;
-  --color-gold-light: #fff0c0;
-  --color-glow: rgba(216, 200, 152, 0.3);
-  --color-glow-intense: rgba(216, 200, 152, 0.6);
-  --gradient-main: linear-gradient(135deg, #58a8d8, #d8c898);
-  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(216, 200, 152, 0.15), transparent 70%);
+  --color-gold: #af4e04;
+  --color-gold-rgb: 175, 78, 4;
+  --color-gold-light: #d7762c;
+  --color-glow: rgba(175, 78, 4, 0.3);
+  --color-glow-intense: rgba(175, 78, 4, 0.6);
+  --gradient-main: linear-gradient(135deg, #0a7169, #af4e04);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(175, 78, 4, 0.15), transparent 70%);
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --border-angle: 0deg;
@@ -109,7 +109,7 @@
 
 /* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #58a8d8, #d8c898, #58a8d8, #d8c898);
+  background: linear-gradient(135deg, #0a7169, #af4e04, #0a7169, #af4e04);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -200,7 +200,7 @@
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0a0a0f; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #58a8d8, #d8c898); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0a7169, #af4e04); border-radius: 3px; }
 
 /* ── Selection ── */
-::selection { background: #58a8d855; color: white; }
+::selection { background: #0a716955; color: white; }

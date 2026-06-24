@@ -10,24 +10,13 @@ import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 const ISLANDS = [
-  {
-    title: "Sobre Tenerife",
-    description: "Tenerife es considerada como la isla de la 'primavera eterna' con un clima suave durante todo el ao. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España.",
-    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife",
-  },
-  {
-    title: "Sobre Gran Canaria",
-    description: "Si usted deja ir su imaginación durante su visita a Gran Canaria, tendr la sensación de que en lugar de una isla, en realidad visitar tres continentes: frica, Europa y América. Es la tercera isla más grande del archipiélago canario.",
-    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife",
-  },
-  {
-    title: "Otras Islas Canarias",
-    description: "La Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro no son sólo nombres. Son 5 islas hermosas y vale la pena visitar. Cada uno tiene características diferentes: La Gomera es considerada como la última selva en Europa.",
-    image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Canarias",
-  },
+  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife" },
+  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Gran+Canaria" },
+  { titleKey: "island_other.title", descKey: "island_other.text", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Canarias" },
 ];
 
 export default function Islands() {
+  const { t } = useLanguage();
   return (
     <section id="excursions" className="relative px-4 py-24 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
@@ -46,10 +35,10 @@ export default function Islands() {
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
           className="mb-12 text-center"
         >
-          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">Destinos</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">Descubre las Islas Canarias</h2>
+          <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("excursions.subtitle")}</span>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("islands.title")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-gray-400">
-            Te invitamos a descubrir juntos el encanto y la singularidad de las Islas Canarias! Desde el pico del volcán, hasta 30 metros de profundidad en el Atlántico, ofrecemos una amplia gama de actividades y excursiones que representan el superlativo de la diversidad para cualquier persona, logrando satisfacer incluso los gustos más exigentes.
+            {t("excursions.text")}
           </p>
         </motion.div>
 
@@ -74,12 +63,12 @@ export default function Islands() {
                   <span className="mb-2 inline-block rounded-full bg-[var(--color-gold)]/20 px-3 py-1 text-xs font-medium text-[var(--color-gold)]">
                     Isla Canaria
                   </span>
-                  <h3 className="text-xl font-bold text-white">{island.title}</h3>
+                  <h3 className="text-xl font-bold text-white">{t(island.titleKey)}</h3>
                 </div>
               </div>
               <div className="p-6">
                 <p className="text-sm leading-relaxed text-gray-300">
-                  {island.description}
+                  {t(island.descKey)}
                 </p>
               </div>
             </motion.div>
