@@ -44,6 +44,9 @@ export type BusinessType =
   | "construction"
   | "creative"
   | "travel"
+  | "fitness"
+  | "beauty"
+  | "automotive"
   | "other";
 
 export interface ContactInfo {
