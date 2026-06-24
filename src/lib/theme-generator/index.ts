@@ -928,9 +928,9 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
   // Carousel images base path
   const nameSlug = config.name.toLowerCase().replace(/\s+/g, '');
   const carouselImages = [
-    { src: `/media/${nameSlug}/c-img-1.jpg`, caption: `{t("hero.carousel_1")}` },
-    { src: `/media/${nameSlug}/c-img-2.jpg`, caption: `{t("hero.carousel_2")}` },
-    { src: `/media/${nameSlug}/c-img-3.jpg`, caption: `{t("hero.carousel_3")}` },
+    `/media/${nameSlug}/c-img-1.jpg`,
+    `/media/${nameSlug}/c-img-2.jpg`,
+    `/media/${nameSlug}/c-img-3.jpg`,
   ];
 
   // ─── Per-language hero subtitle map ───
@@ -1026,7 +1026,7 @@ export default function Hero() {
           transition={{ type: "spring", stiffness: 200, damping: 25 }}
           className="absolute inset-0"
           style={{
-            backgroundImage: \`url(\${slides[current].src})\`,
+            backgroundImage: \`url(\${slides[current]})\`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -1148,7 +1148,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] backdrop-blur-sm">
-            {slides[current].caption}
+            {t("hero.carousel_" + (current + 1))}
           </span>
         </motion.div>
 
@@ -1230,10 +1230,19 @@ function generateAbout(content: GeneratedContent, photo: string | null, site: Sc
               </div>
             </motion.div>`
     : `<motion.div
-              className="aspect-square rounded-2xl bg-gradient-to-br from-[var(--color-gold)]/30 via-[var(--color-primary)]/20 to-black animate-[spin-slow_10s_linear_infinite]"
+              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-black"
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            />`;
+            >
+              <div className="aspect-square flex items-center justify-center">
+                <div className="text-center px-6">
+                  <svg className="w-16 h-16 mx-auto mb-4 text-[var(--color-gold)]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p className="text-xs text-gray-500">{t("about.subtitle")}</p>
+                </div>
+              </div>
+            </motion.div>`;
 
   return `// ============================================================
 //  About — Spring Reveal + Animated Counters + Glassmorphism
@@ -1784,7 +1793,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_name_label")}</label>
                 <motion.input
                   type="text"
-                  placeholder={t("contact.form_name")}
+                  placeholder={t("contact.form_name_placeholder")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -1793,7 +1802,7 @@ export default function Contact() {
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_surname_label")}</label>
                 <motion.input
                   type="text"
-                  placeholder={t("contact.form_lastname")}
+                  placeholder={t("contact.form_surname_placeholder")}
                   whileFocus={{ scale: 1.01 }}
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
@@ -2047,28 +2056,6 @@ export default function Footer() {
             </p>
           </div>
         </motion.div>
-
-        {/* ── Full Scraped Content Section (ALL preserved text) ── */}
-        {${JSON.stringify(scrapedParagraphs.length > 0)} && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="mt-6 border-t border-white/10 pt-6"
-          >
-            <div className="max-w-full text-xs text-gray-500 leading-relaxed">
-              <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
-                {t("footer.complete_info")}
-              </p>
-              {${JSON.stringify(allFooterText)}.split("\\n\\n").map((paragraph, i) => (
-                <p key={i} className="mb-3">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </motion.div>
-        )}
 
         <motion.div
           initial={{ opacity: 0 }}

@@ -141,19 +141,19 @@ export const translations: Record<string, Record<Lang, string>> = {
     hu: "Azért vagyunk itt, hogy meghallgassuk vágyaikat és megszervezzük az Önök által megálmodott nyaralást! Egyéni és csoportos turisztikai szolgáltatásokat kínálunk a Kanári-szigetvilág 7 szigetén. Várjuk, hogy Önnel együtt írjuk meg tökéletes nyaralásának történetét!",
   },
   "about.stats.clients": {
-    es: "Happy Clients",
+    es: "Clientes Felices",
     en: "Happy Clients",
     ro: "Clienți mulțumiți",
     hu: "Elégedett ügyfelek",
   },
   "about.stats.experience": {
-    es: "Years Experience",
+    es: "Años de Experiencia",
     en: "Years Experience",
     ro: "Ani de experiență",
     hu: "Évek tapasztalata",
   },
   "about.stats.satisfaction": {
-    es: "Satisfaction",
+    es: "Satisfacción",
     en: "Satisfaction",
     ro: "Satisfacție",
     hu: "Elégedettség",
