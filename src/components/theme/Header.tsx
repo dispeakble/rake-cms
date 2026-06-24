@@ -7,73 +7,107 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState("es");
-  const { scrollY } = useScroll();
+  const [langOpen, setLangOpen] = useState(false);
+  const langs = [{&quot;code&quot;:&quot;es&quot;,&quot;flag&quot;:&quot;🇪🇸&quot;,&quot;label&quot;:&quot;ES&quot;},{&quot;code&quot;:&quot;en&quot;,&quot;flag&quot;:&quot;🇬🇧&quot;,&quot;label&quot;:&quot;EN&quot;}];
 
-  // Always-on glass background — useTransform produces full CSS values directly
-  // (never interpolate MotionValues into template literals — they become "[object Object]")
-  const bgColorValue = useTransform(scrollY, [0, 80], ["rgba(0,0,0,0.7)", "rgba(0,0,0,0.9)"]);
-  const backdropFilterValue = useTransform(scrollY, [0, 80], ["blur(12px)", "blur(24px)"]);
-  const borderColorValue = useTransform(scrollY, [0, 80], ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.15)"]);
+  // Detect language from URL path on load
+  const [lang, setLang] = useState(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname;
+      for (const l of langs) {
+        if (path === "/" + l.code || path.startsWith("/" + l.code + "/")) return l.code;
+      }
+    }
+    return langs[0]?.code || "es";
+  });
 
   useEffect(() => {
     document.documentElement.setAttribute("lang", lang);
   }, [lang]);
 
-  const toggleLang = () => {
-    const next = lang === "es" ? "en" : "es";
+  const switchLang = (next: string) => {
     setLang(next);
+    setLangOpen(false);
+    document.documentElement.setAttribute("lang", next);
+    // Show/hide sections by data-lang
+    document.querySelectorAll("[data-lang]").forEach(el => {
+      (el as HTMLElement).style.display = el.getAttribute("data-lang") === next ? "" : "none";
+    });
+    // Update URL without reload
+    window.history.pushState({}, "", "/" + next);
   };
+
+  // ─── B2B Link ───
+  const b2bHref = "https://b2b.marioviajes.com";
 
   return (
     <motion.header
-      initial={{ y: 0, opacity: 1 }}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.2 }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <motion.div
-        style={{
-          backgroundColor: bgColorValue,
-          backdropFilter: backdropFilterValue,
-          WebkitBackdropFilter: backdropFilterValue,
-          borderColor: borderColorValue,
-        }}
-        className="border-b border-white/10 shadow-lg shadow-black/20 transition-shadow duration-500"
-      >
+      <div className="border-b border-white/30 bg-white/55 backdrop-blur-2xl shadow-lg shadow-black/5">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
-          <Link href="/" className="group relative">
-            <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
-              Mario Viajes, Tenerife
-            </span>
-            <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-light)] transition-all duration-300 group-hover:w-full" />
+          <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
+            <img src="https://marioviajes.com/images/logo2.png" alt="Mario Viajes" className="h-10 w-auto object-contain" />
+            
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-8 md:flex">
-            <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Inicio</Link>
-            <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Sobre nosotros</Link>
-            <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Qué ofrecemos</Link>
-            <Link href="/#excursions" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Excursiones</Link>
-            <Link href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Contacto</Link>
-            <a href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Contactar</a>
-            <button
-              onClick={toggleLang}
-              className="relative text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer bg-transparent border-none"
-            >
-              {lang === "es" ? "EN" : "ES"}
-            </button>
+            <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Inicio</Link>
+            <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Sobre nosotros</Link>
+          <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Qué ofrecemos</Link>
+          <Link href="/#excursions" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Excursiones</Link>
+          <Link href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Contacto</Link>
+            <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">B2B</a>
+            <a href="http://example.com" target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">ES</a>
+            <a href="https://www.directotrips.com/" target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">excursiones.marioviajes.com.</a>
+            {/* B2B external link */}
+            <a href={b2bHref} target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">B2B</a>
+            <a href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Contactar</a>
+            {/* ─── Language Dropdown ─── */}
+            <div className="relative">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                onBlur={() => setTimeout(() => setLangOpen(false), 200)}
+                className="flex items-center gap-1 relative text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer bg-transparent border-none"
+                style={{cursor:'pointer'}}
+              >
+                {lang.toUpperCase()}
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                </svg>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 mt-1 w-28 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden z-50">
+                  {langs.map(l => (
+                    <button
+                      key={l.code}
+                      onClick={() => switchLang(l.code)}
+                      className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer ${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
+                      style={{cursor:'pointer'}}
+                    >
+                      {l.flag} {l.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Mobile Hamburger */}
           <button
-            className="relative z-50 flex h-10 w-10 items-center justify-center text-white md:hidden"
+            className="relative z-50 flex h-10 w-10 items-center justify-center text-white md:hidden cursor-pointer"
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
+            style={{cursor:'pointer'}}
           >
             <motion.span
               animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
@@ -89,15 +123,15 @@ export default function Header() {
             />
           </button>
         </div>
-      </motion.div>
+      </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ height: "auto", opacity: 1, backdropFilter: "blur(24px)" }}
-            exit={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" }}
+            initial={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" } }
+            animate={{ height: "auto", opacity: 1, backdropFilter: "blur(24px)" } }
+            exit={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" } }
             transition={{ duration: 0.35 }}
             className="overflow-hidden border-b border-white/10 bg-black/90 backdrop-blur-2xl"
           >
@@ -111,18 +145,43 @@ export default function Header() {
                 }}
                 className="flex flex-col gap-4"
               >
-                <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Inicio</Link>
-                <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Sobre nosotros</Link>
-                <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Qué ofrecemos</Link>
-                <Link href="/#excursions" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Excursiones</Link>
-                <Link href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Contacto</Link>
-                <a href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Contactar</a>
-                <button
-                  onClick={() => { toggleLang(); setOpen(false); }}
-                  className="text-base font-medium text-[var(--color-gold)] cursor-pointer hover:text-[var(--color-gold-light)] transition-colors bg-transparent border-none text-left"
-                >
-                  {lang === "es" ? "EN" : "ES"}
-                </button>
+                <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Inicio</Link>
+                <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Sobre nosotros</Link>
+          <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Qué ofrecemos</Link>
+          <Link href="/#excursions" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Excursiones</Link>
+          <Link href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Contacto</Link>
+                <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>B2B</a>
+              <a href="http://example.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>ES</a>
+              <a href="https://www.directotrips.com/" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>excursiones.marioviajes.com.</a>
+                {/* B2B mobile link */}
+                <a href={b2bHref} target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)} style={{cursor:'pointer'}}>B2B</a>
+                <a href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Contactar</a>
+                <div className="relative">
+                  <button
+                    onClick={() => setLangOpen(!langOpen)}
+                    className="flex items-center gap-1 text-base font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors bg-transparent border-none text-left cursor-pointer"
+                    style={{cursor:'pointer'}}
+                  >
+                    {lang.toUpperCase()}
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                    </svg>
+                  </button>
+                  {langOpen && (
+                    <div className="mt-1 w-28 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden">
+                      {langs.map(l => (
+                        <button
+                          key={l.code}
+                          onClick={() => { switchLang(l.code); setOpen(false); }}
+                          className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer ${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
+                          style={{cursor:'pointer'}}
+                        >
+                          {l.flag} {l.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </motion.div>
             </div>
           </motion.div>
