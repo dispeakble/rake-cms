@@ -670,13 +670,22 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	  // Build external links from site data (B2B, social, etc.)
 	  const externalLinks: { href: string; text: string }[] = [];
 	  const allLinks = site?.pages?.flatMap(p => p.links) || [];
-	  const seenUrls = new Set<string>();
+	  const seenKeys = new Set<string>();
+	  const sectionLabels = ["inicio", "home", "sobre nosotros", "about", "qué ofrecemos", "what we offer", "excursiones", "excursions", "contacto", "contact", "contactar"];
 	  for (const link of allLinks) {
-	    if (!seenUrls.has(link.href) && (link.href.startsWith("http") || link.href.startsWith("https"))) {
-	      seenUrls.add(link.href);
-	      externalLinks.push(link);
-	    }
-	  }
+	  	    const href = link.href.trim();
+	  	    const text = link.text.trim().toLowerCase();
+	  	    // Skip: empty, anchors, javascript, section labels (already in nav), language codes
+	  	    if (!href || href === "#" || href.startsWith("javascript:")) continue;
+	  	    if (!text || text.length > 40) continue;
+	  	    if (sectionLabels.includes(text)) continue;
+	  	    if (text === "es" || text === "en" || text === "ro" || text === "hu") continue;
+	  	    if (!href.startsWith("http") && !href.startsWith("https")) continue;
+	  	    const key = href + "|" + text;
+	  	    if (seenKeys.has(key)) continue;
+	  	    seenKeys.add(key);
+	  	    externalLinks.push(link);
+	  	  }
 
 	  // Logo URL
 	  const logoUrl = site?.logoUrl || `/media/${name.toLowerCase().replace(/\s+/g, '')}/logo.png`;
@@ -809,8 +818,6 @@ export default function Header() {
             ${extraDesktopLinks[0]}
             ${desktopLinks}
             ${extraDesktopLinks[1]}
-            {/* B2B external link */}
-            <a href={b2bHref} target="_blank" rel="noopener noreferrer" className="${navLinkClass}">B2B</a>
             ${extraDesktopLinks[2]}
             {/* ─── Language Dropdown ─── */}
             <div className="relative">
@@ -1554,7 +1561,6 @@ function generateReviews(reviews: Review[]): string {
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { useLanguage } from "@/lib/i18n";
 
 const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = ${reviewsJson};
 
@@ -1669,9 +1675,6 @@ function generateContact(site: ScrapedSite | null, business: BusinessData | null
   const addr = business?.address || site?.pages?.[0]?.contactInfo?.address?.[0] || "Dirección disponible próximamente";
   const phone = business?.phone || site?.pages?.[0]?.contactInfo?.phone?.[0] || "";
   const email = site?.pages?.[0]?.contactInfo?.email?.[0] || "";
-  const infoText = config.businessType === "restaurant"
-    ? "Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestro menú, reservas o eventos especiales, no dude en contactarnos."
-    : '{t("contact.info_text")}';
   return `// ============================================================
 //  Contact — Animated Gradient Fields + Pulse Button + Hover Lift
 //  MAXIMUM WOW EDITION
@@ -1681,7 +1684,6 @@ function generateContact(site: ScrapedSite | null, business: BusinessData | null
 
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import { useLanguage } from "@/lib/i18n";
 import { useLanguage } from "@/lib/i18n";
 
 export default function Contact() {
@@ -1765,7 +1767,7 @@ export default function Contact() {
                 <span className="text-[var(--color-gold)]">📋</span> Información
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
-                <p>${escapeJsx(infoText)}</p>
+                <p>{t("contact.info_text")}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
                   <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
                 </div>
@@ -1899,8 +1901,6 @@ function generateFooter(business: BusinessData | null, name: string, pageSlugs: 
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import { useLanguage } from "@/lib/i18n";
-import { useLanguage } from "@/lib/i18n";
 import { useLanguage } from "@/lib/i18n";
 
 export default function Footer() {
@@ -2096,7 +2096,6 @@ function generateIslands(): string {
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { useLanguage } from "@/lib/i18n";
 
 const ISLANDS = [
   {
@@ -2282,6 +2281,7 @@ export async function generateTheme(
     { name: "Header.tsx", content: generateHeader(name, pageSlugs, businessType, site) },
     { name: "Hero.tsx", content: generateHero(content, config, heroPhoto, site) },
     { name: "About.tsx", content: generateAbout(content, aboutPhoto) },
+    ...(businessType === "travel" ? [{ name: "Islands.tsx", content: generateIslands() }] : []),
     { name: "Services.tsx", content: generateServices(content, config) },
     { name: "Reviews.tsx", content: generateReviews(reviews) },
     { name: "Contact.tsx", content: generateContact(site, business, config) },

@@ -9,8 +9,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { useLanguage } from "@/lib/i18n";
-import { useLanguage } from "@/lib/i18n";
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -50,7 +48,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Mario Viajes</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              Tu aventura en Canarias empieza aquí
+              Crea tu tipo de vacaciones
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">

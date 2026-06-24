@@ -8,7 +8,6 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { useLanguage } from "@/lib/i18n";
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -91,7 +90,7 @@ export default function Contact() {
                 <span className="text-[var(--color-gold)]">📋</span> Información
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
-                <p>{t(&quot;contact.info_text&quot;)}</p>
+                <p>{t("contact.info_text")}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
                   <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
                 </div>
