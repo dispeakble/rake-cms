@@ -117,9 +117,9 @@ const ES_TAGLINES: Record<BusinessType, string[]> = {
     "Tu aventura en Canarias empieza aquí",
     "Explora, sueña, descubre — Islas Canarias",
   ],
-  fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+  fitness: ["Entrena con los mejores", "Transforma tu cuerpo", "Supera tus límites", "Salud y rendimiento"],
+  beauty: ["Belleza que inspira", "Cuídate, siéntete bien", "Tu estilo, tu esencia", "Renueva tu imagen"],
+  automotive: ["Potencia y precisión", "Tu coche en las mejores manos", "Experiencia sobre ruedas", "Calidad automotriz"],
   other: [
     "Servicio excepcional, siempre",
     "Tu socio local de confianza",
@@ -199,9 +199,9 @@ const TAGLINES: Record<BusinessType, string[]> = {
     "Explora, sueña, descubre — Islas Canarias",
     "Vacaciones que mereces, experiencias que recordarás",
   ],
-  fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+  fitness: ["Entrena con los mejores", "Transforma tu cuerpo", "Supera tus límites", "Salud y rendimiento"],
+  beauty: ["Belleza que inspira", "Cuídate, siéntete bien", "Tu estilo, tu esencia", "Renueva tu imagen"],
+  automotive: ["Potencia y precisión", "Tu coche en las mejores manos", "Experiencia sobre ruedas", "Calidad automotriz"],
   other: [
     "Exceptional service, every time",
     "Your trusted local partner",
@@ -293,9 +293,9 @@ const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: stri
     { title: "Excursiones en Tenerife", description: "Descubra Tenerife con nuestras excursiones guiadas. Desde el Parque Nacional del Teide hasta los acantilados de Los Gigantes, le mostramos los rincones ms espectaculares de la isla de la eterna primavera." },
     { title: "Alquiler de Coches", description: "Alquiler de coches con las mejores condiciones para que se mueva con total libertad por las Islas Canarias. Amplia flota de vehículos para todos los presupuestos." },
   ],
-  fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+  fitness: [{ title: "Personal Training", description: "Expert-led personal training sessions tailored to your goals." }, { title: "Group Classes", description: "High-energy group fitness classes for all levels." }],
+  beauty: [{ title: "Hair Styling", description: "Professional hair styling for every occasion." }, { title: "Skincare", description: "Rejuvenating skincare treatments using premium products." }],
+  automotive: [{ title: "Engine Repair", description: "Comprehensive engine diagnostic and repair services." }, { title: "Brake Service", description: "Complete brake inspection and repair." }],
   other: [
     { title: "Quality Service", description: "We're committed to delivering the highest standard of service to every customer, every time." },
     { title: "Customer Support", description: "Have a question? Our friendly team is always ready to help with prompt and courteous support." },
@@ -366,9 +366,9 @@ const ES_SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: s
     { title: "Asistencia Turística", description: "Asistencia turística en varios idiomas. Nuestro equipo multilingüe está a su disposición." },
     { title: "Excursiones en Tenerife", description: "Descubra Tenerife con nuestras excursiones guiadas. Desde el Teide hasta Los Gigantes." },
   ],
-  fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-  automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+  fitness: [{ title: "Entrenamiento Personal", description: "Sesiones de entrenamiento personal guiadas por expertos." }, { title: "Clases Grupales", description: "Clases de fitness grupales para todos los niveles." }],
+  beauty: [{ title: "Peluquería", description: "Servicios profesionales de peluquería para toda ocasión." }, { title: "Cuidado Facial", description: "Tratamientos rejuvenecedores con productos premium." }],
+  automotive: [{ title: "Reparación de Motores", description: "Diagnóstico y reparación profesional de motores." }, { title: "Servicio de Frenos", description: "Inspección y reparación completa de frenos." }],
   other: [
     { title: "Servicio de Calidad", description: "Nos comprometemos a ofrecer el más alto nivel de servicio a cada cliente, en cada visita." },
     { title: "Atención al Cliente", description: "¿Tiene una pregunta? Nuestro equipo está siempre dispuesto a ayudarle con atención rápida y cortés." },
@@ -504,9 +504,9 @@ function generateAboutParagraph(name: string, type: BusinessType, location: stri
       construction: `${name} aporta décadas de experiencia en construcción${loc}. Somos conocidos por la calidad artesanal y la atención al detalle.`,
       creative: `${name} es un estudio creativo${loc} dedicado a dar vida a ideas audaces. Combinamos visión artística con pensamiento estratégico.`,
       travel: `${name} es su agencia de viajes de confianza en el sur de Tenerife${loc}. Con años de experiencia en el sector turístico de Canarias.`,
-      fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+      fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
+      beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
+      automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
       other: `${name} se dedica a servir a nuestra comunidad${loc} con calidad y compromiso. La satisfacción del cliente guía cada decisión que tomamos.`,
     };
     return esTemplates[type] || esTemplates.other;
@@ -524,9 +524,9 @@ function generateAboutParagraph(name: string, type: BusinessType, location: stri
     construction: `${name} brings decades of construction expertise${loc}. We're known for quality craftsmanship, attention to detail, and completing projects on time and on budget.`,
     creative: `${name} is a creative studio${loc} dedicated to bringing bold ideas to life. We blend artistic vision with strategic thinking to create work that resonates.`,
     travel: `${name} es su agencia de viajes de confianza en el sur de Tenerife${loc}. Con años de experiencia en el sector turístico de Canarias, le ofrecemos el conocimiento local y la dedicación necesaria para hacer de sus vacaciones una experiencia inolvidable. Nuestra pasión por las Islas Canarias se refleja en cada excursión y paquete que diseñamos.`,
-    fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-    beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-    automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+    fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
+    beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
+    automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
     other: `${name} has been proudly serving our community${loc}. We're committed to quality, reliability, and building lasting relationships with every customer.`,
   };
   return templates[type] || templates.other;
@@ -547,9 +547,9 @@ function generateSecondParagraph(name: string, type: BusinessType, location: str
       construction: `Desde el concepto inicial hasta la inspección final, trabajamos estrechamente con los clientes para garantizar que cada detalle cumpla sus expectativas.`,
       creative: `Creemos que un buen diseño cuenta una historia. Cada proyecto es una oportunidad para crear algo significativo.`,
       travel: `Estamos aquí para escuchar sus deseos y organizar sus vacaciones soñadas${loc}. Le esperamos para escribir juntos la historia de unas vacaciones ideales.`,
-      fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+      fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
+      beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
+      automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
       other: `Creemos en hacer las cosas bien. La calidad, la integridad y la satisfacción del cliente guían cada decisión.`,
     };
     return esTemplates[type] || esTemplates.other;
@@ -567,9 +567,9 @@ function generateSecondParagraph(name: string, type: BusinessType, location: str
     construction: `From initial concept through final walkthrough, we work closely with clients to ensure every detail meets their vision and expectations.`,
     creative: `We believe great design tells a story. Every project is an opportunity to create something meaningful that connects with audiences and drives results.`,
     travel: `Estamos aquí para escuchar sus deseos y organizar sus vacaciones tan soñadas${loc}. Ofrecemos servicios turísticos individuales y de grupo para cualquiera de las 7 islas del Archipiélago Canario. Le esperamos para escribir juntos la historia de unas vacaciones ideales.`,
-    fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-    beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-    automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+    fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
+    beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
+    automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
     other: `We believe in doing things right. Quality, integrity, and customer satisfaction guide every decision we make.`,
   };
   return templates[type] || templates.other;
@@ -593,9 +593,9 @@ function generateSeoDescription(name: string, type: BusinessType, location: stri
       construction: `${name} ofrece servicios de construcción de calidad${loc}. Solicite un presupuesto gratuito.`,
       creative: `${name} ofrece servicios creativos de diseño${loc}. Démos vida a su visión.`,
       travel: `Visite ${name}${loc} y descubra las Islas Canarias como nunca antes. Excursiones guiadas y paquetes vacacionales personalizados.`,
-      fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+      fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
+      beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
+      automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
       other: `${name} ofrece un servicio de calidad${loc}. Contáctenos hoy para obtener más información.`,
     };
     return esIntros[type] || esIntros.other;
@@ -613,9 +613,9 @@ function generateSeoDescription(name: string, type: BusinessType, location: stri
     construction: `${name} provides quality construction services${loc}. Get a free estimate for your project.`,
     creative: `${name} offers creative design services${loc}. Let's bring your vision to life.`,
     travel: `Visite ${name}${loc} y descubra las Islas Canarias como nunca antes. Excursiones guiadas por Tenerife, Gran Canaria, La Gomera y ms. Paquetes vacacionales personalizados, traslados, alquiler de coches y asistencia turística en varios idiomas. Reserve su aventura canaria hoy mismo.`,
-    fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-    beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-    automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+    fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
+    beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
+    automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
     other: `${name} provides quality service${loc}. Contact us today to learn more about what we offer.`,
   };
   return intros[type] || intros.other;
@@ -670,9 +670,9 @@ function generateServiceDescription(serviceName: string, businessType: BusinessT
       construction: [`Servicios profesionales de ${serviceName.toLowerCase()} respaldados por años de experiencia.`, `${serviceName.toLowerCase()} de calidad que cumple con los más altos estándares.`],
       creative: [`Nuestros servicios de ${serviceName.toLowerCase()} combinan creatividad con pensamiento estratégico.`, `Destaque con nuestra experiencia en ${serviceName.toLowerCase()}.`],
       travel: [`Nuestro servicio de ${serviceName.toLowerCase()} le ofrece una experiencia única en las Islas Canarias.`, `Descubra las Islas Canarias con nuestro ${serviceName.toLowerCase()}.`],
-      fitness: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      beauty: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
-      automotive: [...(ES_TAGLINES.other || ["Descubre", "Expertos", "Calidad", "Bienvenido"])],
+      fitness: [`Professional fitness services to help you reach your goals.`, `Transform your body and mind with our specialized training.`],
+      beauty: [`Premium beauty services to enhance your natural beauty.`, `Look good and feel great with our professional treatments.`],
+      automotive: [`Professional automotive services to keep your vehicle in top condition.`, `Trust our experience for your vehicle care.`],
       other: [`Nuestro servicio de ${serviceName.toLowerCase()} está diseñado para satisfacer sus necesidades con calidad y cuidado.`, `Ofrecemos un servicio excepcional de ${serviceName.toLowerCase()} en cada visita.`],
     };
     const esOptions = esTemplates[businessType] || esTemplates.other;
@@ -726,6 +726,9 @@ function generateServiceDescription(serviceName: string, businessType: BusinessT
       `Descubra las Islas Canarias con nuestro ${serviceName.toLowerCase()}. Le garantizamos una experiencia autntica, segura y llena de momentos inolvidables.`,
       `Reserve su ${serviceName.toLowerCase()} con nosotros y djese llevar por la magia de las Islas Canarias. Profesionales locales a su servicio.`,
     ],
+    fitness: [`Professional fitness training services to help you achieve your goals.`, `Transform your health with our expert-led fitness programs.`],
+    beauty: [`Premium beauty and wellness services for a radiant look.`, `Enhance your natural beauty with our professional treatments.`],
+    automotive: [`Expert automotive repair and maintenance services you can trust.`, `Keep your vehicle running smoothly with our professional care.`],
     other: [
       `Our ${serviceName.toLowerCase()} service is designed to meet your needs with quality and care.`,
       `We deliver exceptional ${serviceName.toLowerCase()} service every time.`,

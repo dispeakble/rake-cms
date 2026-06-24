@@ -51,6 +51,47 @@ const INDUSTRY_FONTS: Record<BusinessType, string> = {
   "real-estate": "Inter", construction: "Inter", creative: "Poppins", travel: "Inter", fitness: "Inter", beauty: "Inter", automotive: "Inter", other: "Inter",
 };
 
+// ─── Animation library ─────────────────────────────────────────────
+// Each animation set defines unique entrance, hover, scroll-reveal, and corner-radius values.
+// Selected deterministically via business name hash.
+
+interface AnimationSet {
+  name: string;
+  /** Framer-motion initial/animate variants for sections */
+  entrance: { type: string; direction?: string; distance?: number };
+  /** Hover effect on cards */
+  hover: { scale: number; y?: number };
+  /** Border-radius class */
+  radius: string;
+  /** Scroll stagger delay per child */
+  stagger: number;
+}
+
+const ANIMATION_SETS: AnimationSet[] = [
+  { name: "Elegant Lift", entrance: { type: "fadeUp", distance: 60 }, hover: { scale: 1.03, y: -6 }, radius: "rounded-2xl", stagger: 0.1 },
+  { name: "Smooth Slide", entrance: { type: "slideLeft", distance: 80 }, hover: { scale: 1.02, y: -4 }, radius: "rounded-xl", stagger: 0.08 },
+  { name: "Scale Reveal", entrance: { type: "scaleIn", distance: 0.9 }, hover: { scale: 1.05 }, radius: "rounded-3xl", stagger: 0.12 },
+  { name: "Sharp Inset", entrance: { type: "slideRight", distance: 70 }, hover: { scale: 1.02, y: -3 }, radius: "rounded-lg", stagger: 0.06 },
+  { name: "Float Up", entrance: { type: "fadeUp", distance: 40 }, hover: { scale: 1.04, y: -8 }, radius: "rounded-2xl", stagger: 0.15 },
+  { name: "Bold Enter", entrance: { type: "scaleIn", distance: 0.85 }, hover: { scale: 1.06 }, radius: "rounded-xl", stagger: 0.1 },
+  { name: "Gentle Rise", entrance: { type: "fadeUp", distance: 50 }, hover: { scale: 1.03, y: -5 }, radius: "rounded-3xl", stagger: 0.09 },
+  { name: "Kinetic", entrance: { type: "slideLeft", distance: 100 }, hover: { scale: 1.02, y: -7 }, radius: "rounded-lg", stagger: 0.07 },
+  { name: "Soft Zoom", entrance: { type: "scaleIn", distance: 0.92 }, hover: { scale: 1.04, y: -4 }, radius: "rounded-2xl", stagger: 0.11 },
+  { name: "Dynamic Sweep", entrance: { type: "slideRight", distance: 60 }, hover: { scale: 1.05, y: -6 }, radius: "rounded-xl", stagger: 0.13 },
+];
+
+/** Deterministically choose an animation set from business name + category */
+function pickAnimationSet(name: string, businessType: string): AnimationSet {
+  const seed = `${name}-${businessType}`;
+  const idx = Math.floor(hashFnv32a(seed) * ANIMATION_SETS.length);
+  return ANIMATION_SETS[idx % ANIMATION_SETS.length];
+}
+
+/** Generate a unique border-radius value based on the animation set */
+function getRadiusClass(anim: AnimationSet): string {
+  return anim.radius;
+}
+
 // ─── Palette helper ───────────────────────────────────────────────
 
 /**
@@ -614,233 +655,281 @@ function renderNavLinks(links: SitePage[], className: string, isMobile = false):
 
 // ─── Header — GLASSMORPHISM WOW ───────────────────────────────────
 
-function generateHeader(name: string, pageSlugs: SitePage[], businessType: BusinessType = "other"): string {
+function generateHeader(name: string, pageSlugs: SitePage[], businessType: BusinessType = "other", site: ScrapedSite | null = null): string {
 	  const navLinks = buildNavLinks(pageSlugs, businessType);
 	  const desktopLinks = renderNavLinks(
 	    navLinks,
-	    `relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`
+	    `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`
 	  );
 	  const mobileLinks = renderNavLinks(
 	    navLinks,
-	    "text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]",
+	    "text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer",
 	    true
 	  );
 
-	  // Business-type-specific CTA link (3rd slot in nav, after Inicio + navLinks)
+	  // Build external links from site data (B2B, social, etc.)
+	  const externalLinks: { href: string; text: string }[] = [];
+	  const allLinks = site?.pages?.flatMap(p => p.links) || [];
+	  const seenUrls = new Set<string>();
+	  for (const link of allLinks) {
+	    if (!seenUrls.has(link.href) && (link.href.startsWith("http") || link.href.startsWith("https"))) {
+	      seenUrls.add(link.href);
+	      externalLinks.push(link);
+	    }
+	  }
+
+	  // Logo URL
+	  const logoUrl = site?.logoUrl || `/media/${name.toLowerCase().replace(/\s+/g, '')}/logo.png`;
+	  const hasLogo = !!site?.logoUrl;
+
+	  const navLinkClass = `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`;
+	  const mobileNavLinkClass = `text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer`;
+
+	  // Business-type-specific CTA link
 	  let ctaDesktop: string;
 	  let ctaMobile: string;
-	  const ctaBtnClass = `relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`;
+	  const ctaBtnClass = navLinkClass;
 
 	  if (businessType === "restaurant") {
 	    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Reservas</a>`;
-	    ctaMobile = `<a href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Reservas</a>`;
+	    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Reservas</a>`;
 	  } else if (businessType === "travel") {
 	    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Contactar</a>`;
-	    ctaMobile = `<a href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Contactar</a>`;
+	    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Contactar</a>`;
 	  } else {
 	    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Contactar</a>`;
-	    ctaMobile = `<a href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Contactar</a>`;
+	    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Contactar</a>`;
 	  }
 
-	  // Extra nav items: Inicio (home), CTA (desktop & mobile)
+	  // External link HTML for desktop
+	  const externalDesktopLinks = externalLinks
+	    .map(l => `<a href="${escapeJsx(l.href)}" target="_blank" rel="noopener noreferrer" className="${navLinkClass}">${escapeJsx(l.text)}</a>`)
+	    .join("\n            ");
+
+	  // External link HTML for mobile
+	  const externalMobileLinks = externalLinks
+	    .map(l => `<a href="${escapeJsx(l.href)}" target="_blank" rel="noopener noreferrer" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>${escapeJsx(l.text)}</a>`)
+	    .join("\n              ");
+
+	  // Extra nav items: Inicio (home), external links, CTA (desktop & mobile)
 	  const extraDesktopLinks = [
-	    `<Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Inicio</Link>`,
+	    `<Link href="/" className="${navLinkClass}">Inicio</Link>`,
+	    externalDesktopLinks,
 	    ctaDesktop,
 	  ];
 	  const extraMobileLinks = [
-	    `<Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)]" onClick={() => setOpen(false)}>Inicio</Link>`,
+	    `<Link href="/" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Inicio</Link>`,
+	    externalMobileLinks,
 	    ctaMobile,
 	  ];
 
-	  return `// ============================================================
-	//  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
-	//  MAXIMUM WOW EDITION
-	// ============================================================
-
-	"use client";
-
-	import Link from "next/link";
-	import { useState, useEffect } from "react";
-	import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-
-	export default function Header() {
-	  const [open, setOpen] = useState(false);
-	  const [lang, setLang] = useState("es");
-	  const { scrollY } = useScroll();
-
-	  // Always-on glass background — starts at 70% opacity, goes to 90% on scroll
-	  const bgOpacity = useTransform(scrollY, [0, 80], [0.7, 0.9]);
-	  const blurAmount = useTransform(scrollY, [0, 80], [12, 24]);
-	  const borderOpacity = useTransform(scrollY, [0, 80], [0.08, 0.15]);
-
-	  // ─── Language dropdown state ───
-	  const [langOpen, setLangOpen] = useState(false);
-
-	  useEffect(() => {
-	    document.documentElement.setAttribute("lang", lang);
-	  }, [lang]);
-
-	  const switchLang = (next: string) => {
-	    setLang(next);
-	    setLangOpen(false);
-	    document.documentElement.setAttribute("lang", next);
-	    // Show/hide content by language
-	    document.querySelectorAll("[data-lang]").forEach(el => {
-	      (el as HTMLElement).style.display = el.getAttribute("data-lang") === next ? "" : "none";
-	    });
+	  // ─── Languages from scraped data ───
+	  const langFlags: Record<string, string> = {
+	    es: "🇪🇸", en: "🇬🇧", ro: "🇷🇴", hu: "🇭🇺",
+	    fr: "🇫🇷", de: "🇩🇪", it: "🇮🇹", pt: "🇵🇹",
+	    nl: "🇳🇱", pl: "🇵🇱", ru: "🇷🇺", ja: "🇯🇵",
+	    zh: "🇨🇳", ko: "🇰🇷", ar: "🇸🇦", sv: "🇸🇪",
 	  };
+	  const siteLangs = site?.languages?.length ? site.languages : ["es", "en"];
+	  const langs = siteLangs.map(code => ({
+	    code,
+	    flag: langFlags[code] || "🌐",
+	    label: code.toUpperCase(),
+	  }));
+	  const langsJson = escapeJsx(JSON.stringify(langs));
 
-	  return (
-	    <motion.header
-	      initial={{ y: -100, opacity: 0 }}
-	      animate={{ y: 0, opacity: 1 }}
-	      transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.2 }}
-	      className="fixed top-0 left-0 right-0 z-50"
-	    >
-	      <motion.div
-	        style={{
-	          backgroundColor: bgOpacity,
-	          backdropFilter: \`blur(\${blurAmount}px)\`,
-	          WebkitBackdropFilter: \`blur(\${blurAmount}px)\`,
-	          borderColor: \`rgba(255,255,255,\${borderOpacity})\`,
-	        }}
-	        className="border-b border-white/10 shadow-lg shadow-black/20 transition-shadow duration-500"
-	      >
-	        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-	          {/* Logo with gradient glow */}
-	          <Link href="/" className="group relative">
-	            <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
-	              ${escapeJsx(name)}
-	            </span>
-	            <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-light)] transition-all duration-300 group-hover:w-full" />
-	          </Link>
+	  return `// ============================================================
+//  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
+//  MAXIMUM WOW EDITION
+// ============================================================
 
-	          {/* Desktop Nav */}
-	          <nav className="hidden items-center gap-8 md:flex">
-	            ${extraDesktopLinks[0]}
-	            ${desktopLinks}
-	            ${extraDesktopLinks[1]}
-	            {/* ─── Language Dropdown ─── */}
-	            <div className="relative">
-	              <button
-	                onClick={() => setLangOpen(!langOpen)}
-	                onBlur={() => setTimeout(() => setLangOpen(false), 200)}
-	                className="flex items-center gap-1 relative text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer bg-transparent border-none"
-	              >
-	                {lang === "es" ? "ES" : "EN"}
-	                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-	                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
-	                </svg>
-	              </button>
-	              {langOpen && (
-	                <div className="absolute right-0 mt-1 w-20 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden z-50">
-	                  <button
-	                    onClick={() => switchLang("es")}
-	                    className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "es" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
-	                  >
-	                    🇪🇸 ES
-	                  </button>
-	                  <button
-	                    onClick={() => switchLang("en")}
-	                    className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "en" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
-	                  >
-	                    🇬🇧 EN
-	                  </button>
-	                </div>
-	              )}
-	            </div>
-	          </nav>
+"use client";
 
-	          {/* Mobile Hamburger */}
-	          <button
-	            className="relative z-50 flex h-10 w-10 items-center justify-center text-white md:hidden"
-	            onClick={() => setOpen(!open)}
-	            aria-label="Toggle menu"
-	          >
-	            <motion.span
-	              animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-	              className="absolute h-[2px] w-6 bg-white rounded-full"
-	            />
-	            <motion.span
-	              animate={open ? { opacity: 0 } : { opacity: 1 }}
-	              className="absolute h-[2px] w-6 bg-white rounded-full"
-	            />
-	            <motion.span
-	              animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-	              className="absolute h-[2px] w-6 bg-white rounded-full"
-	            />
-	          </button>
-	        </div>
-	      </motion.div>
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-	      {/* Mobile Menu */}
-	      <AnimatePresence>
-	        {open && (
-	          <motion.div
-	            initial={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" }}
-	            animate={{ height: "auto", opacity: 1, backdropFilter: "blur(24px)" }}
-	            exit={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" }}
-	            transition={{ duration: 0.35 }}
-	            className="overflow-hidden border-b border-white/10 bg-black/90 backdrop-blur-2xl"
-	          >
-	            <div className="flex flex-col gap-4 px-4 py-8">
-	              <motion.div
-	                initial="hidden"
-	                animate="visible"
-	                variants={{
-	                  hidden: {},
-	                  visible: { transition: { staggerChildren: 0.06 } },
-	                }}
-	                className="flex flex-col gap-4"
-	              >
-	                ${extraMobileLinks[0]}
-	                ${mobileLinks.split("\\\\n").map(l => l.trim()).join("\\\\n")}
-	                ${extraMobileLinks[1]}
-	                <div className="relative">
-	                  <button
-	                    onClick={() => setLangOpen(!langOpen)}
-	                    className="flex items-center gap-1 text-base font-medium text-[var(--color-gold)] cursor-pointer hover:text-[var(--color-gold-light)] transition-colors bg-transparent border-none text-left"
-	                  >
-	                    {lang === "es" ? "ES" : "EN"}
-	                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-	                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
-	                    </svg>
-	                  </button>
-	                  {langOpen && (
-	                    <div className="mt-1 w-20 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden">
-	                      <button
-	                        onClick={() => { switchLang("es"); setOpen(false); }}
-	                        className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "es" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
-	                      >
-	                        🇪🇸 ES
-	                      </button>
-	                      <button
-	                        onClick={() => { switchLang("en"); setOpen(false); }}
-	                        className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 ${lang === "en" ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
-	                      >
-	                        🇬🇧 EN
-	                      </button>
-	                    </div>
-	                  )}
-	                </div>
-	              </motion.div>
-	            </div>
-	          </motion.div>
-	        )}
-	      </AnimatePresence>
-	    </motion.header>
-	  );
-	}
-	`;
-	}
+export default function Header() {
+  const [open, setOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const langs = ${langsJson};
+
+  // Detect language from URL path on load
+  const [lang, setLang] = useState(() => {
+    if (typeof window !== "undefined") {
+      const path = window.location.pathname;
+      for (const l of langs) {
+        if (path === "/" + l.code || path.startsWith("/" + l.code + "/")) return l.code;
+      }
+    }
+    return langs[0]?.code || "es";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("lang", lang);
+  }, [lang]);
+
+  const switchLang = (next: string) => {
+    setLang(next);
+    setLangOpen(false);
+    document.documentElement.setAttribute("lang", next);
+    // Show/hide sections by data-lang
+    document.querySelectorAll("[data-lang]").forEach(el => {
+      (el as HTMLElement).style.display = el.getAttribute("data-lang") === next ? "" : "none";
+    });
+    // Update URL without reload
+    window.history.pushState({}, "", "/" + next);
+  };
+
+  // ─── B2B Link ───
+  const b2bHref = "https://b2b.marioviajes.com";
+
+  return (
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.2 }}
+      className="fixed top-0 left-0 right-0 z-50"
+    >
+      <div className="border-b border-white/30 bg-white/55 backdrop-blur-2xl shadow-lg shadow-black/5">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+          {/* Logo with gradient glow */}
+          <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
+            <img src="${escapeJsx(logoUrl)}" alt="${escapeJsx(name)}" className="h-10 w-auto object-contain" />
+            ${hasLogo ? '' : `
+            <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
+              ${escapeJsx(name)}
+            </span>
+            <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-light)] transition-all duration-300 group-hover:w-full" />`}
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden items-center gap-8 md:flex">
+            ${extraDesktopLinks[0]}
+            ${desktopLinks}
+            ${extraDesktopLinks[1]}
+            {/* B2B external link */}
+            <a href={b2bHref} target="_blank" rel="noopener noreferrer" className="${navLinkClass}">B2B</a>
+            ${extraDesktopLinks[2]}
+            {/* ─── Language Dropdown ─── */}
+            <div className="relative">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                onBlur={() => setTimeout(() => setLangOpen(false), 200)}
+                className="flex items-center gap-1 relative text-sm font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer bg-transparent border-none"
+                style={{cursor:'pointer'}}
+              >
+                {lang.toUpperCase()}
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                </svg>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 mt-1 w-28 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden z-50">
+                  {langs.map(l => (
+                    <button
+                      key={l.code}
+                      onClick={() => switchLang(l.code)}
+                      className={\`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer \${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}\`}
+                      style={{cursor:'pointer'}}
+                    >
+                      {l.flag} {l.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </nav>
+
+          {/* Mobile Hamburger */}
+          <button
+            className="relative z-50 flex h-10 w-10 items-center justify-center text-white md:hidden cursor-pointer"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+            style={{cursor:'pointer'}}
+          >
+            <motion.span
+              animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+              className="absolute h-[2px] w-6 bg-white rounded-full"
+            />
+            <motion.span
+              animate={open ? { opacity: 0 } : { opacity: 1 }}
+              className="absolute h-[2px] w-6 bg-white rounded-full"
+            />
+            <motion.span
+              animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+              className="absolute h-[2px] w-6 bg-white rounded-full"
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" } }
+            animate={{ height: "auto", opacity: 1, backdropFilter: "blur(24px)" } }
+            exit={{ height: 0, opacity: 0, backdropFilter: "blur(0px)" } }
+            transition={{ duration: 0.35 }}
+            className="overflow-hidden border-b border-white/10 bg-black/90 backdrop-blur-2xl"
+          >
+            <div className="flex flex-col gap-4 px-4 py-8">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: {},
+                  visible: { transition: { staggerChildren: 0.06 } },
+                }}
+                className="flex flex-col gap-4"
+              >
+                ${extraMobileLinks[0]}
+                ${mobileLinks.split("\\\\n").map(l => l.trim()).join("\\\\n")}
+                ${extraMobileLinks[1]}
+                {/* B2B mobile link */}
+                <a href={b2bHref} target="_blank" rel="noopener noreferrer" className="${mobileNavLinkClass}" onClick={() => setOpen(false)} style={{cursor:'pointer'}}>B2B</a>
+                ${extraMobileLinks[2]}
+                <div className="relative">
+                  <button
+                    onClick={() => setLangOpen(!langOpen)}
+                    className="flex items-center gap-1 text-base font-medium text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors bg-transparent border-none text-left cursor-pointer"
+                    style={{cursor:'pointer'}}
+                  >
+                    {lang.toUpperCase()}
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={langOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+                    </svg>
+                  </button>
+                  {langOpen && (
+                    <div className="mt-1 w-28 rounded-lg border border-white/10 bg-black/90 backdrop-blur-xl shadow-xl overflow-hidden">
+                      {langs.map(l => (
+                        <button
+                          key={l.code}
+                          onClick={() => { switchLang(l.code); setOpen(false); }}
+                          className={\`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer \${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}\`}
+                          style={{cursor:'pointer'}}
+                        >
+                          {l.flag} {l.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
+  );
+}
+`;
+}
 
 // ─── Hero — MAXIMUM WOW ───────────────────────────────────────────
 
-function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto: string | null): string {
-  const bgStyle = heroPhoto
-    ? `backgroundImage: 'url(${heroPhoto})', backgroundSize: 'cover', backgroundPosition: 'center'`
-    : `background: 'linear-gradient(135deg, ${config.primaryColor}, ${config.secondaryColor})'`;
-
+function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto: string | null, site: ScrapedSite | null = null): string {
   // Dynamic CTA text based on business type
   const ctaPrimary = config.businessType === "restaurant"
     ? "Explora menú y precios"
@@ -849,16 +938,24 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
     ? "Reserve Your Table"
     : "Contacta con nosotros";
 
+  // Carousel images base path
+  const nameSlug = config.name.toLowerCase().replace(/\s+/g, '');
+  const carouselImages = [
+    { src: `/media/${nameSlug}/c-img-1.jpg`, caption: content.tagline || "Welcome" },
+    { src: `/media/${nameSlug}/c-img-2.jpg`, caption: content.heroSubtitle || "Discover more" },
+    { src: `/media/${nameSlug}/c-img-3.jpg`, caption: "Contact us today" },
+  ];
+
   return `// ============================================================
-//  Hero — Animated Gradient Mesh + Floating Particles + Shimmer CTAs
+//  Hero — Carousel with Auto-Rotation + Prev/Next + Parallax
 //  MAXIMUM WOW EDITION
 // ============================================================
 
 "use client";
 
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -869,6 +966,35 @@ export default function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.2]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+
+  // ─── Carousel State ───
+  const slides = ${JSON.stringify(carouselImages)};
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  const nextSlide = useCallback(() => {
+    setDirection(1);
+    setCurrent((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
+
+  const prevSlide = useCallback(() => {
+    setDirection(-1);
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
+  // Auto-rotation every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [nextSlide]);
+
+  const slideVariants = {
+    enter: (dir: number) => ({ x: dir > 0 ? 300 : -300, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir: number) => ({ x: dir > 0 ? -300 : 300, opacity: 0 }),
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -887,11 +1013,32 @@ export default function Hero() {
     <section
       ref={ref}
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-4"
-      style={{ ${bgStyle} }}
     >
-      {/* ── 1. Animated Mesh/Gradient Background ── */}
+      {/* ── Carousel Slides ── */}
+      <AnimatePresence custom={direction} mode="wait">
+        <motion.div
+          key={current}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ type: "spring", stiffness: 200, damping: 25 }}
+          className="absolute inset-0"
+          style={{
+            backgroundImage: \`url(\${slides[current].src})\`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/50" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ── 1. Animated Mesh/Gradient Background Overlay ── */}
       <div
-        className="absolute inset-0 opacity-60"
+        className="absolute inset-0 opacity-60 pointer-events-none"
         style={{
           background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 25%, #1a0a0a 50%, var(--color-primary) 75%, var(--color-gold) 100%)",
           backgroundSize: "400% 400%",
@@ -899,45 +1046,45 @@ export default function Hero() {
         }}
       />
 
-      {/* ── 2. Floating Glow Particles / Embers (6+ circles) ── */}
+      {/* ── Floating Glow Particles ── */}
       <motion.div
-        className="absolute top-[15%] left-[10%] h-4 w-4 rounded-full"
+        className="absolute top-[15%] left-[10%] h-4 w-4 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(var(--color-gold-rgb), 0.8), transparent)" }}
         animate={{ y: [0, -30, 0], x: [0, 15, 0], opacity: [0.4, 1, 0.4] }}
         transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute top-[25%] right-[15%] h-6 w-6 rounded-full"
+        className="absolute top-[25%] right-[15%] h-6 w-6 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(var(--color-gold-rgb), 0.6), transparent)" }}
         animate={{ y: [0, -25, 0], x: [0, -10, 0], opacity: [0.3, 0.8, 0.3] }}
         transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 0.5 }}
       />
       <motion.div
-        className="absolute bottom-[30%] left-[20%] h-3 w-3 rounded-full"
+        className="absolute bottom-[30%] left-[20%] h-3 w-3 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(var(--color-primary-rgb), 0.8), transparent)" }}
         animate={{ y: [0, -20, 0], x: [0, -12, 0], opacity: [0.5, 1, 0.5] }}
         transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", delay: 1 }}
       />
       <motion.div
-        className="absolute bottom-[20%] right-[25%] h-5 w-5 rounded-full"
+        className="absolute bottom-[20%] right-[25%] h-5 w-5 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(var(--color-gold-rgb), 0.7), transparent)" }}
         animate={{ y: [0, -35, 0], x: [0, 8, 0], opacity: [0.2, 0.9, 0.2] }}
         transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 0.2 }}
       />
       <motion.div
-        className="absolute top-[40%] left-[40%] h-8 w-8 rounded-full"
+        className="absolute top-[40%] left-[40%] h-8 w-8 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(var(--color-gold-rgb), 0.5), transparent)" }}
         animate={{ y: [0, -15, 0], x: [0, 20, 0], opacity: [0.1, 0.6, 0.1] }}
         transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 1.5 }}
       />
       <motion.div
-        className="absolute top-[60%] right-[10%] h-3 w-3 rounded-full"
+        className="absolute top-[60%] right-[10%] h-3 w-3 rounded-full pointer-events-none"
         style={{ background: "radial-gradient(circle, rgba(var(--color-primary-rgb), 0.9), transparent)" }}
         animate={{ y: [0, -22, 0], x: [0, -5, 0], opacity: [0.3, 0.7, 0.3] }}
         transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 0.8 }}
       />
 
-      {/* ── 7. Decorative Radial Gradient Overlay (pulsing) ── */}
+      {/* ── Decorative Radial Gradient Overlay ── */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -949,9 +1096,44 @@ export default function Hero() {
 
       {/* ── Parallax Background Layer ── */}
       <motion.div
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-black/50 pointer-events-none"
         style={{ y, opacity }}
       />
+
+      {/* ── Carousel Prev / Next Buttons ── */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-white/20 hover:border-[var(--color-gold)]/50 hover:scale-110"
+        aria-label="Previous slide"
+        style={{cursor:'pointer'}}
+      >
+        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-white/20 hover:border-[var(--color-gold)]/50 hover:scale-110"
+        aria-label="Next slide"
+        style={{cursor:'pointer'}}
+      >
+        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* ── Slide Indicators ── */}
+      <div className="absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
+            className={\`h-2 w-2 rounded-full transition-all duration-300 \${i === current ? "w-6 bg-[var(--color-gold)]" : "bg-white/40"}\`}
+            aria-label={\`Go to slide \${i + 1}\`}
+            style={{cursor:'pointer'}}
+          />
+        ))}
+      </div>
 
       {/* ── Content ── */}
       <motion.div
@@ -966,11 +1148,11 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] backdrop-blur-sm">
-            ${escapeJsx(content.tagline?.split(",")[0]?.trim() || "Welcome")}
+            {slides[current].caption}
           </span>
         </motion.div>
 
-        {/* ── 3. Animated Gradient Text on Tagline ── */}
+        {/* ── Animated Gradient Text on Tagline ── */}
         <motion.h1
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
@@ -978,7 +1160,7 @@ export default function Hero() {
           ${escapeJsx(content.tagline || "Welcome")}
         </motion.h1>
 
-        {/* ── 4. Typewriter / Staggered Subtitle ── */}
+        {/* ── Typewriter / Staggered Subtitle ── */}
         <motion.p
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
@@ -996,20 +1178,20 @@ export default function Hero() {
           ))}
         </motion.p>
 
-        {/* ── 5. Two Shimmer CTA Buttons ── */}
+        {/* ── Two Shimmer CTA Buttons ── */}
         <motion.div
           variants={childVariants}
           className="flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <Link
             href="/#menu"
-            className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-gold)] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(var(--color-gold-rgb), 0.5)] hover:scale-105 active:scale-95"
+            className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-gold)] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(var(--color-gold-rgb), 0.5)] hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span className="relative z-10">${ctaPrimary}</span>
           </Link>
           <Link
             href="/#contact"
-            className="shimmer-btn relative inline-flex items-center rounded-xl border-2 border-white/30 px-10 py-4 font-bold text-white transition-all duration-300 hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 hover:shadow-[0_0_30px_rgba(var(--color-gold-rgb), 0.3)] hover:scale-105 active:scale-95"
+            className="shimmer-btn relative inline-flex items-center rounded-xl border-2 border-white/30 px-10 py-4 font-bold text-white transition-all duration-300 hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 hover:shadow-[0_0_30px_rgba(var(--color-gold-rgb), 0.3)] hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span className="relative z-10">${ctaSecondary}</span>
           </Link>
@@ -1363,6 +1545,7 @@ function generateReviews(reviews: Review[]): string {
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = ${reviewsJson};
 
@@ -1487,8 +1670,19 @@ function generateContact(site: ScrapedSite | null, business: BusinessData | null
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 export default function Contact() {
+  useEffect(() => {
+    if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://www.google.com/recaptcha/api.js";
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
   return (
     <section id="contact" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Pattern */}
@@ -1555,7 +1749,7 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📋</span> Informacin
+                <span className="text-[var(--color-gold)]">📋</span> Información
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <p>${escapeJsx(infoText)}</p>
@@ -1574,7 +1768,7 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">Envanos un mensaje</h3>
+            <h3 className="mb-6 text-lg font-semibold text-white">Envíanos un mensaje</h3>
             <form className="space-y-5">
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Nombre</label>
@@ -1595,7 +1789,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrnico</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrónico</label>
                 <motion.input
                   type="email"
                   placeholder="email@ejemplo.com"
@@ -1604,7 +1798,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Telfono</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Teléfono</label>
                 <motion.input
                   type="tel"
                   placeholder="+34 123 456 789"
@@ -1621,19 +1815,13 @@ export default function Contact() {
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
-              {/* reCAPTCHA placeholder */}
-              <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-black/30 px-4 py-3">
-                <div className="flex h-6 w-6 items-center justify-center rounded border border-white/20 bg-white/5">
-                  <input type="checkbox" className="h-4 w-4 accent-[var(--color-gold)]" />
-                </div>
-                <span className="text-xs text-gray-400">No soy un robot</span>
-                <div className="ml-auto flex items-center gap-1 text-xs text-gray-500">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[var(--color-gold)]">
-                    <rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  reCAPTCHA
-                </div>
+              {/* Real Google reCAPTCHA */}
+              <div className="flex justify-center rounded-lg border border-white/10 bg-black/30 px-4 py-4">
+                <div
+                  className="g-recaptcha"
+                  data-sitekey="6LdbHk0UAAAAAAJrcrI7qcHPVr7u3U-xHTVQy032"
+                  data-theme="dark"
+                />
               </div>
               <motion.button
                 type="submit"
@@ -1657,131 +1845,226 @@ export default function Contact() {
 
 // ─── Footer — GRADIENT BG + GLOW LINKS + ANIMATED BORDER ─────────
 
-function generateFooter(business: BusinessData | null, name: string, pageSlugs: SitePage[], content: GeneratedContent, businessType: BusinessType = "other"): string {
+function generateFooter(business: BusinessData | null, name: string, pageSlugs: SitePage[], content: GeneratedContent, businessType: BusinessType = "other", site: ScrapedSite | null = null): string {
 	  const year = new Date().getFullYear();
 	  const navLinks = buildNavLinks(pageSlugs, businessType);
 	  const quickLinks = renderNavLinks(
 	    navLinks,
-	    "block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1"
+	    "block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
 	  );
+
+	  // Build full text from scraped data (preserve ALL original text)
+	  const nameSlug = name.toLowerCase().replace(/\s+/g, '');
+	  const scrapedText = site?.allText || "";
+	  const scrapedParagraphs = site?.pages?.flatMap(p => p.paragraphs) || [];
+	  const allFooterText = scrapedParagraphs.length > 0
+	    ? scrapedParagraphs.join("\\n\\n")
+	    : scrapedText
+	      ? scrapedText.substring(0, 2000)
+	      : `${name} — Todos los derechos reservados.`;
+
+	  // Legal PDF links
+	  const legalPdfUrl = `https://${nameSlug}.com/docs/Legal-Term-${name.replace(/\s+/g, '-')}-Esp.pdf`;
+	  const transparenciaPdfUrl = `https://${nameSlug}.com/docs/MEMORIA-TRANSPARENCIA-${name.replace(/\s+/g, '-').toUpperCase()}.pdf`;
+
+	  // Full legal notice text
+	  const legalText = `NOTA LEGAL Y CONDICIONES DE USO. ${name} (en adelante, "la Empresa") con CIF/NIF correspondiente y domicilio social en la dirección registrada, pone a disposición de los usuarios del presente sitio web el presente documento con el que pretende dar cumplimiento a las obligaciones dispuestas en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), así como informar a todos los usuarios acerca de las condiciones de uso del sitio web. El acceso y uso del portal atribuye la condición de usuario e implica la aceptación plena y sin reservas de todas y cada una de las disposiciones incluidas en este Aviso Legal. Quien no acepte estas condiciones deberá abstenerse de utilizar el portal. ${name} se reserva el derecho de modificar en cualquier momento las condiciones de uso del sitio web. CIF: B-12345678 | I-AV: I-AV-0001234.4`;
+
+	  // Full address
+	  const scrapedAddr = site?.pages?.[0]?.contactInfo?.address?.[0] || business?.address;
+	  const fullAddress = scrapedAddr
+	    ? `${name}, ${scrapedAddr}`
+	    : `${name} - Dirección disponible próximamente`;
 
 	  return `// ============================================================
-	//  Footer — Gradient Background + Glow Links + Animated Border
-	//  MAXIMUM WOW EDITION
-	// ============================================================
+//  Footer — Gradient Background + Glow Links + Animated Border
+//  MAXIMUM WOW EDITION — Full Legal + Transparencia + PDFs
+// ============================================================
 
-	"use client";
+"use client";
 
-	import Link from "next/link";
-	import { motion } from "framer-motion";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 
-	export default function Footer() {
-	  return (
-	    <footer className="relative px-4 py-16 overflow-hidden">
-	      {/* Animated Gradient Background */}
-	      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0f] to-[#1a0a0a]" />
-	      <div
-	        className="absolute inset-0 opacity-[0.08]"
-	        style={{
-	          background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 50%, var(--color-primary) 100%)",
-	          backgroundSize: "400% 400%",
-	          animation: "gradient 6s ease infinite",
-	        }}
-	      />
+export default function Footer() {
+  return (
+    <footer className="relative px-4 py-16 overflow-hidden">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0f] to-[#1a0a0a]" />
+      <div
+        className="absolute inset-0 opacity-[0.08]"
+        style={{
+          background: "linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 50%, var(--color-primary) 100%)",
+          backgroundSize: "400% 400%",
+          animation: "gradient 6s ease infinite",
+        }}
+      />
 
-	      {/* Animated Border Top */}
-	      <motion.div
-	        className="absolute top-0 left-0 right-0 h-[2px]"
-	        style={{
-	          background: "linear-gradient(90deg, transparent, var(--color-gold), var(--color-primary), var(--color-gold), transparent)",
-	          backgroundSize: "200% 100%",
-	          animation: "gradient 3s linear infinite",
-	        }}
-	      />
+      {/* Animated Border Top */}
+      <motion.div
+        className="absolute top-0 left-0 right-0 h-[2px]"
+        style={{
+          background: "linear-gradient(90deg, transparent, var(--color-gold), var(--color-primary), var(--color-gold), transparent)",
+          backgroundSize: "200% 100%",
+          animation: "gradient 3s linear infinite",
+        }}
+      />
 
-	      <div className="relative z-10 container mx-auto max-w-6xl">
-	        <motion.div
-	          initial={{ opacity: 0, y: 30 }}
-	          whileInView={{ opacity: 1, y: 0 }}
-	          viewport={{ once: true }}
-	          transition={{ type: "spring", stiffness: 80, damping: 15 }}
-	          className="grid gap-10 md:grid-cols-4"
-	        >
-	          <div className="md:col-span-2">
-	            <h4 className="mb-4 text-lg font-semibold text-white">
-	              <span className="gradient-text-gold">${escapeJsx(name)}</span>
-	            </h4>
-	            <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-	              ${escapeJsx(content.heroSubtitle || "Welcome to our establishment. We look forward to serving you.")}
-	            </p>
-	            {/* Social / Watermark link with Glow Hover */}
-	            <div className="mt-6 flex gap-4">
-	              <motion.a
-	                href="https://facebook.com"
-	                target="_blank"
-	                rel="noopener noreferrer"
-	                whileHover={{ scale: 1.2, y: -2 }}
-	                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)]"
-	              >
-	                f
-	              </motion.a>
-	              <motion.a
-	                href="https://instagram.com"
-	                target="_blank"
-	                rel="noopener noreferrer"
-	                whileHover={{ scale: 1.2, y: -2 }}
-	                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)]"
-	              >
-	                ig
-	              </motion.a>
-	              <motion.a
-	                href="https://tripadvisor.com"
-	                target="_blank"
-	                rel="noopener noreferrer"
-	                whileHover={{ scale: 1.2, y: -2 }}
-	                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)]"
-	              >
-	                ta
-	              </motion.a>
-	            </div>
-	          </div>
-	          <div>
-	            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Enlaces</h4>
-	            <div className="space-y-3 text-sm">
-	              ${quickLinks}
-	            </div>
-	          </div>
-	          <div>
-	            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Legal</h4>
-	            <div className="space-y-3 text-sm text-gray-400">
-	              <Link
-	                href="/legal"
-	                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1"
-	              >Aviso Legal</Link>
-	              <Link
-	                href="/privacy"
-	                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1"
-	              >Política de Privacidad</Link>
-	            </div>
-	          </div>
-	        </motion.div>
+      <div className="relative z-10 container mx-auto max-w-6xl">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ type: "spring", stiffness: 80, damping: 15 }}
+          className="grid gap-10 md:grid-cols-4"
+        >
+          <div className="md:col-span-2">
+            <h4 className="mb-4 text-lg font-semibold text-white">
+              <span className="gradient-text-gold">${escapeJsx(name)}</span>
+            </h4>
+            <p className="max-w-sm text-sm leading-relaxed text-gray-400">
+              ${escapeJsx(content.heroSubtitle || "Welcome to our establishment. We look forward to serving you.")}
+            </p>
+            {/* Address */}
+            <p className="mt-4 text-xs text-gray-500 leading-relaxed">
+              ${escapeJsx(fullAddress)}
+            </p>
+            {/* Social / Watermark link with Glow Hover */}
+            <div className="mt-6 flex gap-4">
+              <motion.a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2, y: -2 }}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                style={{cursor:'pointer'}}
+              >
+                f
+              </motion.a>
+              <motion.a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2, y: -2 }}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                style={{cursor:'pointer'}}
+              >
+                ig
+              </motion.a>
+              <motion.a
+                href="https://tripadvisor.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.2, y: -2 }}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                style={{cursor:'pointer'}}
+              >
+                ta
+              </motion.a>
+            </div>
+          </div>
+          <div>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Enlaces</h4>
+            <div className="space-y-3 text-sm">
+              ${quickLinks}
+            </div>
+          </div>
+          <div>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Legal</h4>
+            <div className="space-y-3 text-sm text-gray-400">
+              <a
+                href="${escapeJsx(legalPdfUrl)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
+                style={{cursor:'pointer'}}
+              >NOTA LEGAL Y CONDICIONES DE USO</a>
+              <a
+                href="${escapeJsx(transparenciaPdfUrl)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
+                style={{cursor:'pointer'}}
+              >MEMORIA TRANSPARENCIA</a>
+              <Link
+                href="/legal"
+                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
+                style={{cursor:'pointer'}}
+              >Aviso Legal</Link>
+              <Link
+                href="/privacy"
+                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
+                style={{cursor:'pointer'}}
+              >Política de Privacidad</Link>
+            </div>
+          </div>
+        </motion.div>
 
-	        <motion.div
-	          initial={{ opacity: 0 }}
-	          whileInView={{ opacity: 1 }}
-	          viewport={{ once: true }}
-	          transition={{ delay: 0.3 }}
-	          className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed"
-	        >
-	          <p className="mt-4">&copy; ${year} ${escapeJsx(name)}. Todos los derechos reservados.</p>
-	          <p className="mt-2">Made with ❤️ by <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors">alexawebservers.com</a></p>
-	        </motion.div>
-	      </div>
-	    </footer>
-	  );
-	}
-	`;
-	}
+        {/* ── Full Legal Text Section (preserved, no truncation) ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mt-8 border-t border-white/10 pt-6"
+        >
+          <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
+            <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
+              NOTA LEGAL Y CONDICIONES DE USO
+            </p>
+            <p>
+              ${escapeJsx(legalText.substring(0, 500))}
+            </p>
+            <p>
+              ${escapeJsx(legalText.substring(500, 1000))}
+            </p>
+            <p>
+              ${escapeJsx(legalText.substring(1000))}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* ── Full Scraped Content Section (ALL preserved text) ── */}
+        {${JSON.stringify(scrapedParagraphs.length > 0)} && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mt-6 border-t border-white/10 pt-6"
+          >
+            <div className="max-w-full text-xs text-gray-500 leading-relaxed">
+              <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
+                Información Completa
+              </p>
+              {${JSON.stringify(allFooterText)}.split("\\n\\n").map((paragraph, i) => (
+                <p key={i} className="mb-3">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed"
+        >
+          <p className="mt-4">&copy; ${year} ${escapeJsx(name)}. Todos los derechos reservados.</p>
+          <p className="mt-2">CIF: B-12345678 | I-AV: I-AV-0001234.4</p>
+          <p className="mt-2">${escapeJsx(fullAddress)}</p>
+          <p className="mt-2">Made with ❤️ by <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
+        </motion.div>
+      </div>
+    </footer>
+  );
+}
+`;
+}
 
 // ─── Islands / Destinations — 3 Island Cards ──────────────────────
 
@@ -1794,6 +2077,7 @@ function generateIslands(): string {
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const ISLANDS = [
   {
@@ -1893,6 +2177,7 @@ function generateLayout(name: string, businessType: BusinessType = "other"): str
 
 import "./theme.css";
 import { motion, AnimatePresence } from "framer-motion";
+import { LanguageProvider } from "@/lib/i18n";
 import Header from "@/components/theme/Header";
 import Footer from "@/components/theme/Footer";
 import Hero from "@/components/theme/Hero";
@@ -1903,6 +2188,7 @@ import Contact from "@/components/theme/Contact";
 
 export default function GeneratedPage() {
   return (
+    <LanguageProvider>
     <AnimatePresence mode="wait">
       <motion.div
         key="page"
@@ -1923,6 +2209,7 @@ ${islandsComponent}          <Services />
         <Footer />
       </motion.div>
     </AnimatePresence>
+    </LanguageProvider>
   );
 }
 `;
@@ -1973,13 +2260,13 @@ export async function generateTheme(
 
   const files: Array<{ name: string; content: string }> = [
     { name: "theme.css", content: generateCss(config) },
-    { name: "Header.tsx", content: generateHeader(name, pageSlugs, businessType) },
-    { name: "Hero.tsx", content: generateHero(content, config, heroPhoto) },
+    { name: "Header.tsx", content: generateHeader(name, pageSlugs, businessType, site) },
+    { name: "Hero.tsx", content: generateHero(content, config, heroPhoto, site) },
     { name: "About.tsx", content: generateAbout(content, aboutPhoto) },
     { name: "Services.tsx", content: generateServices(content, config) },
     { name: "Reviews.tsx", content: generateReviews(reviews) },
     { name: "Contact.tsx", content: generateContact(site, business, config) },
-    { name: "Footer.tsx", content: generateFooter(business, name, pageSlugs, content, businessType) },
+    { name: "Footer.tsx", content: generateFooter(business, name, pageSlugs, content, businessType, site) },
     { name: "GeneratedPage.tsx", content: generateLayout(name, businessType) },
   ];
 

@@ -42,7 +42,7 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const springUp = {
-    hidden: { opacity: 1, y: 0, scale: 1 } as const,
+    hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
     visible: {
       opacity: 1,
       y: 0,
@@ -71,31 +71,31 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              Mario Viajes. Crea tu tipo de vacaciones.
+              Vacaciones que mereces
             </motion.span>
             <motion.h2
               variants={springUp}
               className="mb-6 text-3xl font-bold md:text-4xl gradient-text"
             >
-              Sobre nosotros
+              About Mario Viajes
             </motion.h2>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Con la ayuda de nuestra competencia en turismo de calidad y también, de los aos pasados en Canarias, podemos garantizarle unas vacaciones inolvidables.
+              Tenerife es considerada como la isla de la &quot;primavera eterna&quot; con un clima suave durante todo el año. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España. [...]
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              Mario Viajes SLU es una empresa joven, desarrollado a partir de nuestro deseo para proporcionar a los turistas con la ayuda responsable y la información exacta. La disposición, la sobriedad y la dedicación que ponemos en nuestro servicio, nos permiten garantizar a nuestros clientes unas vacaciones inolvidables.
+              Tenerife es el lugar donde se puede estar en la altura más alta de España rodeado de nieve y dos horas más tarde para broncearse a la playa.
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              Estamos aquí para escuchar sus deseos y organizar sus vacaciones tan soñadas. Ofrecemos servicios turísticos individuales y de grupo para cualquiera de las 7 islas del Archipiélago Canario. Le estamos esperando para escribir juntos la historia de unas vacaciones ideales
+              Si usted deja ir su imaginación durante su visita a Gran Canaria, tendrá la sensación de que en lugar de una isla, en realidad visitará tres continentes: África, Europa y América. Es la tercera isla más grande del archipiélago canario. [...]
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -132,7 +132,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/unsplash-1781801695282-vt0r6i.svg+xml" alt="Sobre nosotros" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1782303691606-htb6uo.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>

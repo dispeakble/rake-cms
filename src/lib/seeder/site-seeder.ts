@@ -302,6 +302,10 @@ export async function seedSite(
         paragraphs: braveData?.snippets.slice(0, 3) || [description],
         images: [],
         links: [],
+        carousel: [],
+        footerText: "",
+        externalLinks: [],
+        languageLinks: [],
         contactInfo: {
           phone: [],
           email: [],
@@ -314,6 +318,8 @@ export async function seedSite(
       businessType: "other",
       allText: braveData?.snippets.join(" ") || description,
       homepageUrl: "/",
+      languages: [],
+      allImages: [],
     };
 
     const homeContent = generateHomepageContent(

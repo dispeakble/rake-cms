@@ -3,10 +3,13 @@
  *
  * Fetches the homepage, discovers linked pages (about, services, contact),
  * and extracts: title, meta, headings, paragraphs, images, contact info,
- * color palette from CSS, and business information.
+ * color palette from CSS, business information, carousel slides,
+ * nav links (including external), footer text, language versions,
+ * and all images with type classification.
  */
 
 import * as cheerio from "cheerio";
+import type { Element } from "domhandler";
 import { fetchWithRetry } from "@/lib/reliability/retry";
 import { scrapeUrlSchema, sanitizeScrapedContent } from "@/lib/security/validation";
 import { scraperLimiter } from "@/lib/security/rate-limiter";
@@ -20,6 +23,14 @@ export interface ScrapedPage {
   images: { src: string; alt: string }[];
   links: { href: string; text: string }[];
   contactInfo: ContactInfo;
+  /** Carousel/slider slides — images (from background-image or <img>) plus caption text */
+  carousel: { src: string; caption: string }[];
+  /** Concatenated text content from <footer> element */
+  footerText: string;
+  /** Anchor links found inside nav, header, and footer elements */
+  externalLinks: { href: string; text: string }[];
+  /** Language-switcher links (from lang dropdowns or hreflang attributes) */
+  languageLinks: { href: string; lang: string; label: string }[];
 }
 
 export interface ScrapedSite {
@@ -30,6 +41,10 @@ export interface ScrapedSite {
   logoUrl: string | null;
   businessType: BusinessType;
   allText: string;
+  /** Language codes detected across pages (e.g. ["en", "es", "fr"]) */
+  languages: string[];
+  /** Every image found across all pages, classified by role/type */
+  allImages: { src: string; alt: string; type: string }[];
 }
 
 export type BusinessType =
@@ -172,7 +187,7 @@ function extractContactInfo($: cheerio.CheerioAPI): ContactInfo {
   const address: string[] = [];
   const socialLinks: string[] = [];
 
-  const phonePattern = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}/g;
+  const phonePattern = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,6}/g;
   const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
   const socialDomains = ["facebook.com", "instagram.com", "twitter.com", "x.com", "linkedin.com", "youtube.com", "tiktok.com", "pinterest.com"];
 
@@ -181,15 +196,27 @@ function extractContactInfo($: cheerio.CheerioAPI): ContactInfo {
   const phoneMatches = bodyText.match(phonePattern);
   if (phoneMatches) phone.push(...phoneMatches.slice(0, 3));
 
-  // Email from mailto links
+  // Email from mailto links — clean http:// prefix if present
+  const mailtoEmails: string[] = [];
   $('a[href^="mailto:"]').each((_, el) => {
     const href = $(el).attr("href") || "";
-    email.push(href.replace("mailto:", ""));
+    let extracted = href.replace("mailto:", "");
+    // Some sites accidentally include http:// in mailto hrefs
+    extracted = extracted.replace(/^https?:\/\//i, "");
+    mailtoEmails.push(extracted);
   });
 
-  // Email from text
-  const emailMatches = bodyText.match(emailPattern);
-  if (emailMatches) email.push(...emailMatches.slice(0, 3));
+  // Email from text — prefer these over mailto (cleaner)
+  const textEmails = bodyText.match(emailPattern);
+  if (textEmails) {
+    // Remove http:// prefix from any text email too
+    const cleanTextEmails = textEmails.map(e => e.replace(/^https?:\/\//i, ""));
+    email.push(...cleanTextEmails.slice(0, 3));
+  }
+  // Append mailto emails only if not already found via body text
+  for (const m of mailtoEmails) {
+    if (!email.includes(m)) email.push(m);
+  }
 
   // Social links
   $("a[href]").each((_, el) => {
@@ -203,14 +230,42 @@ function extractContactInfo($: cheerio.CheerioAPI): ContactInfo {
     }
   });
 
-  // Address from text patterns
-  const addressPatterns = [
-    /\d+\s+[A-Za-z\s,]+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Court|Ct|Way|Place|Pl)\b/i,
-    /(?:P\.?O\.?\s+Box\s+\d+)/i,
-  ];
-  for (const pattern of addressPatterns) {
-    const match = bodyText.match(pattern);
-    if (match) address.push(match[0]);
+  // Address from text patterns — supports Spanish, English, and EU formats
+  // PRIORITY 1: Look for explicit "Dirección:" labels in the HTML for exact match
+  $("*").each((_, el) => {
+    const html = $(el).html() || "";
+    const dirMatch = html.match(/Dirección:\s*<\/[^>]+>\s*([^<]+)/i);
+    if (dirMatch) {
+      const fullAddr = dirMatch[1].trim();
+      if (fullAddr.length > 10 && !address.some(a => fullAddr.includes(a))) {
+        address.push(fullAddr);
+      }
+    }
+  });
+
+  // PRIORITY 2: English-style address patterns
+  if (address.length === 0) {
+    const addressPatterns = [
+      /\d+\s+[A-Za-zÀ-ÿ\s,]+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Court|Ct|Way|Place|Pl)\b/i,
+      /(?:P\.?O\.?\s+Box\s+\d+)/i,
+    ];
+    for (const pattern of addressPatterns) {
+      const match = bodyText.match(pattern);
+      if (match) address.push(match[0]);
+    }
+  }
+
+  // PRIORITY 3: Spanish address patterns on body text
+  if (address.length === 0) {
+    const spanishPatterns = [
+      /Calle\s+[A-Za-zÀ-ÿ\s,.]+(?:\d{1,5})?/i,
+      /C\.\s*C\.\s+[A-Za-zÀ-ÿ\s,.]+/i,
+      /(?:Avenida|Avda|Av\.)\s+[A-Za-zÀ-ÿ\s,.]+/i,
+    ];
+    for (const pattern of spanishPatterns) {
+      const match = bodyText.match(pattern);
+      if (match) address.push(match[0]);
+    }
   }
 
   return {
@@ -250,6 +305,307 @@ function discoverPages($: cheerio.CheerioAPI, baseUrl: string): string[] {
   });
 
   return Array.from(urls).slice(0, 8); // Max 8 pages
+}
+
+/**
+ * Determine the role/type of an image based on its attributes and context.
+ */
+function classifyImage($el: cheerio.Cheerio<Element>, $: cheerio.CheerioAPI): string {
+  const src = $el.attr("src") || "";
+  const alt = $el.attr("alt") || "";
+  const srcLower = src.toLowerCase();
+  const altLower = alt.toLowerCase();
+  const classes = ($el.attr("class") || "").toLowerCase();
+  const parentClasses = ($el.parent().attr("class") || "").toLowerCase();
+
+  // Carousel / slider images
+  if (
+    classes.includes("carousel") ||
+    classes.includes("slide") ||
+    parentClasses.includes("carousel") ||
+    parentClasses.includes("slide") ||
+    classes.includes("slick") ||
+    parentClasses.includes("slick")
+  ) {
+    return "carousel";
+  }
+
+  // Logo images
+  if (
+    srcLower.includes("logo") ||
+    altLower.includes("logo") ||
+    classes.includes("logo") ||
+    classes.includes("brand") ||
+    parentClasses.includes("logo") ||
+    parentClasses.includes("brand")
+  ) {
+    return "logo";
+  }
+
+  // Icon images (small decorative)
+  if (
+    srcLower.includes("icon") ||
+    classes.includes("icon") ||
+    parentClasses.includes("icon") ||
+    classes.includes("glyphicon") ||
+    parentClasses.includes("glyphicon")
+  ) {
+    return "icon";
+  }
+
+  // Hero / banner images
+  if (
+    classes.includes("hero") ||
+    classes.includes("banner") ||
+    parentClasses.includes("hero") ||
+    parentClasses.includes("banner")
+  ) {
+    return "hero";
+  }
+
+  // Social / sharing icons
+  if (
+    srcLower.includes("social") ||
+    altLower.includes("social") ||
+    classes.includes("social") ||
+    parentClasses.includes("social")
+  ) {
+    return "social";
+  }
+
+  // Thumbnail images
+  if (
+    classes.includes("thumb") ||
+    classes.includes("thumbnail") ||
+    parentClasses.includes("thumb") ||
+    parentClasses.includes("thumbnail")
+  ) {
+    return "thumbnail";
+  }
+
+  // Background / decorative
+  if (classes.includes("bg") || classes.includes("background") || parentClasses.includes("bg")) {
+    return "background";
+  }
+
+  return "content";
+}
+
+/**
+ * Extract carousel/slider slides from a page.
+ * Looks for common carousel frameworks (Bootstrap, Slick, Swiper, custom).
+ */
+function extractCarousel($: cheerio.CheerioAPI, baseUrl: string): { src: string; caption: string }[] {
+  const slides: { src: string; caption: string }[] = [];
+
+  // 1. Try Bootstrap carousel items
+  $(".carousel-item, .carousel .item, [class*=\"carousel-item\"], [class*=\"slide-item\"]").each((_, el) => {
+    const $el = $(el);
+    let src = "";
+
+    // Check for background-image style
+    const style = $el.attr("style") || "";
+    const bgMatch = style.match(/background(?:-image)?\s*:\s*url\(['"]?([^'")\s]+)['"]?\)/i);
+    if (bgMatch) {
+      src = bgMatch[1];
+    }
+
+    // Fall back to <img> child
+    if (!src) {
+      const img = $el.find("img").first();
+      src = img.attr("src") || img.attr("data-src") || img.attr("data-lazy-src") || "";
+    }
+
+    // Get caption from h1/h2/p within the item, or alt text on img
+    let caption = "";
+    const heading = $el.find("h1, h2, h3, .carousel-caption h1, .carousel-caption h2, .carousel-caption h3, .slider-caption, .slide-title, [class*=\"caption\"]").first();
+    caption = heading.text().trim();
+    if (!caption) {
+      const img = $el.find("img").first();
+      caption = img.attr("alt") || "";
+    }
+
+    if (src) {
+      try {
+        src = new URL(src, baseUrl).href;
+      } catch { /* keep as-is */ }
+      slides.push({ src, caption });
+    }
+  });
+
+  // 2. Try generic slider patterns (Slick, Swiper, Owl, custom)
+  if (slides.length === 0) {
+    $(".slick-slide, .swiper-slide, .owl-item, .slide, [class*=\"slideshow\"] > *, [class*=\"slider\"] > *").each((_, el) => {
+      const $el = $(el);
+      // Skip clones/clones used by Slick for infinite loop
+      if ($el.hasClass("slick-cloned")) return;
+
+      let src = "";
+      const style = $el.attr("style") || "";
+      const bgMatch = style.match(/background(?:-image)?\s*:\s*url\(['"]?([^'")\s]+)['"]?\)/i);
+      if (bgMatch) {
+        src = bgMatch[1];
+      }
+
+      if (!src) {
+        const img = $el.find("img").first();
+        src = img.attr("src") || img.attr("data-src") || img.attr("data-lazy-src") || "";
+      }
+
+      let caption = "";
+      const heading = $el.find("h1, h2, h3, h4, .caption, [class*=\"title\"]").first();
+      caption = heading.text().trim();
+      if (!caption) {
+        const img = $el.find("img").first();
+        caption = img.attr("alt") || "";
+      }
+
+      if (src) {
+        try {
+          src = new URL(src, baseUrl).href;
+        } catch { /* keep as-is */ }
+        slides.push({ src, caption });
+      }
+    });
+  }
+
+  // 3. As a last resort, look for elements with background-image inside known slider wrappers
+  if (slides.length === 0) {
+    $(".hero, .banner, [class*=\"hero\"], [class*=\"banner\"]").each((_, el) => {
+      const $el = $(el);
+      const style = $el.attr("style") || "";
+      const bgMatch = style.match(/background(?:-image)?\s*:\s*url\(['"]?([^'")\s]+)['"]?\)/i);
+      if (bgMatch) {
+        let src = bgMatch[1];
+        try {
+          src = new URL(src, baseUrl).href;
+        } catch { /* keep as-is */ }
+        let caption = $el.find("h1, h2, .hero-title, .banner-title").first().text().trim();
+        slides.push({ src, caption });
+      }
+    });
+  }
+
+  return slides.slice(0, 15);
+}
+
+/**
+ * Extract ALL anchor links from nav, header, and footer elements.
+ */
+function extractExternalLinks($: cheerio.CheerioAPI, baseUrl: string): { href: string; text: string }[] {
+  const links: { href: string; text: string }[] = [];
+  const seen = new Set<string>();
+
+  // Look inside nav, header, footer, and any element with nav-related classes
+  $("nav a[href], header a[href], footer a[href], .navbar a[href], .nav-menu a[href], .navigation a[href], [role=\"navigation\"] a[href], .header a[href], .top-bar a[href]").each((_, el) => {
+    const href = ($(el).attr("href") || "").trim();
+    const text = $(el).text().trim();
+
+    if (!href || href === "#" || href.startsWith("javascript:")) return;
+    if (!text) return;
+
+    // Resolve relative URLs
+    let resolvedHref = href;
+    try {
+      resolvedHref = new URL(href, baseUrl).href;
+    } catch {
+      // Keep original if resolution fails
+    }
+
+    const key = resolvedHref + "|" + text;
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    links.push({ href: resolvedHref, text });
+  });
+
+  return links;
+}
+
+/**
+ * Extract language-switcher links from the page.
+ * Looks for hreflang attributes, lang dropdowns, and language selector patterns.
+ */
+function extractLanguageLinks($: cheerio.CheerioAPI, baseUrl: string): { href: string; lang: string; label: string }[] {
+  const links: { href: string; lang: string; label: string }[] = [];
+  const seen = new Set<string>();
+
+  // 1. Look for <link> tags with hreflang (alternate language versions)
+  $('link[rel="alternate"][hreflang]').each((_, el) => {
+    const href = $(el).attr("href") || "";
+    const lang = $(el).attr("hreflang") || "";
+    if (!href || !lang || lang === "x-default") return;
+
+    let resolvedHref = href;
+    try {
+      resolvedHref = new URL(href, baseUrl).href;
+    } catch { /* keep as-is */ }
+
+    const key = resolvedHref + "|" + lang;
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    links.push({ href: resolvedHref, lang, label: lang });
+  });
+
+  // 2. Look for language switcher dropdown menus and links
+  $(
+    '[class*="language"] a[href], [class*="lang"] a[href], ' +
+    '[class*="language"] [class*="dropdown-item"], [class*="lang"] [class*="dropdown-item"], ' +
+    '[class*="language"] li a, [class*="lang"] li a, ' +
+    '#language a, #lang-selector a, .language-selector a, .lang-selector a, ' +
+    '[hreflang] a, a[hreflang]'
+  ).each((_, el) => {
+    const $el = $(el);
+    const href = $el.attr("href") || "";
+    const text = $el.text().trim();
+    const hreflang = $el.attr("hreflang") || "";
+    const dataLang = $el.attr("data-lang") || $el.attr("data-language") || "";
+
+    if (!href || href === "#") return;
+
+    // Determine language code
+    const lang = hreflang || dataLang || text.toLowerCase().slice(0, 2);
+
+    let resolvedHref = href;
+    try {
+      resolvedHref = new URL(href, baseUrl).href;
+    } catch { /* keep as-is */ }
+
+    const key = resolvedHref + "|" + lang;
+    if (seen.has(key)) return;
+    seen.add(key);
+
+    links.push({ href: resolvedHref, lang, label: text || lang });
+  });
+
+  // 3. As a fallback, look for common language codes in URL paths
+  // (e.g., /en/, /es/, /fr/) inside nav elements
+  if (links.length === 0) {
+    const langCodes = ["en", "es", "fr", "de", "it", "pt", "nl", "ja", "zh", "ko", "ru", "ar", "pl", "sv", "da", "fi", "no", "cs", "hu", "ro", "uk", "el", "tr", "th", "vi", "he", "hi"];
+    $("nav a[href], header a[href]").each((_, el) => {
+      const href = $(el).attr("href") || "";
+      const text = $(el).text().trim();
+
+      for (const code of langCodes) {
+        if (href.includes(`/${code}/`) || href === `/${code}` || href.endsWith(`/${code}`)) {
+          let resolvedHref = href;
+          try {
+            resolvedHref = new URL(href, baseUrl).href;
+          } catch { /* keep as-is */ }
+
+          const key = resolvedHref + "|" + code;
+          if (seen.has(key)) return;
+          seen.add(key);
+
+          links.push({ href: resolvedHref, lang: code, label: text || code });
+          break;
+        }
+      }
+    });
+  }
+
+  return links;
 }
 
 /**
@@ -295,6 +651,7 @@ async function scrapePage(url: string): Promise<ScrapedPage> {
     });
   }
 
+  // --- Images (content-only — excluding logos, icons, SVGs) ---
   const images: { src: string; alt: string }[] = [];
   $("img[src]").each((_, el) => {
     const src = $(el).attr("src") || "";
@@ -308,12 +665,31 @@ async function scrapePage(url: string): Promise<ScrapedPage> {
     }
   });
 
+  // --- All links (any <a> with href and text) ---
   const links: { href: string; text: string }[] = [];
   $("a[href]").each((_, el) => {
     const href = $(el).attr("href") || "";
     const text = $(el).text().trim();
     if (href && text) links.push({ href, text });
   });
+
+  // --- Carousel slides ---
+  const carousel = extractCarousel($, url);
+
+  // --- Footer text ---
+  let footerText = "";
+  const $footer = $("footer");
+  if ($footer.length > 0) {
+    footerText = $footer.text().trim();
+    // Collapse excessive whitespace
+    footerText = footerText.replace(/\s+/g, " ").trim();
+  }
+
+  // --- External links from nav/header/footer ---
+  const externalLinks = extractExternalLinks($, url);
+
+  // --- Language links ---
+  const languageLinks = extractLanguageLinks($, url);
 
   return {
     url,
@@ -324,6 +700,10 @@ async function scrapePage(url: string): Promise<ScrapedPage> {
     images: images.slice(0, 20),
     links,
     contactInfo: extractContactInfo($),
+    carousel,
+    footerText,
+    externalLinks,
+    languageLinks,
   };
 }
 
@@ -382,6 +762,60 @@ export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
 
   const allText = pages.map((p) => p.paragraphs.join(" ")).join(" ");
 
+  // --- Collect all images across all pages with type classification ---
+  const allImages: { src: string; alt: string; type: string }[] = [];
+  const seenImages = new Set<string>();
+
+  for (const page of pages) {
+    // Re-fetch page HTML to classify images (we need the DOM for context)
+    try {
+      const resp = await fetchWithRetry(page.url, {
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; RakeCMS-Scraper/1.0)" },
+        timeoutMs: 10000,
+        maxAttempts: 1,
+      });
+      const html = await resp.text();
+      const page$ = cheerio.load(html);
+
+      page$("img[src]").each((_, el) => {
+        const src = page$(el).attr("src") || "";
+        const alt = page$(el).attr("alt") || "";
+        if (!src) return;
+
+        let resolvedSrc = src;
+        try {
+          resolvedSrc = new URL(src, page.url).href;
+        } catch {
+          return; // Skip invalid URLs
+        }
+
+        const key = resolvedSrc + "|" + alt;
+        if (seenImages.has(key)) return;
+        seenImages.add(key);
+
+        const type = classifyImage(page$(el), page$);
+        allImages.push({ src: resolvedSrc, alt, type });
+      });
+    } catch {
+      // If re-fetching fails, use the images already extracted for this page
+      for (const img of page.images) {
+        const key = img.src + "|" + img.alt;
+        if (seenImages.has(key)) continue;
+        seenImages.add(key);
+        allImages.push({ ...img, type: "content" });
+      }
+    }
+  }
+
+  // --- Collect unique language codes from all pages ---
+  const languageSet = new Set<string>();
+  for (const page of pages) {
+    for (const langLink of page.languageLinks) {
+      if (langLink.lang) languageSet.add(langLink.lang);
+    }
+  }
+  const languages = Array.from(languageSet).sort();
+
   const scraped: ScrapedSite = {
     homepageUrl: baseUrl,
     businessName: extractBusinessName(homepage.title, baseUrl),
@@ -390,6 +824,8 @@ export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
     logoUrl: extractLogo($, baseUrl),
     businessType: detectBusinessType(allText, baseUrl),
     allText,
+    languages,
+    allImages,
   };
 
   console.log(`\n📊 Summary:`);
@@ -399,6 +835,8 @@ export async function scrapeWebsite(url: string): Promise<ScrapedSite> {
   console.log(`   Colors: ${scraped.colorPalette.length > 0 ? scraped.colorPalette.join(", ") : "auto"}`);
   console.log(`   Contact: ${scraped.pages[0].contactInfo.email.length > 0 ? "✓" : "—"}`);
   console.log(`   Social: ${scraped.pages[0].contactInfo.socialLinks.length > 0 ? "✓" : "—"}`);
+  console.log(`   Languages: ${languages.length > 0 ? languages.join(", ") : "—"}`);
+  console.log(`   Images: ${allImages.length} total (${allImages.filter(i => i.type === "content").length} content, ${allImages.filter(i => i.type === "carousel").length} carousel, ${allImages.filter(i => i.type === "logo").length} logo, ${allImages.filter(i => i.type === "icon").length} icon)`);
 
   return scraped;
 }

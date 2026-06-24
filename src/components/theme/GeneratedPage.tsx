@@ -7,7 +7,7 @@
 
 import "./theme.css";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect } from "react";
+import { LanguageProvider } from "@/lib/i18n";
 import Header from "@/components/theme/Header";
 import Footer from "@/components/theme/Footer";
 import Hero from "@/components/theme/Hero";
@@ -18,19 +18,13 @@ import Reviews from "@/components/theme/Reviews";
 import Contact from "@/components/theme/Contact";
 
 export default function GeneratedPage() {
-  useEffect(() => {
-    // Set page title from the business name in the header
-    const headerEl = document.querySelector("header a span");
-    if (headerEl?.textContent) {
-      document.title = headerEl.textContent.trim();
-    }
-  }, []);
-
   return (
+    <LanguageProvider>
     <AnimatePresence mode="wait">
       <motion.div
         key="page"
-        initial={{ opacity: 1, y: 0, scale: 1 }}
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -20, scale: 0.98 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="flex min-h-screen flex-col bg-black text-white"
@@ -47,5 +41,6 @@ export default function GeneratedPage() {
         <Footer />
       </motion.div>
     </AnimatePresence>
+    </LanguageProvider>
   );
 }

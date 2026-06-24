@@ -70,7 +70,7 @@ export default function Services() {
         {/* ── Nuestros Servicios ── */}
         <motion.div
           id="locations"
-          initial={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -78,7 +78,7 @@ export default function Services() {
         >
           <div className="mb-12 text-center">
             <motion.span
-              initial={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
@@ -104,7 +104,7 @@ export default function Services() {
         {/* ── Menu / More Services ── */}
         <motion.div
           id="menu"
-          initial={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -112,7 +112,7 @@ export default function Services() {
         >
           <div className="mb-12 text-center">
             <motion.span
-              initial={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
@@ -127,7 +127,7 @@ export default function Services() {
             {SERVICES.map((service, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 1, y: 0, scale: 1 }}
+                initial={{ opacity: 0, y: 40, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, type: "spring", stiffness: 100, damping: 15 }}

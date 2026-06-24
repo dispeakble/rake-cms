@@ -6,8 +6,19 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 export default function Contact() {
+  useEffect(() => {
+    if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://www.google.com/recaptcha/api.js";
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
   return (
     <section id="contact" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Pattern */}
@@ -24,7 +35,7 @@ export default function Contact() {
 
       <div className="relative z-10 container mx-auto max-w-6xl">
         <motion.div
-          initial={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -38,7 +49,7 @@ export default function Contact() {
         <div className="grid gap-10 md:grid-cols-2">
           {/* Contact Details */}
           <motion.div
-            initial={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
@@ -50,20 +61,20 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📍</span> Mario Viajes, Tenerife
+                <span className="text-[var(--color-gold)]">📍</span> Mario Viajes
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>Dirección disponible próximamente</span>
+                  <span>Calle Montana Clara nr.6, C.C. Laurisilva Local 6 I, 38679, Adeje, Tenerife</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
+                  <a href="tel:0034-922724642" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">0034-922724642</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
+                  <a href="mailto:office@marioviajes.com" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">office@marioviajes.com</a>
                 </div>
               </div>
             </motion.div>
@@ -74,7 +85,7 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📋</span> Informacin
+                <span className="text-[var(--color-gold)]">📋</span> Información
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <p>Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestros servicios, no dude en contactarnos.</p>
@@ -87,13 +98,13 @@ export default function Contact() {
 
           {/* Contact form */}
           <motion.div
-            initial={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">Envanos un mensaje</h3>
+            <h3 className="mb-6 text-lg font-semibold text-white">Envíanos un mensaje</h3>
             <form className="space-y-5">
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-300">Nombre</label>
@@ -114,7 +125,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrnico</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Correo electrónico</label>
                 <motion.input
                   type="email"
                   placeholder="email@ejemplo.com"
@@ -123,7 +134,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">Telfono</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-300">Teléfono</label>
                 <motion.input
                   type="tel"
                   placeholder="+34 123 456 789"
@@ -140,19 +151,13 @@ export default function Contact() {
                   className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
-              {/* reCAPTCHA placeholder */}
-              <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-black/30 px-4 py-3">
-                <div className="flex h-6 w-6 items-center justify-center rounded border border-white/20 bg-white/5">
-                  <input type="checkbox" className="h-4 w-4 accent-[var(--color-gold)]" />
-                </div>
-                <span className="text-xs text-gray-400">No soy un robot</span>
-                <div className="ml-auto flex items-center gap-1 text-xs text-gray-500">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-[var(--color-gold)]">
-                    <rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 8v4M12 16h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  reCAPTCHA
-                </div>
+              {/* Real Google reCAPTCHA */}
+              <div className="flex justify-center rounded-lg border border-white/10 bg-black/30 px-4 py-4">
+                <div
+                  className="g-recaptcha"
+                  data-sitekey="6LdbHk0UAAAAAAJrcrI7qcHPVr7u3U-xHTVQy032"
+                  data-theme="dark"
+                />
               </div>
               <motion.button
                 type="submit"
