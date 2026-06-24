@@ -654,6 +654,42 @@ export const translations: Record<string, Record<Lang, string>> = {
     ro: "Făcut cu ❤️ de",
     hu: "Készült ❤️-vel",
   },
+  "footer.links": {
+    es: "Enlaces",
+    en: "Links",
+    ro: "Linkuri",
+    hu: "Linkek",
+  },
+  "footer.legal_heading": {
+    es: "Legal",
+    en: "Legal",
+    ro: "Legal",
+    hu: "Jogi",
+  },
+  "footer.legal_notice": {
+    es: "Aviso Legal",
+    en: "Legal Notice",
+    ro: "Notă Legală",
+    hu: "Jogi nyilatkozat",
+  },
+  "footer.privacy": {
+    es: "Política de Privacidad",
+    en: "Privacy Policy",
+    ro: "Politica de Confidențialitate",
+    hu: "Adatvédelmi irányelvek",
+  },
+  "footer.complete_info": {
+    es: "Información Completa",
+    en: "Complete Information",
+    ro: "Informații Complete",
+    hu: "Teljes információ",
+  },
+  "footer.copyright": {
+    es: "Todos los derechos reservados.",
+    en: "All rights reserved.",
+    ro: "Toate drepturile rezervate.",
+    hu: "Minden jog fenntartva.",
+  },
 
   // ─── Section IDs for scroll ───
   "section.hero": { es: "hero", en: "hero", ro: "hero", hu: "hero" },

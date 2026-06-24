@@ -684,7 +684,7 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	  	    if (seenKeys.has(key)) continue;
 	  	    seenKeys.add(key);
 	  	    externalLinks.push(link);
-	  	  }
+	  }
 
 	  // Logo URL
 	  const logoUrl = site?.logoUrl || `/media/${name.toLowerCase().replace(/\s+/g, '')}/logo.png`;
@@ -933,6 +933,16 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
     { src: `/media/${nameSlug}/c-img-3.jpg`, caption: `{t("hero.carousel_3")}` },
   ];
 
+  // ─── Per-language hero subtitle map ───
+  const heroSubtitleMap: Record<string, string> = { es: content.heroSubtitle || "Welcome to our establishment. We look forward to serving you." };
+  if (site?.languageContent) {
+    for (const [code, lc] of Object.entries(site.languageContent)) {
+      const langContent = lc as { heroSubtitle?: string; tagline?: string };
+      if (langContent.heroSubtitle) heroSubtitleMap[code] = langContent.heroSubtitle;
+      else if (langContent.tagline) heroSubtitleMap[code] = langContent.tagline;
+    }
+  }
+
   return `// ============================================================
 //  Hero — Carousel with Auto-Rotation + Prev/Next + Parallax
 //  MAXIMUM WOW EDITION
@@ -946,7 +956,8 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 export default function Hero() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -1154,7 +1165,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"${escapeJsx(content.heroSubtitle || "Welcome to our establishment. We look forward to serving you.")}".split("").map((char, i) => (
+          {__(${JSON.stringify(heroSubtitleMap)}).split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
@@ -1206,7 +1217,7 @@ export default function Hero() {
 
 // ─── About — SPRING REVEAL + COUNTERS + GLASSMORPHISM ────────────
 
-function generateAbout(content: GeneratedContent, photo: string | null): string {
+function generateAbout(content: GeneratedContent, photo: string | null, site: ScrapedSite | null = null): string {
   const imgHtml = photo
     ? `<motion.div
               className="relative overflow-hidden rounded-2xl"
@@ -1266,7 +1277,8 @@ function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string })
 }
 
 export default function About() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const springUp = {
@@ -1874,6 +1886,16 @@ function generateFooter(business: BusinessData | null, name: string, pageSlugs: 
 	    ? `${name}, ${scrapedAddr}`
 	    : `${name} - Dirección disponible próximamente`;
 
+	  // ─── Per-language hero subtitle map ───
+	  const heroSubtitleMap: Record<string, string> = { es: content.heroSubtitle || "Welcome to our establishment. We look forward to serving you." };
+	  if (site?.languageContent) {
+	    for (const [code, lc] of Object.entries(site.languageContent)) {
+	      const langContent = lc as { heroSubtitle?: string; tagline?: string };
+	      if (langContent.heroSubtitle) heroSubtitleMap[code] = langContent.heroSubtitle;
+	      else if (langContent.tagline) heroSubtitleMap[code] = langContent.tagline;
+	    }
+	  }
+
 	  return `// ============================================================
 //  Footer — Gradient Background + Glow Links + Animated Border
 //  MAXIMUM WOW EDITION — Full Legal + Transparencia + PDFs
@@ -1887,7 +1909,8 @@ import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   return (
     <footer className="relative px-4 py-16 overflow-hidden">
       {/* Animated Gradient Background */}
@@ -1924,7 +1947,7 @@ export default function Footer() {
               <span className="gradient-text-gold">${escapeJsx(name)}</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              ${escapeJsx(content.heroSubtitle || "Welcome to our establishment. We look forward to serving you.")}
+              {__(${JSON.stringify(heroSubtitleMap)})}
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
@@ -1965,13 +1988,13 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Enlaces</h4>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.links")}</h4>
             <div className="space-y-3 text-sm">
               ${quickLinks}
             </div>
           </div>
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">Legal</h4>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.legal_heading")}</h4>
             <div className="space-y-3 text-sm text-gray-400">
               <a
                 href="${escapeJsx(legalPdfUrl)}"
@@ -1991,12 +2014,12 @@ export default function Footer() {
                 href="/legal"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
                 style={{cursor:'pointer'}}
-              >Aviso Legal</Link>
+              >{t("footer.legal_notice")}</Link>
               <Link
                 href="/privacy"
                 className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
                 style={{cursor:'pointer'}}
-              >Política de Privacidad</Link>
+              >{t("footer.privacy")}</Link>
             </div>
           </div>
         </motion.div>
@@ -2036,7 +2059,7 @@ export default function Footer() {
           >
             <div className="max-w-full text-xs text-gray-500 leading-relaxed">
               <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
-                Información Completa
+                {t("footer.complete_info")}
               </p>
               {${JSON.stringify(allFooterText)}.split("\\n\\n").map((paragraph, i) => (
                 <p key={i} className="mb-3">
@@ -2054,7 +2077,7 @@ export default function Footer() {
           transition={{ delay: 0.3 }}
           className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed"
         >
-          <p className="mt-4">&copy; ${year} ${escapeJsx(name)}. Todos los derechos reservados.</p>
+          <p className="mt-4">&copy; ${year} ${escapeJsx(name)}. {t("footer.copyright")}</p>
           <p className="mt-2">CIF: B-12345678 | I-AV: I-AV-0001234.4</p>
           <p className="mt-2">${escapeJsx(fullAddress)}</p>
           <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
@@ -2252,7 +2275,7 @@ export async function generateTheme(
     { name: "theme.css", content: generateCss(config) },
     { name: "Header.tsx", content: generateHeader(name, pageSlugs, businessType, site) },
     { name: "Hero.tsx", content: generateHero(content, config, heroPhoto, site) },
-    { name: "About.tsx", content: generateAbout(content, aboutPhoto) },
+    { name: "About.tsx", content: generateAbout(content, aboutPhoto, site) },
     ...(businessType === "travel" ? [{ name: "Islands.tsx", content: generateIslands() }] : []),
     { name: "Services.tsx", content: generateServices(content, config) },
     { name: "Reviews.tsx", content: generateReviews(reviews) },
