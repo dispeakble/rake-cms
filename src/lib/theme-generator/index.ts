@@ -624,7 +624,6 @@ function buildNavLinks(_pageSlugs: SitePage[], businessType?: BusinessType): Sit
 	  const sectionLinks: SitePage[] = [
 	    { slug: "/#about", label: "Sobre nosotros" },
 	    { slug: "/#services", label: "Qué ofrecemos" },
-	    { slug: "/#contact", label: "Contactar" },
 	  ];
 
 	  // Add business-type-specific middle link
