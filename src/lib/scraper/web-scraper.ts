@@ -108,6 +108,9 @@ function detectBusinessType(text: string, url: string): BusinessType {
     construction: ["construction", "builder", "contractor", "renovation", "remodeling", "roofing", "flooring", "paving"],
     creative: ["design", "photography", "studio", "creative", "art", "portfolio", "graphic", "branding", "media"],
     travel: ["travel", "viajes", "viaje", "turismo", "tour", "excursion", "vacation", "holiday", "cruise", "trips", "b2b", "canary islands", "canarias", "tenerife", "gran canaria"],
+    fitness: ["gym", "fitness", "workout", "training", "exercise", "personal trainer", "crossfit", "yoga", "pilates", "bodybuilding", "cardio", "strength"],
+    beauty: ["salon", "beauty", "hair", "nails", "spa", "cosmetic", "makeup", "skincare", "barber", "stylist", "lash", "massage"],
+    automotive: ["auto", "car", "vehicle", "mechanic", "garage", "repair", "tire", "dealership", "automotive", "service center", "body shop", "motors"],
     other: [],
   };
 
