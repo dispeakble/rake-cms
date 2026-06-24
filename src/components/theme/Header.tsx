@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
-  const langs = [{&quot;code&quot;:&quot;es&quot;,&quot;flag&quot;:&quot;🇪🇸&quot;,&quot;label&quot;:&quot;ES&quot;},{&quot;code&quot;:&quot;en&quot;,&quot;flag&quot;:&quot;🇬🇧&quot;,&quot;label&quot;:&quot;EN&quot;}];
+  const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
 
   // Detect language from URL path on load
   const [lang, setLang] = useState(() => {

@@ -20,7 +20,7 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Carousel State ───
-  const slides = [{"src":"/media/marioviajes/c-img-1.jpg","caption":"Vacaciones que mereces, experiencias que recordarás"},{"src":"/media/marioviajes/c-img-2.jpg","caption":"Vacaciones que mereces, experiencias que recordarás"},{"src":"/media/marioviajes/c-img-3.jpg","caption":"Contact us today"}];
+  const slides = [{"src":"/media/marioviajes/c-img-1.jpg","caption":"Explora, sueña, descubre — Islas Canarias"},{"src":"/media/marioviajes/c-img-2.jpg","caption":"Explora, sueña, descubre — Islas Canarias"},{"src":"/media/marioviajes/c-img-3.jpg","caption":"Contact us today"}];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -209,7 +209,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          Vacaciones que mereces, experiencias que recordarás
+          Explora, sueña, descubre — Islas Canarias
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -217,7 +217,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {"Vacaciones que mereces, experiencias que recordarás".split("").map((char, i) => (
+          {"Explora, sueña, descubre — Islas Canarias".split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
