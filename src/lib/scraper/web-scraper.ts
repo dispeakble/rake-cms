@@ -194,7 +194,20 @@ function extractContactInfo($: cheerio.CheerioAPI): ContactInfo {
   // Phone from text
   const bodyText = $("body").text();
   const phoneMatches = bodyText.match(phonePattern);
-  if (phoneMatches) phone.push(...phoneMatches.slice(0, 3));
+  if (phoneMatches) {
+    // Filter out non-phone numbers (CIF, bank numbers, dates, etc.)
+    const cleanPhones = phoneMatches.filter(n => {
+      const digits = n.replace(/[^\d]/g, "");
+      // Must be 7-15 digits
+      if (digits.length < 7 || digits.length > 15) return false;
+      // Exclude bare 8-digit numbers (CIF/bank account numbers)
+      if (digits.length === 8 && !n.includes("+") && !n.includes("(") && !n.includes("-")) return false;
+      // Must start with area/country code or have formatting (+, -, parens)
+      if (digits.length >= 7 && digits.length <= 9 && !n.match(/[+(\-]/)) return false;
+      return true;
+    });
+    phone.push(...cleanPhones.slice(0, 3));
+  }
 
   // Email from mailto links — clean http:// prefix if present
   const mailtoEmails: string[] = [];
@@ -433,6 +446,32 @@ function extractCarousel($: cheerio.CheerioAPI, baseUrl: string): { src: string;
     }
   });
 
+	  // 4. Rake CMS / Next.js carousel with AnimatePresence (framer-motion)
+	  //    Looks for elements with background-image in hero sections that have slide nav buttons
+	  if (slides.length === 0) {
+	    const $sections = $("section, div[class*=hero], div[class*=slider]");
+	    $sections.each((_, section) => {
+	      const $section = $(section);
+	      const hasPrevBtn = $section.find('button[aria-label*="Previous" i], button[aria-label*="prev" i]').length > 0;
+	      const hasNextBtn = $section.find('button[aria-label*="Next" i], button[aria-label*="next" i]').length > 0;
+	      const hasDots = $section.find('button[aria-label*="slide" i]').length > 0;
+	      if (!hasPrevBtn && !hasNextBtn && !hasDots) return;
+
+	      $section.children().each((_, el) => {
+	        const $el = $(el);
+	        const style = $el.attr("style") || "";
+	        const bgMatch = style.match(/background(?:-image)?\s*:\s*url\(['"]?([^'")\s]+)['"]?\)/i);
+	        if (bgMatch) {
+	          let src = bgMatch[1];
+	          try { src = new URL(src, baseUrl).href; } catch { /* keep as-is */ }
+	          let caption = "";
+	          const heading = $section.find("h1, h2, h3, .badge, [class*=badge], [class*=caption]").first();
+	          caption = heading.text().trim();
+	          slides.push({ src, caption });
+	        }
+	      });
+	    });
+	  }
   // 2. Try generic slider patterns (Slick, Swiper, Owl, custom)
   if (slides.length === 0) {
     $(".slick-slide, .swiper-slide, .owl-item, .slide, [class*=\"slideshow\"] > *, [class*=\"slider\"] > *").each((_, el) => {
@@ -603,6 +642,35 @@ function extractLanguageLinks($: cheerio.CheerioAPI, baseUrl: string): { href: s
         }
       }
     });
+  }
+
+  // 4. Rake CMS pattern: look for data-lang attributes on sections + language toggle buttons in nav
+  if (links.length === 0) {
+    const langCodes = ["en", "es", "fr", "de", "it", "pt", "nl", "ja", "zh", "ko", "ru", "ar", "pl", "sv", "da", "fi", "no", "cs", "hu", "ro", "uk", "el", "tr", "th", "vi", "he", "hi"];
+    // Find all data-lang values used in the page
+    const dataLangs = new Set<string>();
+    $("[data-lang]").each((_, el) => {
+      const lang = $(el).attr("data-lang") || "";
+      if (lang && langCodes.includes(lang)) dataLangs.add(lang);
+    });
+    // Look for language toggle buttons in nav that match known language codes
+    $("nav button, header button, [class*=lang] button, .language-selector button").each((_, el) => {
+      const text = $(el).text().trim().toLowerCase();
+      const code = langCodes.find(c => text === c || text === c.toUpperCase());
+      if (code && !seen.has(code)) {
+        seen.add(code);
+        links.push({ href: `/${code}`, lang: code, label: code.toUpperCase() });
+      }
+    });
+    // If buttons found with data-lang, also collect from data-lang attributes
+    if (links.length === 0) {
+      for (const code of dataLangs) {
+        if (!seen.has(code)) {
+          seen.add(code);
+          links.push({ href: `/${code}`, lang: code, label: code.toUpperCase() });
+        }
+      }
+    }
   }
 
   return links;
