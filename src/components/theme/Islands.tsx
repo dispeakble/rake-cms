@@ -10,9 +10,9 @@ import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 const ISLANDS = [
-  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", extraKey: "island_tenerife.extra", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Tenerife" },
-  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", extraKey: "island_grancanaria.extra", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Gran+Canaria" },
-  { titleKey: "island_other.title", descKey: "island_other.text", extraKey: "island_other.extra", image: "https://placehold.co/800x600/1a0a0a/D4A017?text=Canarias" },
+  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", extraKey: "island_tenerife.extra", image: "/media/marioviajes/tenerife.jpg" },
+  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", extraKey: "island_grancanaria.extra", image: "/media/marioviajes/grancanaria.jpeg" },
+  { titleKey: "island_other.title", descKey: "island_other.text", extraKey: "island_other.extra", image: "/media/marioviajes/otras-islas.jpg" },
 ];
 
 export default function Islands() {
