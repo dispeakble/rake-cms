@@ -9,7 +9,8 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-const SERVICE_KEYS_LIST = ["service_1","service_2","service_3","service_4","service_5","service_6"];
+// ─── Per-site services (embedded from scraped content) ───
+const SERVICES = [{"title":"Identidad de Marca","description":"Destaque con una identidad de marca coherente. Desde logotipos hasta guías de marca completas."},{"title":"Diseño Gráfico","description":"Diseños impactantes para medios impresos y digitales. Materiales de marketing que captan la atención."},{"title":"Fotografía y Video","description":"Contenido visual profesional que muestra su marca bajo la mejor luz."}];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -50,7 +51,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 }
 
 export default function Services() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
@@ -69,9 +70,8 @@ export default function Services() {
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* ── Nuestros Servicios ── */}
+        {/* ── Our Services ── */}
         <motion.div
-          id="locations"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -86,61 +86,19 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              {t("services.subtitle")}
+              Karting Las Américas
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICE_KEYS_LIST.map((key, i) => (
+            {SERVICES.slice(0, 6).map((svc, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{t(key + ".title")}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{t(key + ".desc")}</p>
+                  <h3 className="mb-3 text-xl font-bold text-white">{svc.title}</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">{svc.description}</p>
                 </div>
               </TiltCard>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* ── Menu / More Services ── */}
-        <motion.div
-          id="menu"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 80, damping: 15 }}
-          className="mb-20"
-        >
-          <div className="mb-12 text-center">
-            <motion.span
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
-            >
-              {t("services_all.explore")}
-            </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services_all.title")}</h2>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICE_KEYS_LIST.map((key, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, type: "spring", stiffness: 100, damping: 15 }}
-                whileHover={{ y: -8, scale: 1.03 }}
-                className="relative rounded-2xl p-[1px] overflow-hidden bg-white/10"
-              >
-                <div className="relative rounded-2xl p-8 text-center h-full glass">
-                  <h3 className="mb-2 text-lg font-semibold text-white">{t(key + ".title")}</h3>
-                  <p className="text-sm text-gray-400">{t(key + ".desc")}</p>
-                </div>
-              </motion.div>
             ))}
           </div>
         </motion.div>

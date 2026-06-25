@@ -13,7 +13,6 @@ import Header from "@/components/theme/Header";
 import Footer from "@/components/theme/Footer";
 import Hero from "@/components/theme/Hero";
 import About from "@/components/theme/About";
-import Islands from "@/components/theme/Islands";
 import Services from "@/components/theme/Services";
 import Reviews from "@/components/theme/Reviews";
 import Contact from "@/components/theme/Contact";
@@ -35,7 +34,6 @@ export default function GeneratedPage() {
         <main className="flex-1">
           <Hero />
           <About />
-          <Islands />
           <Services />
           <Reviews />
           <Contact />

@@ -1,22 +1,22 @@
-/* Rake CMS — Theme: Mario Viajes - MAXIMUM WOW EDITION */
+/* Rake CMS — Theme: Karting Las Américas - MAXIMUM WOW EDITION */
 /* ============================================================
    Light mode :root = default (light) | .dark overrides for dark
    ============================================================ */
 
 :root {
   /* ── Brand colors stay the same across themes ── */
-  --color-primary: #58a8d8;
-  --color-primary-rgb: 88, 168, 216;
-  --color-secondary: #d8c898;
-  --color-secondary-rgb: 216, 200, 152;
+  --color-primary: #f80808;
+  --color-primary-rgb: 248, 8, 8;
+  --color-secondary: #282828;
+  --color-secondary-rgb: 40, 40, 40;
   --color-accent: #1a1a2e;
-  --color-gold: #d8c898;
-  --color-gold-rgb: 216, 200, 152;
-  --color-gold-light: #fff0c0;
-  --color-glow: rgba(216, 200, 152, 0.3);
-  --color-glow-intense: rgba(216, 200, 152, 0.6);
-  --gradient-main: linear-gradient(135deg, #58a8d8, #d8c898);
-  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(216, 200, 152, 0.15), transparent 70%);
+  --color-gold: #282828;
+  --color-gold-rgb: 40, 40, 40;
+  --color-gold-light: #505050;
+  --color-glow: rgba(40, 40, 40, 0.3);
+  --color-glow-intense: rgba(40, 40, 40, 0.6);
+  --gradient-main: linear-gradient(135deg, #f80808, #282828);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(40, 40, 40, 0.15), transparent 70%);
   --border-angle: 0deg;
 
   /* ── LIGHT MODE (default) ── */
@@ -207,7 +207,7 @@
 
 /* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #58a8d8, #d8c898, #58a8d8, #d8c898);
+  background: linear-gradient(135deg, #f80808, #282828, #f80808, #282828);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -298,7 +298,7 @@
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #58a8d8, #d8c898); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #f80808, #282828); border-radius: 3px; }
 
 /* ── Selection ── */
 ::selection { background: var(--selection-bg); color: white; }

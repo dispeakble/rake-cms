@@ -63,20 +63,20 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📍</span> Mario Viajes
+                <span className="text-[var(--color-gold)]">📍</span> Karting Las Américas
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>Calle Montana Clara nr.6, C.C. Laurisilva Local 6 I, 38679, Adeje, Tenerife</span>
+                  <span>20 años en el mercado y se est</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:0034-922724642" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">0034-922724642</a>
+                  <a href="tel:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:office@marioviajes.com" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">office@marioviajes.com</a>
+                  <a href="mailto:info@kartingamericas.com" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">info@kartingamericas.com</a>
                 </div>
               </div>
             </motion.div>
