@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 // ─── Per-site services (embedded from scraped content) ───
-const SERVICES = [{"title":"Identidad de Marca","description":"Destaque con una identidad de marca coherente. Desde logotipos hasta guías de marca completas."},{"title":"Diseño Gráfico","description":"Diseños impactantes para medios impresos y digitales. Materiales de marketing que captan la atención."},{"title":"Fotografía y Video","description":"Contenido visual profesional que muestra su marca bajo la mejor luz."}];
+const SERVICES = [{"title":"Eventos Especiales","description":"Organizamos experiencias únicas y memorables para particulares y empresas. Celebraciones, eventos corporativos y actividades que emocionan."},{"title":"Actividades Deportivas","description":"Vive la adrenalina de nuestras actividades. Ideal para grupos que buscan diversión y emoción en un entorno seguro."},{"title":"Experiencias Personalizadas","description":"Cada cliente es único. Creamos paquetes a medida adaptados a tus necesidades y preferencias."},{"title":"Equipamiento y Seguridad","description":"Todo el equipamiento necesario para garantizar tu comodidad y seguridad durante la experiencia."},{"title":"Reserva Online","description":"Reserva fácilmente online. Consulta disponibilidad, precios y promociones desde cualquier dispositivo."}];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);

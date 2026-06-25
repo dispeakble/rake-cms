@@ -281,9 +281,11 @@ const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: stri
     { title: "Project Management", description: "Keep your construction project on time and on budget. Our experienced managers oversee every detail." },
   ],
   creative: [
-    { title: "Brand Identity", description: "Stand out with a cohesive brand identity. From logos to full brand guidelines, we craft your visual story." },
-    { title: "Graphic Design", description: "Eye-catching designs for print and digital. Marketing materials that capture attention." },
-    { title: "Photography & Video", description: "Professional visual content that showcases your brand in the best light." },
+    { title: "Eventos Especiales", description: "Organizamos experiencias únicas y memorables para particulares y empresas. Celebraciones, eventos corporativos y actividades que emocionan." },
+    { title: "Actividades Deportivas", description: "Vive la adrenalina de nuestras actividades. Ideal para grupos que buscan diversión y emoción en un entorno seguro." },
+    { title: "Experiencias Personalizadas", description: "Cada cliente es único. Creamos paquetes a medida adaptados a tus necesidades y preferencias." },
+    { title: "Equipamiento y Seguridad", description: "Todo el equipamiento necesario para garantizar tu comodidad y seguridad durante la experiencia." },
+    { title: "Reserva Online", description: "Reserva fácilmente online. Consulta disponibilidad, precios y promociones desde cualquier dispositivo." },
   ],
   travel: [
     { title: "Paquetes Vacacionales a Medida", description: "Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos. Desde escapadas románticas hasta aventuras familiares, diseñamos sus vacaciones soñadas." },
@@ -297,9 +299,11 @@ const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: stri
   beauty: [{ title: "Hair Styling", description: "Professional hair styling for every occasion." }, { title: "Skincare", description: "Rejuvenating skincare treatments using premium products." }],
   automotive: [{ title: "Engine Repair", description: "Comprehensive engine diagnostic and repair services." }, { title: "Brake Service", description: "Complete brake inspection and repair." }],
   other: [
-    { title: "Quality Service", description: "We're committed to delivering the highest standard of service to every customer, every time." },
-    { title: "Customer Support", description: "Have a question? Our friendly team is always ready to help with prompt and courteous support." },
-    { title: "Custom Solutions", description: "Every customer is unique. We work with you to find the solution that best fits your specific needs." },
+    { title: "Events & Celebrations", description: "We organize unforgettable events for all occasions. From birthdays to corporate events, we offer exciting experiences." },
+    { title: "Sports Experiences", description: "Feel the adrenaline of our sports activities. Perfect for individuals and groups seeking thrills." },
+    { title: "Special Packages", description: "Offers and packages tailored to your needs. Enjoy special prices and exclusive promotions." },
+    { title: "Group Activities", description: "Activities designed for groups and companies. Team building, social events and more." },
+    { title: "Equipment & Gear", description: "High-quality equipment to ensure your safety and comfort throughout the experience." },
   ],
 };
 
@@ -356,9 +360,11 @@ const ES_SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: s
     { title: "Gestión de Proyectos", description: "Mantenga su proyecto de construcción dentro del plazo y presupuesto. Nuestros gestores supervisan cada detalle." },
   ],
   creative: [
-    { title: "Identidad de Marca", description: "Destaque con una identidad de marca coherente. Desde logotipos hasta guías de marca completas." },
-    { title: "Diseño Gráfico", description: "Diseños impactantes para medios impresos y digitales. Materiales de marketing que captan la atención." },
-    { title: "Fotografía y Video", description: "Contenido visual profesional que muestra su marca bajo la mejor luz." },
+    { title: "Eventos Especiales", description: "Organizamos experiencias únicas y memorables para particulares y empresas. Celebraciones, eventos corporativos y actividades que emocionan." },
+    { title: "Actividades Deportivas", description: "Vive la adrenalina de nuestras actividades. Ideal para grupos que buscan diversión y emoción en un entorno seguro." },
+    { title: "Experiencias Personalizadas", description: "Cada cliente es único. Creamos paquetes a medida adaptados a tus necesidades y preferencias." },
+    { title: "Equipamiento y Seguridad", description: "Todo el equipamiento necesario para garantizar tu comodidad y seguridad durante la experiencia." },
+    { title: "Reserva Online", description: "Reserva fácilmente online. Consulta disponibilidad, precios y promociones desde cualquier dispositivo." },
   ],
   travel: [
     { title: "Paquetes Vacacionales a Medida", description: "Paquetes individuales, de grupo o de vacaciones a medida, adaptados a todos los presupuestos." },
@@ -443,8 +449,10 @@ export function generateContent(
   const industryTaglines = spanish ? (ES_TAGLINES[businessType] || ES_TAGLINES.other) : (TAGLINES[businessType] || TAGLINES.other);
   const tagline = rawDescription || industryTaglines[Math.floor(Math.random() * industryTaglines.length)];
 
-  // Hero subtitle — short, punchy
-  const heroSubtitle = tagline;
+  // Hero subtitle — use rawDescription (longer) or a slightly expanded version
+  const heroSubtitle = rawDescription && rawDescription !== tagline
+    ? rawDescription
+    : `${name} — ${tagline}`;
 
   // About heading — Spanish-aware
   const aboutHeading = spanish
