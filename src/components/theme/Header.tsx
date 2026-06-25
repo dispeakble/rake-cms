@@ -38,7 +38,7 @@
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
-            <img src="https://marioviajes.com/images/logo2.png" alt="Mario Viajes" className="h-10 w-auto object-contain" />
+            <img src="https://marioviajes.com/images/logo2.png" alt="Mario Viajes" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
             
           </Link>
 
