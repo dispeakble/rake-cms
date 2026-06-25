@@ -2033,7 +2033,7 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* ── Full Legal Text Section (preserved, no truncation) ── */}
+        {/* ── Full Legal Text Section (preserved from original site) ── */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -2042,17 +2042,23 @@ export default function Footer() {
           className="mt-8 border-t border-white/10 pt-6"
         >
           <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
-            <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
-              {t("footer.legal")}
-            </p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
+              <a
+                href="${escapeJsx(legalPdfUrl)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
+              >{t("footer.legal")}</a>
+              <span className="text-gray-600 text-xs">|</span>
+              <a
+                href="${escapeJsx(transparenciaPdfUrl)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
+              >{t("footer.transparency")}</a>
+            </div>
             <p>
-              ${escapeJsx(legalText.substring(0, 500))}
-            </p>
-            <p>
-              ${escapeJsx(legalText.substring(500, 1000))}
-            </p>
-            <p>
-              ${escapeJsx(legalText.substring(1000))}
+              {__(${JSON.stringify({ es: "De conformidad con lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico, se informa al usuario que el titular del presente sitio web es " + name + " S.L.U., con domicilio en la dirección registrada, con CIF/NIF correspondiente, Agencia de Viajes legalmente constituida. La actividad comprende la organización y comercialización de viajes combinados. Así mismo se informa que se encuentra a disposición de nuestros clientes las correspondientes hojas de reclamaciones debidamente autorizadas.", en: "In accordance with the provisions of Article 10 of Law 34/2002, of July 11, on information society services and electronic commerce, the user is informed that the owner of this website is " + name + " S.L.U., with registered address, with corresponding Tax ID, Travel Agency legally constituted. The activity includes the organization and marketing of package tours. Likewise, complaint forms duly authorized are available to our customers." })})}
             </p>
           </div>
         </motion.div>

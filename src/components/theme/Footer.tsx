@@ -128,7 +128,7 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* ── Full Legal Text Section (preserved, no truncation) ── */}
+        {/* ── Full Legal Text Section (preserved from original site) ── */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -137,17 +137,23 @@ export default function Footer() {
           className="mt-8 border-t border-white/10 pt-6"
         >
           <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
-            <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
-              {t("footer.legal")}
-            </p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
+              <a
+                href="https://marioviajes.com/docs/Legal-Term-Mario-Viajes-Esp.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
+              >{t("footer.legal")}</a>
+              <span className="text-gray-600 text-xs">|</span>
+              <a
+                href="https://marioviajes.com/docs/MEMORIA-TRANSPARENCIA-MARIO-VIAJES.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
+              >{t("footer.transparency")}</a>
+            </div>
             <p>
-              NOTA LEGAL Y CONDICIONES DE USO. Mario Viajes (en adelante, &quot;la Empresa&quot;) con CIF/NIF correspondiente y domicilio social en la dirección registrada, pone a disposición de los usuarios del presente sitio web el presente documento con el que pretende dar cumplimiento a las obligaciones dispuestas en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), así como informar a todos los usuarios acerca de las condiciones de uso del sitio web.
-            </p>
-            <p>
-              El acceso y uso del portal atribuye la condición de usuario e implica la aceptación plena y sin reservas de todas y cada una de las disposiciones incluidas en este Aviso Legal. Quien no acepte estas condiciones deberá abstenerse de utilizar el portal. Mario Viajes se reserva el derecho de modificar en cualquier momento las condiciones de uso del sitio web. CIF: B-12345678 | I-AV: I-AV-0001234.4
-            </p>
-            <p>
-              
+              {__({"es":"De conformidad con lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico, se informa al usuario que el titular del presente sitio web es MARIO VIAJES S.L.U., con domicilio Calle Montana Clara 6, Ed Laurisilva, Local 6 I, Adeje, 38679, Santa Cruz de Tenerife, España, con CIF: B-76675081, Agencia de Viajes legalmente constituida con código de Identificación I-AV-0003355.2, teléfono (+34) 922724642 y correo electrónico de contacto office@marioviajes.com. La actividad de MARIO VIAJES S.L.U. comprende la organización/comercialización de viajes combinados. Así mismo se informa que se encuentra a disposición de nuestros clientes las correspondientes hojas de reclamaciones debidamente autorizadas por la Dirección General de Ordenación y Promoción Turística del Gobierno de Canarias por si fuera de su interés en la dirección: Calle Montana Clara 6, Ed. Laurisilva, Local 6 I, Adeje, 38679, Santa Cruz de Tenerife, España en horario 10:00 hasta 15:00 en días laborables.","en":"In accordance with the provisions of Article 10 of Law 34/2002, of July 11, on information society services and electronic commerce, the user is informed that the owner of this website is MARIO VIAJES S.L.U., with address at Calle Montana Clara 6, Ed Laurisilva, Local 6 I, Adeje, 38679, Santa Cruz de Tenerife, Spain, with Tax ID: B-76675081, Travel Agency legally constituted with Identification Code I-AV-0003355.2, telephone (+34) 922724642 and email contact office@marioviajes.com. The activity of MARIO VIAJES S.L.U. includes the organization/marketing of package tours. Likewise, it is informed that the corresponding complaint forms duly authorized by the General Directorate of Tourism Planning and Promotion of the Government of the Canary Islands are available to our customers if interested at the address: Calle Montana Clara 6, Ed. Laurisilva, Local 6 I, Adeje, 38679, Santa Cruz de Tenerife, Spain during business hours 10:00 to 15:00 on working days."})}
             </p>
           </div>
         </motion.div>
