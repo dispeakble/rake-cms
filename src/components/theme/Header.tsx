@@ -34,7 +34,7 @@
       transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.2 }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className="border-b border-white/30 bg-white/55 backdrop-blur-2xl shadow-lg shadow-black/5">
+      <div className="border-b border-white/30 bg-header backdrop-blur-2xl shadow-lg shadow-black/5">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
@@ -42,8 +42,11 @@
             
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden items-center gap-8 md:flex">
+          {/* ── Spacer between logo and menu ── */}
+          <div className="shrink-0" style={{width:'calc(var(--spacing)*8)'}} />
+
+          {/* ── Desktop Nav with text-shadow ── */}
+          <nav className="hidden items-center gap-8 md:flex" style={{textShadow:'1px 1px 3px rgba(0,0,0,0.5)'}}>
             <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.home")}</Link>
             <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Sobre nosotros</Link>
           <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Qué ofrecemos</Link>

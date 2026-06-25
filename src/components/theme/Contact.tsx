@@ -114,7 +114,7 @@ export default function Contact() {
                   type="text"
                   placeholder={t("contact.form_name_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -123,7 +123,7 @@ export default function Contact() {
                   type="text"
                   placeholder={t("contact.form_surname_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -132,7 +132,7 @@ export default function Contact() {
                   type="email"
                   placeholder={t("contact.form_email_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -141,7 +141,7 @@ export default function Contact() {
                   type="tel"
                   placeholder={t("contact.form_phone_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -150,7 +150,7 @@ export default function Contact() {
                   placeholder={t("contact.form_message_placeholder")}
                   rows={4}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               {/* Real Google reCAPTCHA */}
