@@ -37,7 +37,7 @@ export default async function RootLayout({
   const isLoggedIn = !!session?.user;
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {isLoggedIn && <AdminToolbar />}
         {children}

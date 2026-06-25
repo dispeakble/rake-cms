@@ -19,7 +19,7 @@ export default function Islands() {
   const { t } = useLanguage();
   return (
     <section id="excursions" className="relative px-4 py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -36,8 +36,8 @@ export default function Islands() {
           className="mb-12 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("excursions.subtitle")}</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("islands.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">
+          <h2 className="text-3xl font-bold text-heading md:text-4xl gradient-text">{t("islands.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted">
             {t("excursions.text")}
           </p>
         </motion.div>
@@ -51,7 +51,7 @@ export default function Islands() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, type: "spring", stiffness: 100, damping: 15 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30 hover:shadow-[0_0_30px_rgba(var(--color-gold-rgb), 0.1)]"
+              className="group relative overflow-hidden rounded-2xl border border-card bg-card backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30 hover:shadow-[0_0_30px_rgba(var(--color-gold-rgb), 0.1)]"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
@@ -63,15 +63,15 @@ export default function Islands() {
                   <span className="mb-2 inline-block rounded-full bg-[var(--color-gold)]/20 px-3 py-1 text-xs font-medium text-[var(--color-gold)]">
                     Isla Canaria
                   </span>
-                  <h3 className="text-xl font-bold text-white">{t(island.titleKey)}</h3>
+                  <h3 className="text-xl font-bold text-heading">{t(island.titleKey)}</h3>
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-sm leading-relaxed text-gray-300">
+                <p className="text-sm leading-relaxed text-muted">
                   {t(island.descKey)}
                 </p>
-                <div className="mt-4 border-t border-white/10 pt-4">
-                  <p className="text-xs leading-relaxed text-gray-400 italic">
+                <div className="mt-4 border-t border-card pt-4">
+                  <p className="text-xs leading-relaxed text-muted italic">
                     {t(island.extraKey)}
                   </p>
                 </div>

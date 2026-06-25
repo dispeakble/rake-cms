@@ -1,6 +1,10 @@
 /* Rake CMS — Theme: Mario Viajes - MAXIMUM WOW EDITION */
+/* ============================================================
+   Light mode :root = default (light) | .dark overrides for dark
+   ============================================================ */
 
 :root {
+  /* ── Brand colors stay the same across themes ── */
   --color-primary: #0a7169;
   --color-primary-rgb: 10, 113, 105;
   --color-secondary: #af4e04;
@@ -13,10 +17,81 @@
   --color-glow-intense: rgba(175, 78, 4, 0.6);
   --gradient-main: linear-gradient(135deg, #0a7169, #af4e04);
   --gradient-glow: radial-gradient(circle at 50% 50%, rgba(175, 78, 4, 0.15), transparent 70%);
+  --border-angle: 0deg;
+
+  /* ── LIGHT MODE (default) ── */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --page-bg: #ffffff;
+  --page-text: #111827;
+  --section-bg-start: #f8fafc;
+  --section-bg-mid: #ffffff;
+  --section-bg-end: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --muted: #64748b;
+  --muted-lighter: #94a3b8;
+  --input-bg: #ffffff;
+  --input-border: rgba(0, 0, 0, 0.12);
+  --hero-overlay: rgba(0, 0, 0, 0.3);
+  --scrollbar-track: #f1f5f9;
+  --selection-bg: var(--color-primary);
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-border: rgba(0, 0, 0, 0.08);
+  --mobile-menu-bg: rgba(255, 255, 255, 0.95);
+  --mobile-menu-border: rgba(0, 0, 0, 0.08);
+  --card-inner-bg: rgba(255, 255, 255, 0.95);
+  --recaptcha-border: rgba(0, 0, 0, 0.08);
+  --recaptcha-bg: rgba(255, 255, 255, 0.9);
+  --headings: #0f172a;
+}
+
+.dark {
+  /* ── DARK MODE ── */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
-  --border-angle: 0deg;
+  --page-bg: #000000;
+  --page-text: #ffffff;
+  --section-bg-start: #0d0d0d;
+  --section-bg-mid: #1a0a0a;
+  --section-bg-end: #0d0d0d;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --muted: #94a3b8;
+  --muted-lighter: #64748b;
+  --input-bg: rgba(0, 0, 0, 0.4);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --hero-overlay: rgba(0, 0, 0, 0.5);
+  --scrollbar-track: #0a0a0f;
+  --selection-bg: var(--color-primary);
+  --header-bg: rgba(255, 255, 255, 0.55);
+  --header-border: rgba(255, 255, 255, 0.1);
+  --mobile-menu-bg: rgba(0, 0, 0, 0.95);
+  --mobile-menu-border: rgba(255, 255, 255, 0.1);
+  --card-inner-bg: #0a0a0f;
+  --recaptcha-border: rgba(255, 255, 255, 0.1);
+  --recaptcha-bg: rgba(0, 0, 0, 0.3);
+  --headings: #ffffff;
 }
+
+/* ── Theme-aware utility classes ── */
+.bg-page { background-color: var(--page-bg); }
+.text-page { color: var(--page-text); }
+.bg-section { background: linear-gradient(180deg, var(--section-bg-start), var(--section-bg-mid), var(--section-bg-end)); }
+.text-muted { color: var(--muted); }
+.text-muted-lighter { color: var(--muted-lighter); }
+.bg-card { background: var(--card-bg); }
+.border-card { border-color: var(--card-border); }
+.bg-input { background: var(--input-bg); }
+.border-input { border-color: var(--input-border); }
+.bg-header { background: var(--header-bg); }
+.border-header { border-color: var(--header-border); }
+.bg-mobile-menu { background: var(--mobile-menu-bg); }
+.border-mobile-menu { border-color: var(--mobile-menu-border); }
+.bg-card-inner { background: var(--card-inner-bg); }
+.bg-recaptcha { background: var(--recaptcha-bg); }
+.border-recaptcha { border-color: var(--recaptcha-border); }
+.text-heading { color: var(--headings); }
 
 /* ── Gradient Text Utility ── */
 .gradient-text {
@@ -55,8 +130,8 @@
 /* ── Glow Card Utility ── */
 .glow-card {
   position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -81,7 +156,7 @@
 
 .glow-card:hover {
   border-color: transparent;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--card-bg);
   box-shadow: 0 0 30px rgba(var(--color-gold-rgb), 0.15), 0 0 60px rgba(var(--color-gold-rgb), 0.05);
   transform: translateY(-4px);
 }
@@ -199,8 +274,8 @@
 
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0a0a0f; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0a7169, #af4e04); border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--color-primary), var(--color-secondary)); border-radius: 3px; }
 
 /* ── Selection ── */
-::selection { background: #0a716955; color: white; }
+::selection { background: var(--selection-bg); color: white; }

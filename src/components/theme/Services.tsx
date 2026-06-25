@@ -54,7 +54,7 @@ export default function Services() {
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0808] to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-20"
         style={{
@@ -88,15 +88,15 @@ export default function Services() {
             >
               {t("services.subtitle")}
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
+            <h2 className="text-3xl font-bold text-heading md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {SERVICE_KEYS_LIST.map((key, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
-                <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
+                <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{t(key + ".title")}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{t(key + ".desc")}</p>
+                  <h3 className="mb-3 text-xl font-bold text-heading">{t(key + ".title")}</h3>
+                  <p className="text-sm leading-relaxed text-muted">{t(key + ".desc")}</p>
                 </div>
               </TiltCard>
             ))}
@@ -122,7 +122,7 @@ export default function Services() {
             >
               {t("services_all.explore")}
             </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services_all.title")}</h2>
+            <h2 className="text-3xl font-bold text-heading md:text-4xl gradient-text">{t("services_all.title")}</h2>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -137,8 +137,8 @@ export default function Services() {
                 className="relative rounded-2xl p-[1px] overflow-hidden bg-white/10"
               >
                 <div className="relative rounded-2xl p-8 text-center h-full glass">
-                  <h3 className="mb-2 text-lg font-semibold text-white">{t(key + ".title")}</h3>
-                  <p className="text-sm text-gray-400">{t(key + ".desc")}</p>
+                  <h3 className="mb-2 text-lg font-semibold text-heading">{t(key + ".title")}</h3>
+                  <p className="text-sm text-muted">{t(key + ".desc")}</p>
                 </div>
               </motion.div>
             ))}

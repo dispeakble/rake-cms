@@ -404,9 +404,57 @@ function generateCss(config: ThemeConfig): string {
   const goldColor = config.secondaryColor;
   const goldLight = shiftHex(config.secondaryColor, 40);
   const goldRgb = hexToRgb(config.secondaryColor);
+  // Light-mode defaults (brighter backgrounds)
+  const lightBgStart = "#f8fafc";
+  const lightBgMid = "#ffffff";
+  const lightBgEnd = "#f8fafc";
+  const lightCardInner = "#ffffff";
+  const lightCardBg = "rgba(255, 255, 255, 0.9)";
+  const lightCardBorder = "rgba(0, 0, 0, 0.08)";
+  const lightMuted = "#64748b";
+  const lightMutedLighter = "#94a3b8";
+  const lightInputBg = "#ffffff";
+  const lightInputBorder = "rgba(0, 0, 0, 0.12)";
+  const lightHeaderBg = "rgba(255, 255, 255, 0.85)";
+  const lightHeaderBorder = "rgba(0, 0, 0, 0.08)";
+  const lightMobileBg = "rgba(255, 255, 255, 0.95)";
+  const lightPageText = "#111827";
+  const lightHeadings = "#0f172a";
+  const lightScrollbarTrack = "#f1f5f9";
+  const lightGlassBg = "rgba(255, 255, 255, 0.7)";
+  const lightGlassBorder = "rgba(0, 0, 0, 0.08)";
+  const lightRecaptchaBorder = "rgba(0, 0, 0, 0.08)";
+  const lightRecaptchaBg = "rgba(255, 255, 255, 0.9)";
+
+  // Dark-mode defaults
+  const darkBgStart = "#0d0d0d";
+  const darkBgMid = "#1a0a0a";
+  const darkBgEnd = "#0d0d0d";
+  const darkCardInner = "#0a0a0f";
+  const darkCardBg = "rgba(255, 255, 255, 0.03)";
+  const darkCardBorder = "rgba(255, 255, 255, 0.1)";
+  const darkMuted = "#94a3b8";
+  const darkMutedLighter = "#64748b";
+  const darkInputBg = "rgba(0, 0, 0, 0.4)";
+  const darkInputBorder = "rgba(255, 255, 255, 0.1)";
+  const darkHeaderBg = "rgba(255, 255, 255, 0.55)";
+  const darkHeaderBorder = "rgba(255, 255, 255, 0.1)";
+  const darkMobileBg = "rgba(0, 0, 0, 0.95)";
+  const darkPageText = "#ffffff";
+  const darkHeadings = "#ffffff";
+  const darkScrollbarTrack = "#0a0a0f";
+  const darkGlassBg = "rgba(255, 255, 255, 0.05)";
+  const darkGlassBorder = "rgba(255, 255, 255, 0.1)";
+  const darkRecaptchaBorder = "rgba(255, 255, 255, 0.1)";
+  const darkRecaptchaBg = "rgba(0, 0, 0, 0.3)";
+
   return `/* Rake CMS — Theme: ${config.name} - MAXIMUM WOW EDITION */
+/* ============================================================
+   Light mode :root = default (light) | .dark overrides for dark
+   ============================================================ */
 
 :root {
+  /* ── Brand colors stay the same across themes ── */
   --color-primary: ${config.primaryColor};
   --color-primary-rgb: ${rgb};
   --color-secondary: ${config.secondaryColor};
@@ -419,10 +467,76 @@ function generateCss(config: ThemeConfig): string {
   --color-glow-intense: rgba(${goldRgb}, 0.6);
   --gradient-main: linear-gradient(135deg, ${config.primaryColor}, ${config.secondaryColor});
   --gradient-glow: radial-gradient(circle at 50% 50%, rgba(${goldRgb}, 0.15), transparent 70%);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
   --border-angle: 0deg;
+
+  /* ── LIGHT MODE (default) ── */
+  --glass-bg: ${lightGlassBg};
+  --glass-border: ${lightGlassBorder};
+  --page-bg: #ffffff;
+  --page-text: ${lightPageText};
+  --section-bg-start: ${lightBgStart};
+  --section-bg-mid: ${lightBgMid};
+  --section-bg-end: ${lightBgEnd};
+  --card-bg: ${lightCardBg};
+  --card-border: ${lightCardBorder};
+  --muted: ${lightMuted};
+  --muted-lighter: ${lightMutedLighter};
+  --input-bg: ${lightInputBg};
+  --input-border: ${lightInputBorder};
+  --scrollbar-track: ${lightScrollbarTrack};
+  --selection-bg: var(--color-primary);
+  --header-bg: ${lightHeaderBg};
+  --header-border: ${lightHeaderBorder};
+  --mobile-menu-bg: ${lightMobileBg};
+  --card-inner-bg: ${lightCardInner};
+  --recaptcha-border: ${lightRecaptchaBorder};
+  --recaptcha-bg: ${lightRecaptchaBg};
+  --headings: ${lightHeadings};
 }
+
+.dark {
+  /* ── DARK MODE ── */
+  --glass-bg: ${darkGlassBg};
+  --glass-border: ${darkGlassBorder};
+  --page-bg: #000000;
+  --page-text: ${darkPageText};
+  --section-bg-start: ${darkBgStart};
+  --section-bg-mid: ${darkBgMid};
+  --section-bg-end: ${darkBgEnd};
+  --card-bg: ${darkCardBg};
+  --card-border: ${darkCardBorder};
+  --muted: ${darkMuted};
+  --muted-lighter: ${darkMutedLighter};
+  --input-bg: ${darkInputBg};
+  --input-border: ${darkInputBorder};
+  --scrollbar-track: ${darkScrollbarTrack};
+  --selection-bg: var(--color-primary);
+  --header-bg: ${darkHeaderBg};
+  --header-border: ${darkHeaderBorder};
+  --mobile-menu-bg: ${darkMobileBg};
+  --card-inner-bg: ${darkCardInner};
+  --recaptcha-border: ${darkRecaptchaBorder};
+  --recaptcha-bg: ${darkRecaptchaBg};
+  --headings: ${darkHeadings};
+}
+
+/* ── Theme-aware utility classes ── */
+.bg-page { background-color: var(--page-bg); }
+.text-page { color: var(--page-text); }
+.bg-section { background: linear-gradient(180deg, var(--section-bg-start), var(--section-bg-mid), var(--section-bg-end)); }
+.text-muted { color: var(--muted); }
+.text-muted-lighter { color: var(--muted-lighter); }
+.bg-card { background: var(--card-bg); }
+.border-card { border-color: var(--card-border); }
+.bg-input { background: var(--input-bg); }
+.border-input { border-color: var(--input-border); }
+.bg-header { background: var(--header-bg); }
+.border-header { border-color: var(--header-border); }
+.bg-mobile-menu { background: var(--mobile-menu-bg); }
+.bg-card-inner { background: var(--card-inner-bg); }
+.bg-recaptcha { background: var(--recaptcha-bg); }
+.border-recaptcha { border-color: var(--recaptcha-border); }
+.text-heading { color: var(--headings); }
 
 /* ── Gradient Text Utility ── */
 .gradient-text {
@@ -605,11 +719,11 @@ function generateCss(config: ThemeConfig): string {
 
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0a0a0f; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
 ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, ${config.primaryColor}, ${config.secondaryColor}); border-radius: 3px; }
 
 /* ── Selection ── */
-::selection { background: ${config.primaryColor}55; color: white; }
+::selection { background: var(--selection-bg); color: white; }
 `;
 }
 
@@ -754,13 +868,10 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 
 	  "use client";
 
-	  import Link from "next/link";
-	  import { useState } from "react";
-	  import { motion, AnimatePresence } from "framer-motion";
-	  import { useLanguage } from "@/lib/i18n";
+	  import Link from "next/link";\n	  import { useState } from "react";\n	  import { motion, AnimatePresence } from "framer-motion";\n	  import { useLanguage } from "@/lib/i18n";\n	  import { useTheme } from "@/components/theme/ThemeProvider";
 
 	  export default function Header() {
-	      const { lang, switchLang, t } = useLanguage();
+	    const { lang, switchLang, t } = useLanguage();\n	    const { theme, toggleTheme } = useTheme();
 	    const [open, setOpen] = useState(false);
 	    const [langOpen, setLangOpen] = useState(false);
 	    const langs = ${langsTs};
@@ -826,6 +937,23 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
                 </div>
               )}
             </div>
+            {/* ── Theme Toggle ── */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 hover:bg-white/10 cursor-pointer bg-transparent border-none"
+              style={{cursor:'pointer'}}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {theme === 'dark' ? (
+                <svg className="w-4 h-4 text-[var(--color-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 text-[var(--color-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
           </nav>
 
           {/* Mobile Hamburger */}
@@ -903,6 +1031,19 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
                     </div>
                   )}
                 </div>
+                {/* Mobile Theme Toggle */}
+                <button
+                  onClick={() => { toggleTheme(); setOpen(false); }}
+                  className="flex items-center gap-2 text-base font-medium cursor-pointer bg-transparent border-none text-left"
+                  style={{cursor:'pointer'}}
+                >
+                  <span className="text-[var(--color-gold)]">
+                    {theme === 'dark' ? '☀️' : '🌙'}
+                  </span>
+                  <span className="text-white/80">
+                    {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                  </span>
+                </button>
               </motion.div>
             </div>
           </motion.div>
@@ -1303,7 +1444,7 @@ export default function About() {
   return (
     <section id="about" ref={sectionRef} className="relative px-4 py-24 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#1a0a0a] to-black opacity-90" />
+      <div className="absolute inset-0 bg-section opacity-90" />
       <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, rgba(var(--color-gold-rgb), 0.05), transparent 50%)" }} />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
@@ -1453,7 +1594,7 @@ export default function Services() {
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0808] to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-20"
         style={{
@@ -1607,7 +1748,7 @@ export default function Reviews() {
   const { t } = useLanguage();
   return (
     <section id="reviews" className="relative px-4 py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -1705,7 +1846,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-black to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -1923,7 +2064,7 @@ export default function Footer() {
   return (
     <footer className="relative px-4 py-16 overflow-hidden">
       {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0f] to-[#1a0a0a]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-[0.08]"
         style={{
@@ -2106,7 +2247,7 @@ export default function Islands() {
   const { t } = useLanguage();
   return (
     <section id="excursions" className="relative px-4 py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-[#1a0a0a] to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -2189,6 +2330,7 @@ function generateLayout(name: string, businessType: BusinessType = "other"): str
 import "./theme.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { LanguageProvider } from "@/lib/i18n";
+import ThemeProvider from "@/components/theme/ThemeProvider";
 import Header from "@/components/theme/Header";
 import Footer from "@/components/theme/Footer";
 import Hero from "@/components/theme/Hero";
@@ -2199,6 +2341,7 @@ import Contact from "@/components/theme/Contact";
 
 export default function GeneratedPage() {
   return (
+    <ThemeProvider>
     <LanguageProvider>
     <AnimatePresence mode="wait">
       <motion.div
@@ -2207,7 +2350,7 @@ export default function GeneratedPage() {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -20, scale: 0.98 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex min-h-screen flex-col bg-black text-white"
+        className="flex min-h-screen flex-col bg-page text-page"
       >
         <Header />
         <main className="flex-1">
@@ -2221,6 +2364,7 @@ ${islandsComponent}          <Services />
       </motion.div>
     </AnimatePresence>
     </LanguageProvider>
+    </ThemeProvider>
   );
 }
 `;
