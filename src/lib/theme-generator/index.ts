@@ -794,7 +794,7 @@ function renderNavLinks(links: SitePage[], className: string, isMobile = false):
         return `<Link href="${escapeJsx(link.slug)}" className="${escapeJsx(className)}"${isMobile ? ` onClick={() => setOpen(false)}` : ""}>${label}</Link>`;
       }
     )
-    .join("\\n          ");
+    .join("\n          ");
 }
 
 /** Map section slugs to their translation keys */
