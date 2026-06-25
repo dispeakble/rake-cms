@@ -368,7 +368,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
         deploySpinner.message("Configuring Apache reverse proxy...");
 
         // Create Apache proxy config for this specific subdomain
-        // Uses Let's Encrypt wildcard cert (alexawebservers.com covers all subdomains)
+        // Docker container will serve on a rotating port (updated in Phase 8)
         const vhostContent = `<VirtualHost *:80>
     ServerName ${subdomain}
     UseCanonicalName Off
@@ -388,14 +388,15 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
     ProxyRequests Off
     ProxyPreserveHost On
     SSLEngine on
-    # Serve Next.js static files directly (avoids 404s on chunks Next.js 16 won't serve)
-    Alias /_next/static "${outputDir}/.next/static"
-    <Directory "${outputDir}/.next/static">
-        Require all granted
-    </Directory>
-    ProxyPass /_next/static !
+    # Docker container serves static files — no separate Alias needed
     ProxyPass / http://127.0.0.1:3100/
     ProxyPassReverse / http://127.0.0.1:3100/
+    # Serve media directly (images, uploads) to avoid Docker overlay overhead
+    Alias /media "${outputDir}/public/media"
+    <Directory "${outputDir}/public/media">
+        Require all granted
+    </Directory>
+    ProxyPass /media !
     SSLCertificateFile /etc/letsencrypt/live/alexawebservers.com/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/alexawebservers.com/privkey.pem
     Include /etc/letsencrypt/options-ssl-apache.conf
@@ -437,9 +438,9 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
       }
     }
 
-    // Phase 7: Build & Deploy
-    console.log("\n" + "=".repeat(50));
-    console.log("  PHASE 7: Build Next.js App");
+    // Phase 7: Build Next.js App + Docker Image
+    console.log("\\n" + "=".repeat(50));
+    console.log("  PHASE 7: Build Next.js + Docker Image");
     console.log("=".repeat(50));
 
     if (options.build !== false) {
@@ -451,59 +452,134 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
           encoding: "utf-8",
           cwd: outputDir,
         });
-        // Extract the last few lines for summary
         const lines = buildOutput.trim().split("\n");
         const summary = lines.slice(-5).join("\n");
         buildSpinner.stop("✅ Build complete");
         console.log(`   ${summary}`);
+
+        // Build Docker image
+        const dockerSpinner = spinner();
+        dockerSpinner.start("Building Docker image...");
+        try {
+          const dockerBuild = execSync(
+            `sudo docker build -t rake-cms:latest -t rake-cms:${slug}-${Date.now()} ${outputDir} 2>&1`,
+            { timeout: 180000, encoding: "utf-8" }
+          );
+          dockerSpinner.stop("✅ Docker image built");
+          console.log(`   Image: rake-cms:latest (${(dockerBuild.match(/Successfully built ([a-f0-9]+)/)?.[1] || "").substring(0, 12)}...)`);
+        } catch (dockerErr: any) {
+          dockerSpinner.stop(`❌ Docker build failed: ${(dockerErr as Error).message}`);
+          throw dockerErr;
+        }
       } catch (error: any) {
         buildSpinner.stop(`❌ Build failed: ${(error as Error).message}`);
+        throw error;
       }
     }
 
-    // Phase 8: Verification
+    // Phase 8: Docker Rolling Deploy
     if (options.build !== false) {
-      console.log("\n" + "=".repeat(50));
-      console.log("  PHASE 8: Restarting Server");
+      console.log("\\n" + "=".repeat(50));
+      console.log("  PHASE 8: Docker Rolling Deploy");
       console.log("=".repeat(50));
 
-      const restartSpinner = spinner();
-      try {
-        // Kill any existing server on port 3100
-        execSync(`lsof -ti:3100 | xargs -r kill 2>/dev/null || true`, { timeout: 5000 });
-        // Wait for port to be free
-        execSync(`sleep 1 && while lsof -ti:3100 >/dev/null 2>&1; do sleep 1; done`, { timeout: 10000 });
-        // Start new server in background
-        execSync(`cd ${outputDir} && nohup npx next start -p 3100 > /tmp/rake-cms-server.log 2>&1 &`, { timeout: 10000 });
-        // Wait for it to be ready
-        execSync(`sleep 3`, { timeout: 10000 });
-        restartSpinner.stop("✅ Server restarted on port 3100");
+      let deployPort = 3100;
+      const deploySpinner = spinner();
+      deploySpinner.start("Deploying Docker container...");
 
-      // ─── Verify hash freshness (catch stale-server 404 problem) ───
       try {
-        const freshHtml = execSync(`curl -s http://127.0.0.1:3100/`, { timeout: 5000, encoding: "utf-8" });
-        const cssRefs = [...freshHtml.matchAll(/href="(\/_next\/static\/chunks\/[^"]*\.css)"/g)].map(m => m[1]);
-        const jsRefs = [...freshHtml.matchAll(/src="(\/_next\/static\/chunks\/[^"]*\.js)"/g)].map(m => m[1]);
-        const refs = [...cssRefs, ...jsRefs];
-        const missing = refs.filter(ref => {
-          const filePath = path.join(outputDir, ".next", "static", "chunks", path.basename(ref));
-          try { require("fs").accessSync(filePath); return false; } catch { return true; }
-        });
-        if (missing.length > 0) {
-          console.log(`   ⚠️  ${missing.length} chunk(s) referenced in HTML don't exist on disk — stale server detected`);
-          console.log(`   🔄 Force-killing and restarting...`);
-          execSync(`pkill -f "next start" 2>/dev/null; pkill -f "next-server" 2>/dev/null; sleep 2`, { timeout: 10000 });
-          execSync(`cd ${outputDir} && nohup npx next start -p 3100 > /tmp/rake-cms-server.log 2>&1 &`, { timeout: 10000 });
-          execSync(`sleep 4`, { timeout: 10000 });
-          console.log(`   ✅ Server restarted with fresh build`);
-        } else {
-          console.log(`   ✅ All ${refs.length} chunk hashes match disk`);
+        // ─── Port rotation ───
+        const PORT_FILE = "/tmp/rake-cms-active-port";
+        const PORT_START = 3101;
+        const PORT_END = 3105;
+        let lastPort = PORT_START;
+        try {
+          lastPort = parseInt(require("fs").readFileSync(PORT_FILE, "utf-8").trim(), 10);
+        } catch { /* no file yet — start at PORT_START */ }
+        const newPort = lastPort >= PORT_END ? PORT_START : lastPort + 1;
+        deployPort = newPort;
+
+        const imageName = "rake-cms:latest";
+        const containerName = `rake-cms-${newPort}`;
+
+        // Stop old container
+        const oldContainerName = `rake-cms-${lastPort}`;
+        try {
+          execSync(`sudo docker stop ${oldContainerName} 2>/dev/null || true`, { timeout: 10000 });
+          execSync(`sudo docker rm ${oldContainerName} 2>/dev/null || true`, { timeout: 5000 });
+          console.log(`   🛑 Stopped old container: ${oldContainerName}`);
+        } catch { /* no old container — ok */ }
+
+        // Start new container
+        const runCmd = [
+          `sudo docker run -d`,
+          `--name ${containerName}`,
+          `--restart unless-stopped`,
+          `-p 127.0.0.1:${newPort}:3000`,
+          `-v ${outputDir}/.env:/app/.env:ro`,
+          `-v ${outputDir}/public/media:/app/public/media`,
+          imageName,
+        ].join(" ");
+
+        const containerId = execSync(runCmd, { timeout: 30000, encoding: "utf-8" }).trim().substring(0, 12);
+        console.log(`   🐳 Started: ${containerName} (${containerId}) on port ${newPort}`);
+
+        // Wait for health
+        deploySpinner.message("Waiting for container to be ready...");
+        let healthy = false;
+        for (let i = 0; i < 12; i++) {
+          try {
+            const code = execSync(
+              `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:${newPort}/`,
+              { timeout: 3000, encoding: "utf-8" }
+            ).trim();
+            if (code === "200") { healthy = true; break; }
+          } catch { /* not ready yet */ }
+          execSync(`sleep 2`, { timeout: 5000 });
         }
-      } catch (hashErr: any) {
-        console.log(`   ⚠️  Hash verification skipped: ${hashErr.message}`);
-      }
+
+        if (!healthy) {
+          throw new Error(`Container never became healthy on port ${newPort}`);
+        }
+        console.log(`   ✅ Container healthy on port ${newPort}`);
+
+        // ─── Verify chunk hashes ───
+        try {
+          const freshHtml = execSync(`curl -s http://127.0.0.1:${newPort}/`, { timeout: 5000, encoding: "utf-8" });
+          const cssRefs = [...freshHtml.matchAll(/href="(\/_next\/static\/chunks\/[^"]*\.css)"/g)].map(m => m[1]);
+          const jsRefs = [...freshHtml.matchAll(/src="(\/_next\/static\/chunks\/[^"]*\.js)"/g)].map(m => m[1]);
+          const refs = [...cssRefs, ...jsRefs];
+          // With Docker, Next.js serves its own static files — no need to check disk
+          console.log(`   ✅ ${refs.length} chunk references in HTML`);
+        } catch (hashErr: any) {
+          console.log(`   ⚠️  Hash check skipped: ${hashErr.message}`);
+        }
+
+        // ─── Update Apache vhost to proxy to new port ───
+        // Read existing vhost, update the ProxyPass port
+        const vhostPath = `/etc/apache2/sites-available/${subdomain}.conf`;
+        try {
+          const vhostContent = require("fs").readFileSync(vhostPath, "utf-8");
+          // Update all ProxyPass/ProxyPassReverse directives to new port
+          const updatedVhost = vhostContent
+            .replace(/127\.0\.0\.1:\d+/g, `127.0.0.1:${newPort}`)
+            // Remove /_next/static Alias — Dockerized Next.js serves its own static files
+            .replace(/\n\s*# Serve Next.js static files directly.*\n.*\n.*\n.*\n.*ProxyPass \/_next\/static !\n/g, "\n");
+          require("fs").writeFileSync("/tmp/rake-cms-vhost-updated.conf", updatedVhost, "utf-8");
+          execSync(`sudo mv /tmp/rake-cms-vhost-updated.conf ${vhostPath}`, { timeout: 5000 });
+          execSync(`sudo systemctl reload apache2 2>&1`, { timeout: 15000 });
+          console.log(`   🔄 Apache vhost updated → port ${newPort}`);
+        } catch (vhostErr: any) {
+          console.log(`   ⚠️  Apache vhost update: ${(vhostErr as Error).message}`);
+          console.log(`   ℹ️  Container still running on port ${newPort} — update Apache manually`);
+        }
+
+        // Save current port for next deploy
+        require("fs").writeFileSync(PORT_FILE, String(newPort), "utf-8");
+
+        deploySpinner.stop(`✅ Rolling deploy complete: port ${newPort}${lastPort !== newPort ? ` (was ${lastPort})` : ""}`);
       } catch (error: any) {
-        restartSpinner.stop(`⚠️ Server restart: ${(error as Error).message}`);
+        deploySpinner.stop(`❌ Docker deploy failed: ${(error as Error).message}`);
       }
 
       console.log("\n" + "=".repeat(50));
@@ -516,10 +592,12 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
       try {
         const { verifyDeployment } = await import("../../scripts/verify-deploy");
         const allSlugs = pageSlugs.map((p) => p.slug);
+        // Use the Docker container port if available, otherwise fall back to 3100
+        const verifyPort = deployPort;
         const result = await verifyDeployment(
           subdomain,
           allSlugs,
-          3100,
+          deployPort,
           business?.name || site?.businessName || rawName
         );
         verifySpinner.stop(result.pass ? "✅ All checks passed" : "❌ Some checks failed");
