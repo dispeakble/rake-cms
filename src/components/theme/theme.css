@@ -38,7 +38,7 @@
   --header-bg: rgba(255, 255, 255, 0.85);
   --header-border: rgba(0, 0, 0, 0.08);
   --mobile-menu-bg: rgba(255, 255, 255, 0.95);
-  --card-inner-bg: #ffffff;
+  --card-inner-bg: #f8fafc;
   --recaptcha-border: rgba(0, 0, 0, 0.08);
   --recaptcha-bg: rgba(255, 255, 255, 0.9);
   --headings: #0f172a;
@@ -87,6 +87,32 @@
 .bg-recaptcha { background: var(--recaptcha-bg); }
 .border-recaptcha { border-color: var(--recaptcha-border); }
 .text-heading { color: var(--headings); }
+
+/* ── Light mode: auto-fix hardcoded white/gray text inside card contexts ── */
+:root .bg-card .text-white,
+:root .bg-card-inner .text-white,
+:root .bg-card h1.text-white,
+:root .bg-card-inner h1.text-white,
+:root .bg-card h2.text-white:not(.gradient-text):not(.gradient-text-gold),
+:root .bg-card-inner h2.text-white:not(.gradient-text):not(.gradient-text-gold),
+:root .bg-card h3.text-white,
+:root .bg-card-inner h3.text-white,
+:root .bg-card h4.text-white,
+:root .bg-card-inner h4.text-white {
+  color: var(--headings) !important;
+}
+:root .bg-card .text-gray-300,
+:root .bg-card-inner .text-gray-300,
+:root .bg-card .text-gray-400,
+:root .bg-card-inner .text-gray-400,
+:root .bg-card .text-gray-500,
+:root .bg-card-inner .text-gray-500 {
+  color: var(--muted) !important;
+}
+:root .bg-card .text-gray-600,
+:root .bg-card-inner .text-gray-600 {
+  color: var(--muted-lighter) !important;
+}
 
 /* ── Gradient Text Utility ── */
 .gradient-text {

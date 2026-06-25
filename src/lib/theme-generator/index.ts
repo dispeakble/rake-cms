@@ -408,7 +408,7 @@ function generateCss(config: ThemeConfig): string {
   const lightBgStart = "#f8fafc";
   const lightBgMid = "#ffffff";
   const lightBgEnd = "#f8fafc";
-  const lightCardInner = "#ffffff";
+  const lightCardInner = "#f8fafc";
   const lightCardBg = "rgba(255, 255, 255, 0.9)";
   const lightCardBorder = "rgba(0, 0, 0, 0.08)";
   const lightMuted = "#64748b";
@@ -537,6 +537,32 @@ function generateCss(config: ThemeConfig): string {
 .bg-recaptcha { background: var(--recaptcha-bg); }
 .border-recaptcha { border-color: var(--recaptcha-border); }
 .text-heading { color: var(--headings); }
+
+/* ── Light mode: auto-fix hardcoded white/gray text inside card contexts ── */
+:root .bg-card .text-white,
+:root .bg-card-inner .text-white,
+:root .bg-card h1.text-white,
+:root .bg-card-inner h1.text-white,
+:root .bg-card h2.text-white:not(.gradient-text):not(.gradient-text-gold),
+:root .bg-card-inner h2.text-white:not(.gradient-text):not(.gradient-text-gold),
+:root .bg-card h3.text-white,
+:root .bg-card-inner h3.text-white,
+:root .bg-card h4.text-white,
+:root .bg-card-inner h4.text-white {
+  color: var(--headings) !important;
+}
+:root .bg-card .text-gray-300,
+:root .bg-card-inner .text-gray-300,
+:root .bg-card .text-gray-400,
+:root .bg-card-inner .text-gray-400,
+:root .bg-card .text-gray-500,
+:root .bg-card-inner .text-gray-500 {
+  color: var(--muted) !important;
+}
+:root .bg-card .text-gray-600,
+:root .bg-card-inner .text-gray-600 {
+  color: var(--muted-lighter) !important;
+}
 
 /* ── Gradient Text Utility ── */
 .gradient-text {
@@ -1634,7 +1660,7 @@ export default function Services() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {SERVICE_KEYS_LIST.map((key, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
-                <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
+                <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
                   <h3 className="mb-3 text-xl font-bold text-white">{t(key + ".title")}</h3>
                   <p className="text-sm leading-relaxed text-gray-300">{t(key + ".desc")}</p>

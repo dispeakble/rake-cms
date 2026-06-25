@@ -93,7 +93,7 @@ export default function Services() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {SERVICE_KEYS_LIST.map((key, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
-                <div className="relative rounded-2xl bg-[#0a0a0f] p-8 h-full">
+                <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
                   <h3 className="mb-3 text-xl font-bold text-white">{t(key + ".title")}</h3>
                   <p className="text-sm leading-relaxed text-gray-300">{t(key + ".desc")}</p>
