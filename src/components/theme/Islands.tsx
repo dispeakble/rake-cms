@@ -61,7 +61,7 @@ export default function Islands() {
                 />
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-6">
                   <span className="mb-2 inline-block rounded-full bg-[var(--color-gold)]/20 px-3 py-1 text-xs font-medium text-[var(--color-gold)]">
-                    Isla Canaria
+                    {t("island.badge")}
                   </span>
                   <h3 className="text-xl font-bold text-white">{t(island.titleKey)}</h3>
                 </div>

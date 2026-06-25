@@ -44,6 +44,30 @@ export const translations: Record<string, Record<Lang, string>> = {
     ro: "B2B",
     hu: "B2B",
   },
+  "nav.menu": {
+    es: "Nuestra Carta",
+    en: "Our Menu",
+    ro: "Meniul Nostru",
+    hu: "Étlapunk",
+  },
+  "nav.products": {
+    es: "Productos",
+    en: "Products",
+    ro: "Produse",
+    hu: "Termékek",
+  },
+  "nav.blog": {
+    es: "Blog",
+    en: "Blog",
+    ro: "Blog",
+    hu: "Blog",
+  },
+  "island.badge": {
+    es: "Isla Canaria",
+    en: "Canary Island",
+    ro: "Insulă Canare",
+    hu: "Kanári-sziget",
+  },
 
   // ─── Brand ───
   "brand.mario_viajes": {
