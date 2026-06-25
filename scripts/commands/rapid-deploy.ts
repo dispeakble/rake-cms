@@ -578,6 +578,17 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
         require("fs").writeFileSync(PORT_FILE, String(newPort), "utf-8");
 
         deploySpinner.stop(`✅ Rolling deploy complete: port ${newPort}${lastPort !== newPort ? ` (was ${lastPort})` : ""}`);
+
+        // ─── Clean up old Docker images ───
+        try {
+          const pruned = execSync(`sudo docker image prune -f --filter "until=24h" 2>&1`, { timeout: 15000, encoding: "utf-8" }).trim();
+          const reclaimed = pruned.match(/Total reclaimed space: ([^\n]+)/)?.[1] || "—";
+          if (pruned.includes("Total reclaimed space")) {
+            console.log(`   🧹 Old images pruned (reclaimed: ${reclaimed})`);
+          } else {
+            console.log(`   🧹 No stale images to prune`);
+          }
+        } catch { /* prune is best-effort */ }
       } catch (error: any) {
         deploySpinner.stop(`❌ Docker deploy failed: ${(error as Error).message}`);
       }
