@@ -415,7 +415,7 @@ function generateCss(config: ThemeConfig): string {
   const lightMutedLighter = "#64748b";
   const lightInputBg = "#ffffff";
   const lightInputBorder = "rgba(0, 0, 0, 0.12)";
-  const lightHeaderBg = "rgba(255, 255, 255, 0.85)";
+  const lightHeaderBg = "rgba(var(--color-primary-rgb), 0.85)";
   const lightHeaderBorder = "rgba(0, 0, 0, 0.08)";
   const lightMobileBg = "rgba(255, 255, 255, 0.95)";
   const lightPageText = "#111827";
@@ -788,10 +788,26 @@ function buildNavLinks(_pageSlugs: SitePage[], businessType?: BusinessType): Sit
 function renderNavLinks(links: SitePage[], className: string, isMobile = false): string {
   return links
     .map(
-      (link) =>
-        `<Link href="${escapeJsx(link.slug)}" className="${escapeJsx(className)}"${isMobile ? ` onClick={() => setOpen(false)}` : ""}>${escapeJsx(link.label)}</Link>`
+      (link) => {
+        const tKey = slugToNavKey(link.slug);
+        const label = tKey ? `{t("${tKey}")}` : escapeJsx(link.label);
+        return `<Link href="${escapeJsx(link.slug)}" className="${escapeJsx(className)}"${isMobile ? ` onClick={() => setOpen(false)}` : ""}>${label}</Link>`;
+      }
     )
-    .join("\n          ");
+    .join("\\n          ");
+}
+
+/** Map section slugs to their translation keys */
+function slugToNavKey(slug: string): string | null {
+  const map: Record<string, string> = {
+    "/#about": "nav.about",
+    "/#services": "nav.services",
+    "/#excursions": "nav.excursions",
+    "/#menu": "nav.menu",
+    "/#products": "nav.products",
+    "/blog": "nav.blog",
+  };
+  return map[slug] || null;
 }
 
 // ─── Header — GLASSMORPHISM WOW ───────────────────────────────────
@@ -2231,7 +2247,7 @@ export default function Footer() {
               >{t("footer.transparency")}</a>
             </div>
             <p>
-              {__(${JSON.stringify({ es: "De conformidad con lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico, se informa al usuario que el titular del presente sitio web es " + name + " S.L.U., con domicilio en la dirección registrada, con CIF/NIF correspondiente, Agencia de Viajes legalmente constituida. La actividad comprende la organización y comercialización de viajes combinados. Así mismo se informa que se encuentra a disposición de nuestros clientes las correspondientes hojas de reclamaciones debidamente autorizadas.", en: "In accordance with the provisions of Article 10 of Law 34/2002, of July 11, on information society services and electronic commerce, the user is informed that the owner of this website is " + name + " S.L.U., with registered address, with corresponding Tax ID, Travel Agency legally constituted. The activity includes the organization and marketing of package tours. Likewise, complaint forms duly authorized are available to our customers." })})}
+              {__(${JSON.stringify({ es: "De conformidad con lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico, se informa al usuario que el titular del presente sitio web es " + name + " S.L.U., con domicilio en la dirección registrada, con CIF/NIF correspondiente, Agencia de Viajes legalmente constituida. La actividad comprende la organización y comercialización de viajes combinados. Así mismo se informa que se encuentra a disposición de nuestros clientes las correspondientes hojas de reclamaciones debidamente autorizadas.", en: "In accordance with the provisions of Article 10 of Law 34/2002, of July 11, on information society services and electronic commerce, the user is informed that the owner of this website is " + name + " S.L.U., with registered address, with corresponding Tax ID, Travel Agency legally constituted. The activity includes the organization and marketing of package tours. Likewise, complaint forms duly authorized are available to our customers.", ro: "În conformitate cu prevederile articolului 10 din Legea 34/2002 din 11 iulie privind serviciile societății informaționale și comerțul electronic, utilizatorul este informat că proprietarul acestui site web este " + name + " S.L.U., cu sediul social la adresa înregistrată, cu CIF/NIF corespunzător, Agenție de Turism constituită legal. Activitatea include organizarea și comercializarea de pachete turistice. De asemenea, formularele de reclamații autorizate sunt puse la dispoziția clienților noștri.", hu: "A 34/2002. számú, július 11-i törvény 10. cikkének rendelkezéseivel összhangban, amely az információs társadalom szolgáltatásairól és az elektronikus kereskedelemmel foglalkozik, a felhasználó tájékoztatást kap arról, hogy a weboldal tulajdonosa " + name + " S.L.U., bejegyzett címmel, megfelelő CIF/NIF számmal, jogilag megalapított Utazási Iroda. A tevékenység magában foglalja az utazási csomagok szervezését és értékesítését. Továbbá, a megfelelően engedélyezett panaszfüzetek ügyfeleink rendelkezésére állnak." })})}
             </p>
           </div>
         </motion.div>
@@ -2321,7 +2337,7 @@ export default function Islands() {
                 />
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-6">
                   <span className="mb-2 inline-block rounded-full bg-[var(--color-gold)]/20 px-3 py-1 text-xs font-medium text-[var(--color-gold)]">
-                    Isla Canaria
+                    {t("island.badge")}
                   </span>
                   <h3 className="text-xl font-bold text-white">{t(island.titleKey)}</h3>
                 </div>
