@@ -1891,7 +1891,7 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("contact.subtitle")}</p>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">${escapeJsx(config.name)}</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -1938,7 +1938,7 @@ export default function Contact() {
               <div className="space-y-3 text-sm text-gray-300">
                 <p>{t("contact.info_text")}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
+                  <p className="text-xs text-gray-400">{t("contact.response_time")}</p>
                 </div>
               </div>
             </motion.div>
