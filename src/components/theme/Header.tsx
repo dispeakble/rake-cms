@@ -1,31 +1,31 @@
 // ============================================================
-//  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
-//  MAXIMUM WOW EDITION
-// ============================================================
+	  //  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
+	  //  MAXIMUM WOW EDITION
+	  // ============================================================
 
-"use client";
+	  "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "@/lib/i18n";
-import type { Lang } from "@/lib/i18n";
-import { useTheme } from "@/components/theme/ThemeProvider";
+	  import Link from "next/link";
+	  import { useState } from "react";
+	  import { motion, AnimatePresence } from "framer-motion";
+	  import { useLanguage } from "@/lib/i18n";
+	  import { useTheme } from "@/components/theme/ThemeProvider";
+	  import type { Lang } from "@/lib/i18n";
 
-export default function Header() {
-  const { lang, switchLang, t } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
-  const [open, setOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const langs: {code: Lang; flag: string; label: string}[] = [{code:"es" as Lang,flag:"🇪🇸",label:"ES"},{code:"en" as Lang,flag:"🇬🇧",label:"EN"}];
+	  export default function Header() {
+	    const { lang, switchLang, t } = useLanguage();
+	    const { theme, toggleTheme } = useTheme();
+	    const [open, setOpen] = useState(false);
+	    const [langOpen, setLangOpen] = useState(false);
+	    const langs = [{code:"en",flag:"🇬🇧",label:"EN"},{code:"hu",flag:"🇭🇺",label:"HU"},{code:"ro",flag:"🇷🇴",label:"RO"}];
 
-  const doSwitchLang = (next: Lang) => {
-    setLangOpen(false);
-    switchLang(next);
-  };
+	    const doSwitchLang = (next: Lang) => {
+	      setLangOpen(false);
+	      switchLang(next);
+	    };
 
-  const navLinkClass = "relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full";
-  const mobileLinkClass = "text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer";
+  // ─── B2B Link ───
+  const b2bHref = "https://b2b.marioviajes.com";
 
   return (
     <motion.header
@@ -44,12 +44,14 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-8 md:flex">
-            <Link href="/" className={navLinkClass}>{t("nav.home")}</Link>
-            <Link href="/#about" className={navLinkClass}>Sobre nosotros</Link>
-            <Link href="/#services" className={navLinkClass}>Qué ofrecemos</Link>
-            <Link href="/#excursions" className={navLinkClass}>Excursiones</Link>
-            <Link href="/#contact" className={navLinkClass}>Contactar</Link>
-            <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className={navLinkClass}>B2B</a>
+            <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.home")}</Link>
+            <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Sobre nosotros</Link>
+          <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Qué ofrecemos</Link>
+          <Link href="/#excursions" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Excursiones</Link>
+            <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">B2B</a>
+            <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">b2b.marioviajes.com</a>
+            <a href="https://www.directotrips.com/" target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">excursiones.marioviajes.com.</a>
+            <a href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">Contactar</a>
             {/* ─── Language Dropdown ─── */}
             <div className="relative">
               <button
@@ -68,7 +70,7 @@ export default function Header() {
                   {langs.map(l => (
                     <button
                       key={l.code}
-                      onClick={() => doSwitchLang(l.code)}
+                      onClick={() => doSwitchLang(l.code as Lang)}
                       className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer ${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
                       style={{cursor:'pointer'}}
                     >
@@ -140,12 +142,16 @@ export default function Header() {
                 }}
                 className="flex flex-col gap-4"
               >
-                <Link href="/" className={mobileLinkClass} onClick={() => setOpen(false)}>{t("nav.home")}</Link>
-                <Link href="/#about" className={mobileLinkClass} onClick={() => setOpen(false)}>Sobre nosotros</Link>
-                <Link href="/#services" className={mobileLinkClass} onClick={() => setOpen(false)}>Qué ofrecemos</Link>
-                <Link href="/#excursions" className={mobileLinkClass} onClick={() => setOpen(false)}>Excursiones</Link>
-                <Link href="/#contact" className={mobileLinkClass} onClick={() => setOpen(false)}>Contactar</Link>
-                <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className={mobileLinkClass} onClick={() => setOpen(false)}>B2B</a>
+                <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.home")}</Link>
+                <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Sobre nosotros</Link>
+          <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Qué ofrecemos</Link>
+          <Link href="/#excursions" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Excursiones</Link>
+                <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>B2B</a>
+              <a href="https://b2b.marioviajes.com" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>b2b.marioviajes.com</a>
+              <a href="https://www.directotrips.com/" target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>excursiones.marioviajes.com.</a>
+                {/* B2B mobile link */}
+                <a href={b2bHref} target="_blank" rel="noopener noreferrer" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)} style={{cursor:'pointer'}}>B2B</a>
+                <a href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>Contactar</a>
                 <div className="relative">
                   <button
                     onClick={() => setLangOpen(!langOpen)}
@@ -162,7 +168,7 @@ export default function Header() {
                       {langs.map(l => (
                         <button
                           key={l.code}
-                          onClick={() => { doSwitchLang(l.code); setOpen(false); }}
+                          onClick={() => { doSwitchLang(l.code as Lang); setOpen(false); }}
                           className={`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer ${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}`}
                           style={{cursor:'pointer'}}
                         >

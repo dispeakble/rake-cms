@@ -67,8 +67,8 @@ export default function Reviews() {
           className="mb-12 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("reviews.subtitle")}</span>
-          <h2 className="text-3xl font-bold text-heading md:text-4xl gradient-text">{t("reviews.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted">{t("reviews.tagline")}</p>
+          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("reviews.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("reviews.tagline")}</p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -89,7 +89,7 @@ export default function Reviews() {
                 scale: 1.02,
                 boxShadow: "0 20px 60px rgba(var(--color-gold-rgb), 0.15)",
               }}
-              className="relative rounded-xl border border-card bg-card p-6 backdrop-blur-sm hover:border-[var(--color-gold)]/30"
+              className="relative rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm hover:border-[var(--color-gold)]/30"
               style={{ transformPerspective: 800 }}
             >
               {/* Gradient Quote Decoration */}
@@ -100,9 +100,9 @@ export default function Reviews() {
               </div>
 
               <StarRating rating={review.rating} />
-              <p className="mt-3 text-sm leading-relaxed text-muted relative z-10">"{review.text}"</p>
-              <div className="mt-4 flex items-center justify-between border-t border-card pt-3 text-xs text-muted-lighter">
-                <span className="font-medium text-heading">— {review.author}</span>
+              <p className="mt-3 text-sm leading-relaxed text-gray-300 relative z-10">"{review.text}"</p>
+              <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-gray-400">
+                <span className="font-medium text-white">— {review.author}</span>
                 <span className="text-[var(--color-gold)]/80">{review.source}</span>
               </div>
             </motion.div>
