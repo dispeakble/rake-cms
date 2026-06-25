@@ -411,8 +411,8 @@ function generateCss(config: ThemeConfig): string {
   const lightCardInner = "#f8fafc";
   const lightCardBg = "rgba(255, 255, 255, 0.9)";
   const lightCardBorder = "rgba(0, 0, 0, 0.08)";
-  const lightMuted = "#64748b";
-  const lightMutedLighter = "#94a3b8";
+  const lightMuted = "#475569";
+  const lightMutedLighter = "#64748b";
   const lightInputBg = "#ffffff";
   const lightInputBorder = "rgba(0, 0, 0, 0.12)";
   const lightHeaderBg = "rgba(255, 255, 255, 0.85)";
@@ -481,6 +481,8 @@ function generateCss(config: ThemeConfig): string {
   --card-border: ${lightCardBorder};
   --muted: ${lightMuted};
   --muted-lighter: ${lightMutedLighter};
+  --color-gray-300: #4b5563;
+  --color-gray-400: #6b7280;
   --input-bg: ${lightInputBg};
   --input-border: ${lightInputBorder};
   --scrollbar-track: ${lightScrollbarTrack};
