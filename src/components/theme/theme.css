@@ -29,8 +29,10 @@
   --section-bg-end: #f8fafc;
   --card-bg: rgba(255, 255, 255, 0.9);
   --card-border: rgba(0, 0, 0, 0.08);
-  --muted: #64748b;
-  --muted-lighter: #94a3b8;
+  --muted: #475569;
+  --muted-lighter: #64748b;
+  --color-gray-300: #4b5563;
+  --color-gray-400: #6b7280;
   --input-bg: #ffffff;
   --input-border: rgba(0, 0, 0, 0.12);
   --scrollbar-track: #f1f5f9;
