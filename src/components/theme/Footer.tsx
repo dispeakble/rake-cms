@@ -16,7 +16,7 @@ export default function Footer() {
   return (
     <footer className="relative px-4 py-16 overflow-hidden">
       {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0f] to-[#1a0a0a]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-[0.08]"
         style={{
@@ -45,14 +45,14 @@ export default function Footer() {
           className="grid gap-10 md:grid-cols-4"
         >
           <div className="md:col-span-2">
-            <h4 className="mb-4 text-lg font-semibold text-white">
+            <h4 className="mb-4 text-lg font-semibold text-heading">
               <span className="gradient-text-gold">Mario Viajes</span>
             </h4>
-            <p className="max-w-sm text-sm leading-relaxed text-gray-400">
+            <p className="max-w-sm text-sm leading-relaxed text-muted">
               {__({"es":"Tenerife es considerada como la isla de la \"primavera eterna\" con un clima suave durante todo el año. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España. [...]","en":"Tenerife is considered to be the island of \"eternal spring\" with a gentle climate throughout the year. It is the tallest island of the seven Canary Islands due to the Teide volcano, which is 3718 meters high, being the highest peak of Spain.[...]","hu":"Tenerifét az „örök tavasz” szigetének nevezik, hiszen egész évben enyhe klíma jellemzi. A hét Kanári-sziget közül a legmagasabb, itt található a Teide vulkán, ami 3718 m-es magasságával egyben Spanyolország legmagasabb pontja is. [...]","ro":"Tenerife este considerata a fi insula “ eternei primaveri” avand un climat bland pe tot parcursul anului. Ea este cea mai inalta insula dintre cele 7 insule canare datorita vulcanului Teide care are o inaltime de 3718 metri, fiind cel mai inalt varf al Spaniei . [...]"})}
             </p>
             {/* Address */}
-            <p className="mt-4 text-xs text-gray-500 leading-relaxed">
+            <p className="mt-4 text-xs text-muted-lighter leading-relaxed">
               Mario Viajes, Calle Montana Clara nr.6, C.C. Laurisilva Local 6 I, 38679, Adeje, Tenerife
             </p>
             {/* Social / Watermark link with Glow Hover */}
@@ -62,7 +62,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2, y: -2 }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-card bg-card text-sm text-muted transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
                 style={{cursor:'pointer'}}
               >
                 f
@@ -72,7 +72,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2, y: -2 }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-card bg-card text-sm text-muted transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
                 style={{cursor:'pointer'}}
               >
                 ig
@@ -82,7 +82,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2, y: -2 }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-card bg-card text-sm text-muted transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
                 style={{cursor:'pointer'}}
               >
                 ta
@@ -90,16 +90,16 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.links")}</h4>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">{t("footer.links")}</h4>
             <div className="space-y-3 text-sm">
-              <Link href="/#about" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Sobre nosotros</Link>
-          <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Qué ofrecemos</Link>
-          <Link href="/#excursions" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Excursiones</Link>
+              <Link href="/#about" className="block text-sm text-muted transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Sobre nosotros</Link>
+          <Link href="/#services" className="block text-sm text-muted transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Qué ofrecemos</Link>
+          <Link href="/#excursions" className="block text-sm text-muted transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">Excursiones</Link>
             </div>
           </div>
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.legal_heading")}</h4>
-            <div className="space-y-3 text-sm text-gray-400">
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted">{t("footer.legal_heading")}</h4>
+            <div className="space-y-3 text-sm text-muted">
               <a
                 href="https://marioviajes.com/docs/Legal-Term-Mario-Viajes-Esp.pdf"
                 target="_blank"
@@ -134,22 +134,22 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="mt-8 border-t border-white/10 pt-6"
+          className="mt-8 border-t border-card pt-6"
         >
-          <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
+          <div className="max-w-full text-xs text-muted leading-relaxed space-y-3">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
               <a
                 href="https://marioviajes.com/docs/Legal-Term-Mario-Viajes-Esp.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
+                className="text-muted font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
               >{t("footer.legal")}</a>
-              <span className="text-gray-600 text-xs">|</span>
+              <span className="text-muted-lighter text-xs">|</span>
               <a
                 href="https://marioviajes.com/docs/MEMORIA-TRANSPARENCIA-MARIO-VIAJES.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
+                className="text-muted font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
               >{t("footer.transparency")}</a>
             </div>
             <p>
@@ -163,7 +163,7 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed"
+          className="mt-12 border-t border-card pt-8 text-center text-xs text-muted leading-relaxed"
         >
           <p className="mt-4">&copy; 2026 Mario Viajes. {t("footer.copyright")}</p>
           <p className="mt-2">CIF: B-12345678 | I-AV: I-AV-0001234.4</p>
