@@ -37,7 +37,7 @@
   --input-border: rgba(0, 0, 0, 0.12);
   --scrollbar-track: #f1f5f9;
   --selection-bg: var(--color-primary);
-  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-bg: rgba(var(--color-primary-rgb), 0.85);
   --header-border: rgba(0, 0, 0, 0.08);
   --mobile-menu-bg: rgba(255, 255, 255, 0.95);
   --card-inner-bg: #f8fafc;
