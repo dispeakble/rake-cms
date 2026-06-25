@@ -152,28 +152,6 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* ── Full Scraped Content Section (ALL preserved text) ── */}
-        {true && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="mt-6 border-t border-white/10 pt-6"
-          >
-            <div className="max-w-full text-xs text-gray-500 leading-relaxed">
-              <p className="text-gray-400 font-medium text-xs uppercase tracking-wider mb-2">
-                {t("footer.complete_info")}
-              </p>
-              {"Tenerife es considerada como la isla de la \"primavera eterna\" con un clima suave durante todo el año. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España. [...]\\n\\nTenerife es el lugar donde se puede estar en la altura más alta de España rodeado de nieve y dos horas más tarde para broncearse a la playa.\\n\\nSi usted deja ir su imaginación durante su visita a Gran Canaria, tendrá la sensación de que en lugar de una isla, en realidad visitará tres continentes: África, Europa y América. Es la tercera isla más grande del archipiélago canario. [...]\\n\\nUno de los principales atractivos de la isla de Gran Canaria son las dunas de Maspalomas.\\n\\nLa Gomera, Lanzarote, Fuerteventura, La Palma y El Hierro no son sólo nombres. Son 5 islas hermosas y vale la pena visitar. Cada uno tiene características diferentes: La Gomera es considerada como la última selva en Europa. [...]\\n\\nLa Palma es la más verde. Hierro es el más pequeño. Lanzarote es preferido por los amantes de los deportes acuáticos y Fuerteventura está a sólo 100 kilómetros de la costa africana y es famosa por sus hermosas playas de arena blanca.\\n\\nUnas vacaciones perfectas son las que usted desea no terminar!\\n\\nCon la ayuda de nuestra competencia en turismo de calidad y también, de los años pasados en Canarias, podemos garantizarle unas vacaciones inolvidables.\\n\\nMario Viajes SLU es una empresa joven, desarrollado a partir de nuestro deseo para proporcionar a los turistas con la ayuda responsable y la información exacta. La disposición, la sobriedad y la dedicación que ponemos en nuestro servicio, nos permiten garantizar a nuestros clientes unas vacaciones inolvidables.\\n\\nEstamos aquí para escuchar sus deseos y organizar sus vacaciones tan soñadas . Ofrecemos servicios turísticos individuales y de grupo para cualquiera de las 7 islas del Archipiélago Canario. Le estamos esperando para escribir juntos la historia de unas vacaciones ideales\\n\\nEstamos aquí para convertir sus vacaciones en una experiencia memorable!\\n\\nPodemos ayudarle incluso si está planeando un evento único! Y para nuestras agencias de turismo asociadas desarrollamos un sistema de reservas en línea que facilita las búsquedas dentro de nuestros productos, por lo que le invitamos a acceder a nuestro enlace:  b2b.marioviajes.com.\\n\\nLas excursiones con nosotros son solo a una sonrisa de distancia!\\n\\nTe invitamos a descubrir juntos el encanto y la singularidad de las Islas Canarias! Desde el pico del volcán, hasta 30 metros de profundidad en el Atlántico, ofrecemos una amplia gama de actividades y excursiones que representan el superlativo de la diversidad para cualquier persona, logrando satisfacer incluso los gustos más exigentes.\\n\\nPara las agencias de viajes asociadas, hemos desarrollado un sistema de reservas en línea para viajes a las Islas Canarias, y para registrarse, visite nuestro enlace : excursiones.marioviajes.com.\\n\\nPara más información, rellene el siguiente formulario.\\n\\nNOTA LEGAL Y CONDICIONES DE USO DE LA PÁGINA WEB\\n\\nMEMORIA TRANSPARENCIA\\n\\nDe conformidad con lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico, se informa al usuario que el titular del presente sitio web es MARIO VIAJES S.L.U., con domicilio Calle Montana Clara 6, Ed Laurisilva, Local 6 I, Adeje, 38679, Santa Cruz de Tenerife, España, con CIF: B-76675081, Agencia de Viajes legalmente constituida con código de Identificación I-AV-0003355.2, teléfono (+34) 922724642 y correo electrónico de contacto office@marioviajes.com. La actividad de MARIO VIAJES S.L.U. comprende la organización/comercialización de viajes combinados. Así mismo se informa que se encuentra a disposición de nuestros clientes las correspondientes hojas de reclamaciones debidamente autorizadas por la Dirección General de Ordenación y Promoción Turística del Gobierno de Canarias por si fuera de su interés en la dirección: Calle Montana Clara 6, Ed. Laurisilva, Local 6 I, Adeje, 38679, Santa Cruz de Tenerife, España en horario 10:00 hasta 15:00 en días laborables.".split("\n\n").map((paragraph, i) => (
-                <p key={i} className="mb-3">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </motion.div>
-        )}
-
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
