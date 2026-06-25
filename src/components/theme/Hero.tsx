@@ -23,11 +23,11 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Per-site content (embedded from scraped data) ───
-  const TAGLINE = "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!";
-  const HERO_SUBTITLE = "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!";
+  const TAGLINE = "We are Karting Las Américas, serving the local area.";
+  const HERO_SUBTITLE = "Karting Las Américas — We are Karting Las Américas, serving the local area.";
 
   // ─── Carousel State ───
-  const slides = ["/media/kartinglasaméricas/c-img-1.jpg","/media/kartinglasaméricas/c-img-2.jpg","/media/kartinglasaméricas/c-img-3.jpg"];
+  const slides = ["/media/kartinglasamericas/c-img-1.jpg","/media/kartinglasamericas/c-img-2.jpg","/media/kartinglasamericas/c-img-3.jpg"];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 

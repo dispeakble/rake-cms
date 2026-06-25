@@ -825,23 +825,23 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	  );
 
 	  // Build external links from site data (B2B, social, etc.)
+	  // Build external links from site data — only social media (max 3)
 	  const externalLinks: { href: string; text: string }[] = [];
 	  const allLinks = site?.pages?.flatMap(p => p.links) || [];
 	  const seenKeys = new Set<string>();
-	  const sectionLabels = ["inicio", "home", "sobre nosotros", "about", "qué ofrecemos", "what we offer", "excursiones", "excursions", "contacto", "contact", "contactar"];
+	  const socialDomains = ["facebook.com", "instagram.com", "twitter.com", "x.com",
+	    "tiktok.com", "linkedin.com", "youtube.com", "tripadvisor.com"];
 	  for (const link of allLinks) {
-	  	    const href = link.href.trim();
-	  	    const text = link.text.trim().toLowerCase();
-	  	    // Skip: empty, anchors, javascript, section labels (already in nav), language codes
-	  	    if (!href || href === "#" || href.startsWith("javascript:")) continue;
-	  	    if (!text || text.length > 40) continue;
-	  	    if (sectionLabels.includes(text)) continue;
-	  	    if (text === "es" || text === "en" || text === "ro" || text === "hu") continue;
-	  	    if (!href.startsWith("http") && !href.startsWith("https")) continue;
-	  	    	    // Dedup by URL only — same href with different text (e.g. "B2B" vs "b2b.marioviajes.com") => keep first
-	  	    	    if (seenKeys.has(href)) continue;
-	  	    	    seenKeys.add(href);
-	  	    	    externalLinks.push(link);
+	    const href = link.href.trim();
+	    const text = link.text.trim();
+	    if (!href || !href.startsWith("http")) continue;
+	    // Only keep social media / important links
+	    const domain = href.replace(/https?:\/\/(www\.)?/, "").split("/")[0].toLowerCase();
+	    if (!socialDomains.some(d => domain.includes(d))) continue;
+	    if (seenKeys.has(href)) continue;
+	    seenKeys.add(href);
+	    externalLinks.push({ href, text });
+	    if (externalLinks.length >= 3) break;
 	  }
 
 	  // Logo URL

@@ -29,12 +29,22 @@ export const translations: Record<string, Record<Lang, string>> = {
   "hero.cta_services": { es: "Explora nuestros servicios", en: "Explore our services", ro: "Explorează serviciile noastre", hu: "Fedezze fel szolgáltatásainkat" },
   "hero.cta_contact": { es: "Contacta con nosotros", en: "Contact us", ro: "Contactați-ne", hu: "Vegye fel velünk a kapcsolatot" },
 
+  // ─── About section ───
+  "about.title": { es: "Sobre nosotros", en: "About us", ro: "Despre noi", hu: "Rólunk" },
+  "about.stats.clients": { es: "Clientes satisfechos", en: "Happy clients", ro: "Clienți mulțumiți", hu: "Elégedett ügyfelek" },
+  "about.stats.experience": { es: "Años de experiencia", en: "Years of experience", ro: "Ani de experiență", hu: "Éves tapasztalat" },
+  "about.stats.satisfaction": { es: "Satisfacción", en: "Satisfaction", ro: "Satisfacție", hu: "Elégedettség" },
+
+  // ─── Services section ───
+  "services.title": { es: "Nuestros servicios", en: "Our services", ro: "Serviciile noastre", hu: "Szolgáltatásaink" },
+
   // ─── Contact section labels (generic form fields) ───
   "contact.title": { es: "Contacto", en: "Contact", ro: "Contact", hu: "Kapcsolat" },
   "contact.badge": { es: "Contacto", en: "Contact", ro: "Contact", hu: "Kapcsolat" },
+  "contact.subtitle": { es: "Estaremos encantados de atenderle", en: "We will be happy to assist you", ro: "Vom fi încântați să vă ajutăm", hu: "Örömmel állunk rendelkezésére" },
   "contact.info_title": { es: "Información", en: "Information", ro: "Informații", hu: "Információ" },
   "contact.info_text": { es: "Estaremos encantados de atenderle. Si tiene alguna pregunta sobre nuestros servicios, no dude en contactarnos.", en: "We will be happy to assist you. If you have any questions about our services, please do not hesitate to contact us.", ro: "Vom fi încântați să vă asistăm. Dacă aveți întrebări despre serviciile noastre, nu ezitați să ne contactați.", hu: "Örömmel állunk rendelkezésére. Ha bármilyen kérdése van szolgáltatásainkkal kapcsolatban, ne habozzon kapcsolatba lépni velünk." },
-  "contact.response_time": { es: "Le responderemos en un plazo de 24 horas.", en: "We will respond within 24 hours.", ro: "Vă vom răspunde în termen de 24 de ore.", hu: "24 órán belül válaszolunk." },
+  "contact.info_response": { es: "Le responderemos en un plazo de 24 horas.", en: "We will respond within 24 hours.", ro: "Vă vom răspunde în termen de 24 de ore.", hu: "24 órán belül válaszolunk." },
   "contact.form_title": { es: "Envíanos un mensaje", en: "Send us a message", ro: "Trimiteți-ne un mesaj", hu: "Küldjön üzenetet" },
   "contact.form_name_label": { es: "Nombre", en: "First Name", ro: "Prenume", hu: "Keresztnév" },
   "contact.form_name_placeholder": { es: "Su nombre", en: "Your first name", ro: "Prenumele dvs.", hu: "Az Ön keresztneve" },
