@@ -822,10 +822,10 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	  	    if (sectionLabels.includes(text)) continue;
 	  	    if (text === "es" || text === "en" || text === "ro" || text === "hu") continue;
 	  	    if (!href.startsWith("http") && !href.startsWith("https")) continue;
-	  	    const key = href + "|" + text;
-	  	    if (seenKeys.has(key)) continue;
-	  	    seenKeys.add(key);
-	  	    externalLinks.push(link);
+	  	    	    // Dedup by URL only — same href with different text (e.g. "B2B" vs "b2b.marioviajes.com") => keep first
+	  	    	    if (seenKeys.has(href)) continue;
+	  	    	    seenKeys.add(href);
+	  	    	    externalLinks.push(link);
 	  }
 
 	  // Logo URL
