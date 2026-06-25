@@ -1115,7 +1115,7 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
     : `{t("hero.cta_contact")}`;
 
   // Carousel images base path
-  const nameSlug = config.name.toLowerCase().replace(/\s+/g, '');
+  const nameSlug = config.name.toLowerCase().replace(/[\s']/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const carouselImages = [
     `/media/${nameSlug}/c-img-1.jpg`,
     `/media/${nameSlug}/c-img-2.jpg`,
