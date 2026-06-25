@@ -1132,6 +1132,9 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
     }
   }
 
+  const tagline = JSON.stringify(content.tagline || config.name);
+  const heroSubtitle = JSON.stringify(content.heroSubtitle || "");
+
   return `// ============================================================
 //  Hero — Carousel with Auto-Rotation + Prev/Next + Parallax
 //  MAXIMUM WOW EDITION
@@ -1155,6 +1158,10 @@ export default function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.2]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+
+  // ─── Per-site content (embedded from scraped data) ───
+  const TAGLINE = ${JSON.stringify(content.tagline || config.name)};
+  const HERO_SUBTITLE = ${JSON.stringify(content.heroSubtitle || "")};
 
   // ─── Carousel State ───
   const slides = ${JSON.stringify(carouselImages)};
@@ -1337,7 +1344,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] backdrop-blur-sm">
-            {t("hero.carousel_" + (current + 1))}
+            {HERO_SUBTITLE || TAGLINE}
           </span>
         </motion.div>
 
@@ -1346,7 +1353,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          {t("hero.h1")}
+          {TAGLINE}
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -1407,6 +1414,11 @@ export default function Hero() {
 // ─── About — SPRING REVEAL + COUNTERS + GLASSMORPHISM ────────────
 
 function generateAbout(content: GeneratedContent, photo: string | null, site: ScrapedSite | null = null): string {
+  const aboutParagraphs = content.aboutParagraphs || [];
+  const p1 = aboutParagraphs[0] || "";
+  const p2 = aboutParagraphs[1] || "";
+  const p3 = aboutParagraphs[2] || "";
+  const businessName = escapeJsx(site?.businessName || site?.pages?.[0]?.title || content.aboutHeading || "Our Business");
   const imgHtml = photo
     ? `<motion.div
               className="relative overflow-hidden rounded-2xl"
@@ -1479,6 +1491,11 @@ export default function About() {
   const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // ─── Per-site about content (embedded from scraped data) ───
+  const ABOUT_P1 = ${JSON.stringify(p1)};
+  const ABOUT_P2 = ${JSON.stringify(p2)};
+  const ABOUT_P3 = ${JSON.stringify(p3)};
+
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
     visible: {
@@ -1509,7 +1526,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              {t("about.subtitle")}
+              {"${businessName}"}
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -1521,19 +1538,19 @@ export default function About() {
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {t("about.p1")}
+              {ABOUT_P1}
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {t("about.p2")}
+              {ABOUT_P2}
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              {t("about.p3")}
+              {ABOUT_P3}
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -1585,6 +1602,7 @@ function generateServices(content: GeneratedContent, config: ThemeConfig): strin
     "service_6",
   ];
   const bizName = escapeJsx(config.name || "Our Business");
+  const servicesData = content.services || [];
 
   return `// ============================================================
 //  Services — 3D Perspective Tilt + Glowing Borders + Pulse Dots
@@ -1597,7 +1615,8 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-const SERVICE_KEYS_LIST = ${JSON.stringify(["service_1","service_2","service_3","service_4","service_5","service_6"])};
+// ─── Per-site services (embedded from scraped content) ───
+const SERVICES = ${JSON.stringify(servicesData)};
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -1638,7 +1657,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 }
 
 export default function Services() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
@@ -1657,9 +1676,8 @@ export default function Services() {
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* ── Nuestros Servicios ── */}
+        {/* ── Our Services ── */}
         <motion.div
-          id="locations"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -1674,61 +1692,19 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              {t("services.subtitle")}
+              ${escapeJsx(config.name)}
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICE_KEYS_LIST.map((key, i) => (
+            {SERVICES.slice(0, 6).map((svc, i) => (
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{t(key + ".title")}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{t(key + ".desc")}</p>
+                  <h3 className="mb-3 text-xl font-bold text-white">{svc.title}</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">{svc.description}</p>
                 </div>
               </TiltCard>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* ── Menu / More Services ── */}
-        <motion.div
-          id="menu"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ type: "spring", stiffness: 80, damping: 15 }}
-          className="mb-20"
-        >
-          <div className="mb-12 text-center">
-            <motion.span
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
-            >
-              {t("services_all.explore")}
-            </motion.span>
-            <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services_all.title")}</h2>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICE_KEYS_LIST.map((key, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, type: "spring", stiffness: 100, damping: 15 }}
-                whileHover={{ y: -8, scale: 1.03 }}
-                className="relative rounded-2xl p-[1px] overflow-hidden bg-white/10"
-              >
-                <div className="relative rounded-2xl p-8 text-center h-full glass">
-                  <h3 className="mb-2 text-lg font-semibold text-white">{t(key + ".title")}</h3>
-                  <p className="text-sm text-gray-400">{t(key + ".desc")}</p>
-                </div>
-              </motion.div>
             ))}
           </div>
         </motion.div>

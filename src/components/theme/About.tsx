@@ -44,6 +44,11 @@ export default function About() {
   const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // ─── Per-site about content (embedded from scraped data) ───
+  const ABOUT_P1 = "Te garantizamos eventos, competiciones y cursos de máxima calidad.";
+  const ABOUT_P2 = "Precio especial para residentes";
+  const ABOUT_P3 = "Events Karts es una empresa que lleva más de 20 años en el mercado y se está expandiendo buscando nuevos retos.";
+
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
     visible: {
@@ -74,7 +79,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              {t("about.subtitle")}
+              {"Karting Las Américas"}
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -86,19 +91,19 @@ export default function About() {
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {t("about.p1")}
+              {ABOUT_P1}
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {t("about.p2")}
+              {ABOUT_P2}
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              {t("about.p3")}
+              {ABOUT_P3}
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -135,7 +140,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1782401078190-o8rb4u.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1782405211144-9zslwp.png" alt="Sobre Karting Las Américas" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>
