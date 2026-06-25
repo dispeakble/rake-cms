@@ -813,81 +813,46 @@ function slugToNavKey(slug: string): string | null {
 // ─── Header — GLASSMORPHISM WOW ───────────────────────────────────
 
 function generateHeader(name: string, pageSlugs: SitePage[], businessType: BusinessType = "other", site: ScrapedSite | null = null): string {
-	  const navLinks = buildNavLinks(pageSlugs, businessType);
-	  const desktopLinks = renderNavLinks(
-	    navLinks,
-	    `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`
-	  );
-	  const mobileLinks = renderNavLinks(
-	    navLinks,
-	    "text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer",
-	    true
-	  );
+  const navLinks = buildNavLinks(pageSlugs, businessType);
+  const desktopLinks = renderNavLinks(
+    navLinks,
+    `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`
+  );
+  const mobileLinks = renderNavLinks(
+    navLinks,
+    "text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer",
+    true
+  );
 
-	  // Build external links from site data (B2B, social, etc.)
-	  // Build external links from site data — only social media (max 3)
-	  const externalLinks: { href: string; text: string }[] = [];
-	  const allLinks = site?.pages?.flatMap(p => p.links) || [];
-	  const seenKeys = new Set<string>();
-	  const socialDomains = ["facebook.com", "instagram.com", "twitter.com", "x.com",
-	    "tiktok.com", "linkedin.com", "youtube.com", "tripadvisor.com"];
-	  for (const link of allLinks) {
-	    const href = link.href.trim();
-	    const text = link.text.trim();
-	    if (!href || !href.startsWith("http")) continue;
-	    // Only keep social media / important links
-	    const domain = href.replace(/https?:\/\/(www\.)?/, "").split("/")[0].toLowerCase();
-	    if (!socialDomains.some(d => domain.includes(d))) continue;
-	    if (seenKeys.has(href)) continue;
-	    seenKeys.add(href);
-	    externalLinks.push({ href, text });
-	    if (externalLinks.length >= 3) break;
-	  }
+  // Logo URL
+  const logoUrl = `/media/${name.toLowerCase().replace(/\s+/g, '')}/logo.png`;
+  const hasLogo = false;
 
-	  // Logo URL
-	  const logoUrl = site?.logoUrl || `/media/${name.toLowerCase().replace(/\s+/g, '')}/logo.png`;
-	  const hasLogo = !!site?.logoUrl;
+  const navLinkClass = `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`;
+  const mobileNavLinkClass = `text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer`;
 
-	  const navLinkClass = `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`;
-	  const mobileNavLinkClass = `text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer`;
+  // Standard CTA link
+  let ctaDesktop: string;
+  let ctaMobile: string;
+  const ctaBtnClass = navLinkClass;
 
-	  // Business-type-specific CTA link
-	  let ctaDesktop: string;
-	  let ctaMobile: string;
-	  const ctaBtnClass = navLinkClass;
+  if (businessType === "restaurant") {
+    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Reservas</a>`;
+    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Reservas</a>`;
+  } else {
+    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Contactar</a>`;
+    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Contactar</a>`;
+  }
 
-	  if (businessType === "restaurant") {
-	    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Reservas</a>`;
-	    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Reservas</a>`;
-	  } else if (businessType === "travel") {
-	    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Contactar</a>`;
-	    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Contactar</a>`;
-	  } else {
-	    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Contactar</a>`;
-	    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Contactar</a>`;
-	  }
-
-	  // External link HTML for desktop
-	  const externalDesktopLinks = externalLinks
-	    .map(l => `<a href="${escapeJsx(l.href)}" target="_blank" rel="noopener noreferrer" className="${navLinkClass}">${escapeJsx(l.text)}</a>`)
-	    .join("\n            ");
-
-	  // External link HTML for mobile
-	  const externalMobileLinks = externalLinks
-	    .map(l => `<a href="${escapeJsx(l.href)}" target="_blank" rel="noopener noreferrer" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>${escapeJsx(l.text)}</a>`)
-	    .join("\n              ");
-
-	  // Extra nav items: Inicio (home), external links, CTA (desktop & mobile)
-	  	  const extraDesktopLinks = [
-	  	    `<Link href="/" className="${navLinkClass}">{t("nav.home")}</Link>`,
-	  	    externalDesktopLinks,
-	  	    ctaDesktop,
-	  	  ];
-	  	  const extraMobileLinks = [
-	  	    `<Link href="/" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>{t("nav.home")}</Link>`,
-	  	    externalMobileLinks,
-	  	    ctaMobile,
-	  	  ];
+  // Extra nav items: Inicio (home), CTA (desktop & mobile) — no scraped external links
+  const extraDesktopLinks = [
+    `<Link href="/" className="${navLinkClass}">{t("nav.home")}</Link>`,
+    ctaDesktop,
+  ];
+  const extraMobileLinks = [
+    `<Link href="/" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>{t("nav.home")}</Link>`,
+    ctaMobile,
+  ];
 
 	  // ─── Languages from scraped data ───
 	  const langFlags: Record<string, string> = {
