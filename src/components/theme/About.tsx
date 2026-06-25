@@ -57,7 +57,7 @@ export default function About() {
   return (
     <section id="about" ref={sectionRef} className="relative px-4 py-24 overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-[#1a0a0a] to-black opacity-90" />
+      <div className="absolute inset-0 bg-section opacity-90" />
       <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, rgba(var(--color-gold-rgb), 0.05), transparent 50%)" }} />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
@@ -84,19 +84,19 @@ export default function About() {
             </motion.h2>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-gray-300"
+              className="mb-4 leading-relaxed text-muted"
             >
               {t("about.p1")}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-gray-300"
+              className="mb-4 leading-relaxed text-muted"
             >
               {t("about.p2")}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="leading-relaxed text-gray-300"
+              className="leading-relaxed text-muted"
             >
               {t("about.p3")}
             </motion.p>
@@ -113,12 +113,12 @@ export default function About() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
+                  className="rounded-xl border border-card bg-card p-4 text-center backdrop-blur-sm"
                 >
                   <div className="text-2xl font-black text-[var(--color-gold)]">
                     <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                   </div>
-                  <div className="mt-1 text-xs text-gray-400">{stat.label}</div>
+                  <div className="mt-1 text-xs text-muted">{stat.label}</div>
                 </div>
               ))}
             </motion.div>

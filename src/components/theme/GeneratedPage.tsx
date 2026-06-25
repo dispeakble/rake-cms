@@ -8,6 +8,7 @@
 import "./theme.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { LanguageProvider } from "@/lib/i18n";
+import ThemeProvider from "@/components/theme/ThemeProvider";
 import Header from "@/components/theme/Header";
 import Footer from "@/components/theme/Footer";
 import Hero from "@/components/theme/Hero";
@@ -19,6 +20,7 @@ import Contact from "@/components/theme/Contact";
 
 export default function GeneratedPage() {
   return (
+    <ThemeProvider>
     <LanguageProvider>
     <AnimatePresence mode="wait">
       <motion.div
@@ -27,7 +29,7 @@ export default function GeneratedPage() {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -20, scale: 0.98 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="flex min-h-screen flex-col bg-black text-white"
+        className="flex min-h-screen flex-col bg-page text-page"
       >
         <Header />
         <main className="flex-1">
@@ -42,5 +44,6 @@ export default function GeneratedPage() {
       </motion.div>
     </AnimatePresence>
     </LanguageProvider>
+    </ThemeProvider>
   );
 }

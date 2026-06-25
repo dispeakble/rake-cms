@@ -24,7 +24,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Pattern */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d0d0d] via-black to-[#0d0d0d]" />
+      <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -44,8 +44,8 @@ export default function Contact() {
           className="mb-14 text-center"
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
-          <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("contact.subtitle")}</p>
+          <h2 className="text-3xl font-bold text-heading md:text-4xl gradient-text">{t("contact.title")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-muted">{t("contact.subtitle")}</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -60,12 +60,12 @@ export default function Contact() {
             {/* Business location — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
+              className="rounded-2xl border border-card bg-card p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
-              <h3 className="mb-4 text-lg font-bold text-white">
+              <h3 className="mb-4 text-lg font-bold text-heading">
                 <span className="text-[var(--color-gold)]">📍</span> Mario Viajes
               </h3>
-              <div className="space-y-3 text-sm text-gray-300">
+              <div className="space-y-3 text-sm text-muted">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
                   <span>Calle Montana Clara nr.6, C.C. Laurisilva Local 6 I, 38679, Adeje, Tenerife</span>
@@ -84,15 +84,15 @@ export default function Contact() {
             {/* Additional contact info — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
+              className="rounded-2xl border border-card bg-card p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
-              <h3 className="mb-4 text-lg font-bold text-white">
+              <h3 className="mb-4 text-lg font-bold text-heading">
                 <span className="text-[var(--color-gold)]">📋</span> {t("contact.info_title")}
               </h3>
-              <div className="space-y-3 text-sm text-gray-300">
+              <div className="space-y-3 text-sm text-muted">
                 <p>{t("contact.info_text")}</p>
-                <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
+                <div className="mt-4 pt-3 border-t border-card">
+                <p className="text-xs text-muted">{t("contact.info_response")}</p>
                 </div>
               </div>
             </motion.div>
@@ -104,57 +104,57 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
-            className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
+            className="rounded-2xl border border-card bg-card p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">{t("contact.form_title")}</h3>
+            <h3 className="mb-6 text-lg font-semibold text-heading">{t("contact.form_title")}</h3>
             <form className="space-y-5">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_name_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-muted">{t("contact.form_name_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_name_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-input bg-input px-4 py-3 text-sm text-page placeholder-muted-lighter transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_surname_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-muted">{t("contact.form_surname_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_surname_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-input bg-input px-4 py-3 text-sm text-page placeholder-muted-lighter transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_email_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-muted">{t("contact.form_email_label")}</label>
                 <motion.input
                   type="email"
                   placeholder={t("contact.form_email_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-input bg-input px-4 py-3 text-sm text-page placeholder-muted-lighter transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_phone_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-muted">{t("contact.form_phone_label")}</label>
                 <motion.input
                   type="tel"
                   placeholder={t("contact.form_phone_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-input bg-input px-4 py-3 text-sm text-page placeholder-muted-lighter transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_message_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-muted">{t("contact.form_message_label")}</label>
                 <motion.textarea
                   placeholder={t("contact.form_message_placeholder")}
                   rows={4}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-input bg-input px-4 py-3 text-sm text-page placeholder-muted-lighter transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               {/* Real Google reCAPTCHA */}
-              <div className="flex justify-center rounded-lg border border-white/10 bg-black/30 px-4 py-4">
+              <div className="flex justify-center rounded-lg border border-recaptcha bg-recaptcha px-4 py-4">
                 <div
                   className="g-recaptcha"
                   data-sitekey="6LdbHk0UAAAAAAJrcrI7qcHPVr7u3U-xHTVQy032"
