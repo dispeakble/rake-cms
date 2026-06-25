@@ -21,7 +21,6 @@ export const useTheme = () => useContext(ThemeContext);
 export default function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
 
-  // On mount, read stored preference and apply it
   useEffect(() => {
     const stored = localStorage.getItem("rake-theme") as Theme | null;
     const preferred = stored || "dark";

@@ -84,19 +84,19 @@ export default function About() {
             </motion.h2>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-muted"
+              className="mb-4 leading-relaxed text-gray-300"
             >
               {t("about.p1")}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-muted"
+              className="mb-4 leading-relaxed text-gray-300"
             >
               {t("about.p2")}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="leading-relaxed text-muted"
+              className="leading-relaxed text-gray-300"
             >
               {t("about.p3")}
             </motion.p>
@@ -113,18 +113,18 @@ export default function About() {
               ].map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-xl border border-card bg-card p-4 text-center backdrop-blur-sm"
+                  className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
                 >
                   <div className="text-2xl font-black text-[var(--color-gold)]">
                     <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                   </div>
-                  <div className="mt-1 text-xs text-muted">{stat.label}</div>
+                  <div className="mt-1 text-xs text-gray-400">{stat.label}</div>
                 </div>
               ))}
             </motion.div>
           </div>
 
-          {/* Right Image */}
+          {/* Right Image with Rotating Glow */}
           <motion.div
             variants={springUp}
           >
@@ -135,7 +135,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/marioviajes/about-us.jpg" alt="Mario Viajes" className="h-full w-full object-cover" />
+                <img src="/media/scraped/website-1782376378527-4w8ss6.jpeg" alt="About Mario Viajes" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>

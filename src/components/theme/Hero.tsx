@@ -23,7 +23,7 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Carousel State ───
-  const slides = [{"src":"/media/marioviajes/c-img-1.jpg","caption":"{t(\"hero.carousel_1\")}"},{"src":"/media/marioviajes/c-img-2.jpg","caption":"{t(\"hero.carousel_2\")}"},{"src":"/media/marioviajes/c-img-3.jpg","caption":"{t(\"hero.carousel_3\")}"}];
+  const slides = ["/media/marioviajes/c-img-1.jpg","/media/marioviajes/c-img-2.jpg","/media/marioviajes/c-img-3.jpg"];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -81,7 +81,7 @@ export default function Hero() {
           transition={{ type: "spring", stiffness: 200, damping: 25 }}
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${slides[current].src})`,
+            backgroundImage: `url(${slides[current]})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -203,7 +203,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] backdrop-blur-sm">
-            {slides[current].caption}
+            {t("hero.carousel_" + (current + 1))}
           </span>
         </motion.div>
 

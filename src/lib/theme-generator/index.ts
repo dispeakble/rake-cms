@@ -869,6 +869,7 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	  "use client";
 
 	  import Link from "next/link";\n	  import { useState } from "react";\n	  import { motion, AnimatePresence } from "framer-motion";\n	  import { useLanguage } from "@/lib/i18n";\n	  import { useTheme } from "@/components/theme/ThemeProvider";
+	  import type { Lang } from "@/lib/i18n";
 
 	  export default function Header() {
 	    const { lang, switchLang, t } = useLanguage();\n	    const { theme, toggleTheme } = useTheme();
@@ -876,7 +877,7 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	    const [langOpen, setLangOpen] = useState(false);
 	    const langs = ${langsTs};
 
-	    const doSwitchLang = (next: string) => {
+	    const doSwitchLang = (next: Lang) => {
 	      setLangOpen(false);
 	      switchLang(next);
 	    };
@@ -927,13 +928,13 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
                   {langs.map(l => (
                     <button
                       key={l.code}
-                      onClick={() => doSwitchLang(l.code)}
+                      onClick={() => doSwitchLang(l.code as Lang)}
                       className={\`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer \${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}\`}
                       style={{cursor:'pointer'}}
                     >
                       {l.flag} {l.label}
                     </button>
-                  )}
+                  ))}
                 </div>
               )}
             </div>
@@ -1021,7 +1022,7 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
                       {langs.map(l => (
                         <button
                           key={l.code}
-                          onClick={() => { doSwitchLang(l.code); setOpen(false); }}
+                          onClick={() => { doSwitchLang(l.code as Lang); setOpen(false); }}
                           className={\`w-full px-3 py-2 text-xs font-medium text-left transition-colors hover:bg-white/10 cursor-pointer \${lang === l.code ? "text-[var(--color-gold)] bg-white/5" : "text-white/60"}\`}
                           style={{cursor:'pointer'}}
                         >
