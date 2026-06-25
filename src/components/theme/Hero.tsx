@@ -22,8 +22,12 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.2]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
+  // ─── Per-site content (embedded from scraped data) ───
+  const TAGLINE = "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!";
+  const HERO_SUBTITLE = "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!";
+
   // ─── Carousel State ───
-  const slides = ["/media/marioviajes/c-img-1.jpg","/media/marioviajes/c-img-2.jpg","/media/marioviajes/c-img-3.jpg"];
+  const slides = ["/media/kartinglasaméricas/c-img-1.jpg","/media/kartinglasaméricas/c-img-2.jpg","/media/kartinglasaméricas/c-img-3.jpg"];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -203,7 +207,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] backdrop-blur-sm">
-            {t("hero.carousel_" + (current + 1))}
+            {HERO_SUBTITLE || TAGLINE}
           </span>
         </motion.div>
 
@@ -212,7 +216,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          {t("hero.h1")}
+          {TAGLINE}
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -220,7 +224,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {__({"es":"Tenerife es considerada como la isla de la \"primavera eterna\" con un clima suave durante todo el año. Es la isla más alta de las siete Islas Canarias debido al volcán Teide, que es 3718 metros de altura, siendo el pico más alto de España. [...]","en":"Tenerife is considered to be the island of \"eternal spring\" with a gentle climate throughout the year. It is the tallest island of the seven Canary Islands due to the Teide volcano, which is 3718 meters high, being the highest peak of Spain.[...]","hu":"Tenerifét az „örök tavasz” szigetének nevezik, hiszen egész évben enyhe klíma jellemzi. A hét Kanári-sziget közül a legmagasabb, itt található a Teide vulkán, ami 3718 m-es magasságával egyben Spanyolország legmagasabb pontja is. [...]","ro":"Tenerife este considerata a fi insula “ eternei primaveri” avand un climat bland pe tot parcursul anului. Ea este cea mai inalta insula dintre cele 7 insule canare datorita vulcanului Teide care are o inaltime de 3718 metri, fiind cel mai inalt varf al Spaniei . [...]"}).split("").map((char, i) => (
+          {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"Circuitos Kart"}).split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
