@@ -63,7 +63,7 @@
   --input-border: rgba(255, 255, 255, 0.1);
   --scrollbar-track: #0a0a0f;
   --selection-bg: var(--color-primary);
-  --header-bg: rgba(255, 255, 255, 0.55);
+  --header-bg: rgba(var(--color-primary-rgb), 0.55);
   --header-border: rgba(255, 255, 255, 0.1);
   --mobile-menu-bg: rgba(0, 0, 0, 0.95);
   --card-inner-bg: #0a0a0f;
