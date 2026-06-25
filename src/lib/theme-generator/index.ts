@@ -437,7 +437,7 @@ function generateCss(config: ThemeConfig): string {
   const darkMutedLighter = "#64748b";
   const darkInputBg = "rgba(0, 0, 0, 0.4)";
   const darkInputBorder = "rgba(255, 255, 255, 0.1)";
-  const darkHeaderBg = "rgba(255, 255, 255, 0.55)";
+  const darkHeaderBg = "rgba(var(--color-primary-rgb), 0.55)";
   const darkHeaderBorder = "rgba(255, 255, 255, 0.1)";
   const darkMobileBg = "rgba(0, 0, 0, 0.95)";
   const darkPageText = "#ffffff";
@@ -920,7 +920,7 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
       transition={{ type: "spring", stiffness: 100, damping: 25, delay: 0.2 }}
       className="fixed top-0 left-0 right-0 z-50"
     >
-      <div className="border-b border-white/30 bg-white/55 backdrop-blur-2xl shadow-lg shadow-black/5">
+      <div className="border-b border-white/30 bg-header backdrop-blur-2xl shadow-lg shadow-black/5">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
@@ -932,8 +932,11 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
             <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-light)] transition-all duration-300 group-hover:w-full" />`}
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden items-center gap-8 md:flex">
+          {/* ── Spacer between logo and menu ── */}
+          <div className="shrink-0" style={{width:'calc(var(--spacing)*8)'}} />
+
+          {/* ── Desktop Nav with text-shadow ── */}
+          <nav className="hidden items-center gap-8 md:flex" style={{textShadow:'1px 1px 3px rgba(0,0,0,0.5)'}}>
             ${extraDesktopLinks[0]}
             ${desktopLinks}
             ${extraDesktopLinks[1]}
@@ -1965,7 +1968,7 @@ export default function Contact() {
                   type="text"
                   placeholder={t("contact.form_name_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -1974,7 +1977,7 @@ export default function Contact() {
                   type="text"
                   placeholder={t("contact.form_surname_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -1983,7 +1986,7 @@ export default function Contact() {
                   type="email"
                   placeholder={t("contact.form_email_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -1992,7 +1995,7 @@ export default function Contact() {
                   type="tel"
                   placeholder={t("contact.form_phone_placeholder")}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               <div>
@@ -2001,7 +2004,7 @@ export default function Contact() {
                   placeholder={t("contact.form_message_placeholder")}
                   rows={4}
                   whileFocus={{ scale: 1.01 }}
-                  className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder-gray-500 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
+                  className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
               {/* Real Google reCAPTCHA */}
