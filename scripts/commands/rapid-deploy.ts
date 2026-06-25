@@ -478,6 +478,30 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
         // Wait for it to be ready
         execSync(`sleep 3`, { timeout: 10000 });
         restartSpinner.stop("✅ Server restarted on port 3100");
+
+      // ─── Verify hash freshness (catch stale-server 404 problem) ───
+      try {
+        const freshHtml = execSync(`curl -s http://127.0.0.1:3100/`, { timeout: 5000, encoding: "utf-8" });
+        const cssRefs = [...freshHtml.matchAll(/href="(\/_next\/static\/chunks\/[^"]*\.css)"/g)].map(m => m[1]);
+        const jsRefs = [...freshHtml.matchAll(/src="(\/_next\/static\/chunks\/[^"]*\.js)"/g)].map(m => m[1]);
+        const refs = [...cssRefs, ...jsRefs];
+        const missing = refs.filter(ref => {
+          const filePath = path.join(outputDir, ".next", "static", "chunks", path.basename(ref));
+          try { require("fs").accessSync(filePath); return false; } catch { return true; }
+        });
+        if (missing.length > 0) {
+          console.log(`   ⚠️  ${missing.length} chunk(s) referenced in HTML don't exist on disk — stale server detected`);
+          console.log(`   🔄 Force-killing and restarting...`);
+          execSync(`pkill -f "next start" 2>/dev/null; pkill -f "next-server" 2>/dev/null; sleep 2`, { timeout: 10000 });
+          execSync(`cd ${outputDir} && nohup npx next start -p 3100 > /tmp/rake-cms-server.log 2>&1 &`, { timeout: 10000 });
+          execSync(`sleep 4`, { timeout: 10000 });
+          console.log(`   ✅ Server restarted with fresh build`);
+        } else {
+          console.log(`   ✅ All ${refs.length} chunk hashes match disk`);
+        }
+      } catch (hashErr: any) {
+        console.log(`   ⚠️  Hash verification skipped: ${hashErr.message}`);
+      }
       } catch (error: any) {
         restartSpinner.stop(`⚠️ Server restart: ${(error as Error).message}`);
       }
