@@ -23,8 +23,8 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Per-site content (embedded from scraped data) ───
-  const TAGLINE = { es: "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!" };
-  const HERO_SUBTITLE = { es: "Karting Las Américas — Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Karting Las Américas — Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!" };
+  const TAGLINE = { es: "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Discover Karting Las Américas, the best track to feel the speed. Events, sessions and pure adrenaline for all ages. We look forward to seeing you!" };
+  const HERO_SUBTITLE = { es: "Karting Las Américas — Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Karting Las Américas — Discover Karting Las Américas, the best track to feel the speed. Events, sessions and pure adrenaline for all ages. We look forward to seeing you!" };
 
   // ─── Carousel State ───
   const slides = ["/media/kartinglasamericas/c-img-1.jpg","/media/kartinglasamericas/c-img-2.jpg","/media/kartinglasamericas/c-img-3.jpg"];

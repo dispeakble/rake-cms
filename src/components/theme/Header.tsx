@@ -35,7 +35,7 @@
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
-            <img src="/media/kartinglasaméricas/logo.png" alt="Karting Las Américas" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
+            <img src="/media/kartinglasamericas/logo.png" alt="Karting Las Américas" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
             
             <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
               Karting Las Américas
