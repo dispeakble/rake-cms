@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 // ─── Per-site services (embedded from scraped content) ───
-const SERVICES = [{"title":"Eventos Especiales","description":"Organizamos experiencias únicas y memorables para particulares y empresas. Celebraciones, eventos corporativos y actividades que emocionan."},{"title":"Actividades Deportivas","description":"Vive la adrenalina de nuestras actividades. Ideal para grupos que buscan diversión y emoción en un entorno seguro."},{"title":"Experiencias Personalizadas","description":"Cada cliente es único. Creamos paquetes a medida adaptados a tus necesidades y preferencias."},{"title":"Equipamiento y Seguridad","description":"Todo el equipamiento necesario para garantizar tu comodidad y seguridad durante la experiencia."},{"title":"Reserva Online","description":"Reserva fácilmente online. Consulta disponibilidad, precios y promociones desde cualquier dispositivo."}];
+const SERVICES = [{"title":{"es":"Consulta Profesional","en":"Professional Consultation"},"description":{"es":"¿No está seguro de lo que necesita? Empezamos cada proyecto con una consulta exhaustiva para entender sus requisitos.","en":"Not sure what you need? We start each project with a thorough consultation to understand your requirements."}},{"title":{"es":"Servicio Profesional","en":"Professional Service"},"description":{"es":"Nuestro equipo experimentado ofrece un servicio fiable y de alta calidad en cada ocasión.","en":"Our experienced team provides reliable, high-quality service every time."}},{"title":{"es":"Soporte de Emergencia","en":"Emergency Support"},"description":{"es":"¿Necesita ayuda urgente? Ofrecemos servicios de respuesta rápida para solucionar cualquier imprevisto.","en":"Need urgent help? We offer rapid response services to solve any unexpected issues."}}];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -52,6 +52,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 
 export default function Services() {
   const { t, lang } = useLanguage();
+  const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
@@ -95,8 +96,8 @@ export default function Services() {
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{svc.title}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{svc.description}</p>
+                  <h3 className="mb-3 text-xl font-bold text-white">{__(svc.title)}</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">{__(svc.description)}</p>
                 </div>
               </TiltCard>
             ))}
