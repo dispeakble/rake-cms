@@ -45,9 +45,9 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // ─── Per-site about content (embedded from scraped data) ───
-  const ABOUT_P1 = "Te garantizamos eventos, competiciones y cursos de máxima calidad.";
-  const ABOUT_P2 = "Precio especial para residentes";
-  const ABOUT_P3 = "Events Karts es una empresa que lleva más de 20 años en el mercado y se está expandiendo buscando nuevos retos.";
+  const ABOUT_P1 = { es: "Te garantizamos eventos, competiciones y cursos de máxima calidad.", en: "We guarantee top-quality events, competitions, and courses." };
+  const ABOUT_P2 = { es: "Te garantizamos eventos, competiciones y cursos de máxima calidad.", en: "We guarantee top-quality events, competitions, and courses." };
+  const ABOUT_P3 = { es: "Precio especial para residentes", en: "Special price for residents" };
 
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
@@ -79,7 +79,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              {"Karting Las Américas"}
+              {"Rake CMS"}
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -91,19 +91,19 @@ export default function About() {
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {ABOUT_P1}
+              {__(ABOUT_P1)}
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {ABOUT_P2}
+              {__(ABOUT_P2)}
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              {ABOUT_P3}
+              {__(ABOUT_P3)}
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -134,13 +134,17 @@ export default function About() {
             variants={springUp}
           >
             <motion.div
-              className="relative overflow-hidden rounded-2xl"
+              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-black"
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 300, damping: 15 }}
             >
-              <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
-              <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/website-1782411705225-06joj8.png" alt="Sobre Karting Las Américas" className="h-full w-full object-cover" />
+              <div className="aspect-square flex items-center justify-center">
+                <div className="text-center px-6">
+                  <svg className="w-16 h-16 mx-auto mb-4 text-[var(--color-gold)]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p className="text-xs text-gray-500">{t("about.subtitle")}</p>
+                </div>
               </div>
             </motion.div>
           </motion.div>

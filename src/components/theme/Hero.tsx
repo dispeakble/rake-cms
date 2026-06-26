@@ -23,8 +23,8 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Per-site content (embedded from scraped data) ───
-  const TAGLINE = "We are Karting Las Américas, serving the local area.";
-  const HERO_SUBTITLE = "Karting Las Américas — We are Karting Las Américas, serving the local area.";
+  const TAGLINE = { es: "A modern CMS like WordPress built with Next.js", en: "A modern CMS like WordPress built with Next.js" };
+  const HERO_SUBTITLE = { es: "Karting Las Américas — A modern CMS like WordPress built with Next.js", en: "Karting Las Américas — A modern CMS like WordPress built with Next.js" };
 
   // ─── Carousel State ───
   const slides = ["/media/kartinglasamericas/c-img-1.jpg","/media/kartinglasamericas/c-img-2.jpg","/media/kartinglasamericas/c-img-3.jpg"];
@@ -207,7 +207,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] backdrop-blur-sm">
-            {HERO_SUBTITLE || TAGLINE}
+            {__(HERO_SUBTITLE) || __(TAGLINE)}
           </span>
         </motion.div>
 
@@ -216,7 +216,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          {TAGLINE}
+          {__(TAGLINE)}
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -224,7 +224,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"Circuitos Kart"}).split("").map((char, i) => (
+          {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad."}).split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}

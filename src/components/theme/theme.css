@@ -5,18 +5,18 @@
 
 :root {
   /* ── Brand colors stay the same across themes ── */
-  --color-primary: #f80808;
-  --color-primary-rgb: 248, 8, 8;
-  --color-secondary: #282828;
-  --color-secondary-rgb: 40, 40, 40;
+  --color-primary: #0a3a53;
+  --color-primary-rgb: 10, 58, 83;
+  --color-secondary: #e03232;
+  --color-secondary-rgb: 224, 50, 50;
   --color-accent: #1a1a2e;
-  --color-gold: #282828;
-  --color-gold-rgb: 40, 40, 40;
-  --color-gold-light: #505050;
-  --color-glow: rgba(40, 40, 40, 0.3);
-  --color-glow-intense: rgba(40, 40, 40, 0.6);
-  --gradient-main: linear-gradient(135deg, #f80808, #282828);
-  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(40, 40, 40, 0.15), transparent 70%);
+  --color-gold: #e03232;
+  --color-gold-rgb: 224, 50, 50;
+  --color-gold-light: #ff5a5a;
+  --color-glow: rgba(224, 50, 50, 0.3);
+  --color-glow-intense: rgba(224, 50, 50, 0.6);
+  --gradient-main: linear-gradient(135deg, #0a3a53, #e03232);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(224, 50, 50, 0.15), transparent 70%);
   --border-angle: 0deg;
 
   /* ── LIGHT MODE (default) ── */
@@ -207,7 +207,7 @@
 
 /* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #f80808, #282828, #f80808, #282828);
+  background: linear-gradient(135deg, #0a3a53, #e03232, #0a3a53, #e03232);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -298,7 +298,7 @@
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #f80808, #282828); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0a3a53, #e03232); border-radius: 3px; }
 
 /* ── Selection ── */
 ::selection { background: var(--selection-bg); color: white; }

@@ -775,8 +775,6 @@ function buildNavLinks(_pageSlugs: SitePage[], businessType?: BusinessType): Sit
 	    sectionLinks.splice(2, 0, { slug: "/#excursions", label: "Excursiones" });
 	  } else if (businessType === "retail") {
 	    sectionLinks.splice(2, 0, { slug: "/#products", label: "Productos" });
-	  } else if (businessType === "service" || businessType === "professional") {
-	    sectionLinks.splice(2, 0, { slug: "/#menu", label: "Servicios" });
 	  }
 
 	  if (_pageSlugs.find((p) => p.slug === "blog")) {
@@ -837,11 +835,11 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
   const ctaBtnClass = navLinkClass;
 
   if (businessType === "restaurant") {
-    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Reservas</a>`;
-    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Reservas</a>`;
+    ctaDesktop = `<Link href="/#contact" className="${ctaBtnClass}">{t("nav.contact")}</Link>`;
+    ctaMobile = `<Link href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>{t("nav.contact")}</Link>`;
   } else {
-    ctaDesktop = `<a href="/#contact" className="${ctaBtnClass}">Contactar</a>`;
-    ctaMobile = `<a href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>Contactar</a>`;
+    ctaDesktop = `<Link href="/#contact" className="${ctaBtnClass}">{t("nav.contact")}</Link>`;
+    ctaMobile = `<Link href="/#contact" className="${mobileNavLinkClass}" onClick={() => setOpen(false)}>{t("nav.contact")}</Link>`;
   }
 
   // Extra nav items: Inicio (home), CTA (desktop & mobile) — no scraped external links
@@ -891,9 +889,6 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
 	      switchLang(next);
 	    };
 
-  // ─── B2B Link ───
-  const b2bHref = "https://b2b.marioviajes.com";
-
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
@@ -921,7 +916,6 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
             ${extraDesktopLinks[0]}
             ${desktopLinks}
             ${extraDesktopLinks[1]}
-            ${extraDesktopLinks[2]}
             {/* ─── Language Dropdown ─── */}
             <div className="relative">
               <button
@@ -1013,11 +1007,8 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
                 className="flex flex-col gap-4"
               >
                 ${extraMobileLinks[0]}
-                ${mobileLinks.split("\\\\n").map(l => l.trim()).join("\\\\n")}
+                ${mobileLinks.split("\\n").map(l => l.trim()).join("\\n")}
                 ${extraMobileLinks[1]}
-                {/* B2B mobile link */}
-                <a href={b2bHref} target="_blank" rel="noopener noreferrer" className="${mobileNavLinkClass}" onClick={() => setOpen(false)} style={{cursor:'pointer'}}>B2B</a>
-                ${extraMobileLinks[2]}
                 <div className="relative">
                   <button
                     onClick={() => setLangOpen(!langOpen)}
@@ -1125,8 +1116,8 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Per-site content (embedded from scraped data) ───
-  const TAGLINE = ${JSON.stringify(content.tagline || config.name)};
-  const HERO_SUBTITLE = ${JSON.stringify(content.heroSubtitle || "")};
+  const TAGLINE = { es: ${JSON.stringify(content.tagline || config.name)}, en: ${JSON.stringify(content.tagline || config.name)} };
+  const HERO_SUBTITLE = { es: ${JSON.stringify(content.heroSubtitle || "")}, en: ${JSON.stringify(content.heroSubtitle || "")} };
 
   // ─── Carousel State ───
   const slides = ${JSON.stringify(carouselImages)};
@@ -1309,7 +1300,7 @@ export default function Hero() {
           className="mb-6 inline-block"
         >
           <span className="inline-block rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-6 py-2 text-xs uppercase tracking-[0.3em] text-[var(--color-gold)] backdrop-blur-sm">
-            {HERO_SUBTITLE || TAGLINE}
+            {__(HERO_SUBTITLE) || __(TAGLINE)}
           </span>
         </motion.div>
 
@@ -1318,7 +1309,7 @@ export default function Hero() {
           variants={childVariants}
           className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
         >
-          {TAGLINE}
+          {__(TAGLINE)}
         </motion.h1>
 
         {/* ── Typewriter / Staggered Subtitle ── */}
@@ -1457,9 +1448,9 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // ─── Per-site about content (embedded from scraped data) ───
-  const ABOUT_P1 = ${JSON.stringify(p1)};
-  const ABOUT_P2 = ${JSON.stringify(p2)};
-  const ABOUT_P3 = ${JSON.stringify(p3)};
+  const ABOUT_P1 = { es: ${JSON.stringify(p1)}, en: ${JSON.stringify(p1)} };
+  const ABOUT_P2 = { es: ${JSON.stringify(p2)}, en: ${JSON.stringify(p2)} };
+  const ABOUT_P3 = { es: ${JSON.stringify(p3)}, en: ${JSON.stringify(p3)} };
 
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
@@ -1503,19 +1494,19 @@ export default function About() {
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {ABOUT_P1}
+              {__(ABOUT_P1)}
             </motion.p>
             <motion.p
               variants={springUp}
               className="mb-4 leading-relaxed text-gray-300"
             >
-              {ABOUT_P2}
+              {__(ABOUT_P2)}
             </motion.p>
             <motion.p
               variants={springUp}
               className="leading-relaxed text-gray-300"
             >
-              {ABOUT_P3}
+              {__(ABOUT_P3)}
             </motion.p>
 
             {/* ── 2. Animated Counter Stats ── */}
@@ -1581,7 +1572,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 // ─── Per-site services (embedded from scraped content) ───
-const SERVICES = ${JSON.stringify(servicesData)};
+const SERVICES = ${JSON.stringify(servicesData.map(s => ({ title: { es: s.title, en: s.title }, description: { es: s.description, en: s.description } })))};
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -1623,6 +1614,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 
 export default function Services() {
   const { t, lang } = useLanguage();
+  const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
       {/* Animated Background Mesh */}
@@ -1666,8 +1658,8 @@ export default function Services() {
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{svc.title}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{svc.description}</p>
+                  <h3 className="mb-3 text-xl font-bold text-white">{__(svc.title)}</h3>
+                  <p className="text-sm leading-relaxed text-gray-300">{__(svc.description)}</p>
                 </div>
               </TiltCard>
             ))}

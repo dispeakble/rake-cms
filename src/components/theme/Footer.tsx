@@ -49,7 +49,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Karting Las Américas</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"Circuitos Kart"})}
+              {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad."})}
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
