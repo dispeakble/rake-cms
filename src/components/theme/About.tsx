@@ -49,6 +49,12 @@ export default function About() {
   const ABOUT_P2 = {"es":"Precio especial para residentes","en":"Special price for residents"};
   const ABOUT_P3 = {"es":"Events Karts es una empresa que lleva más de 20 años en el mercado y se está expandiendo buscando nuevos retos.","en":"We are a fun, exciting family-owned business, and we help you develop your driving skills."};
 
+  const stats = [
+    { value: 857, label: { es: "Metros de pista", en: "Track length" }, suffix: "m" },
+    { value: 20, label: { es: "Años de experiencia", en: "Years of experience" }, suffix: "+" },
+    { value: 8, label: { es: "Anchura pista", en: "Track width" }, suffix: "m" },
+  ];
+
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
     visible: {
@@ -111,19 +117,15 @@ export default function About() {
               variants={springUp}
               className="mt-8 grid grid-cols-3 gap-4"
             >
-              {[
-                { value: 500, label: t("about.stats.clients"), suffix: "+" },
-                { value: 15, label: t("about.stats.experience"), suffix: "+" },
-                { value: 99, label: t("about.stats.satisfaction"), suffix: "%" },
-              ].map((stat) => (
+              {stats.map((stat) => (
                 <div
-                  key={stat.label}
+                  key={stat.label.es}
                   className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
                 >
                   <div className="text-2xl font-black text-[var(--color-gold)]">
                     <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                   </div>
-                  <div className="mt-1 text-xs text-gray-400">{stat.label}</div>
+                  <div className="mt-1 text-xs text-gray-400">{__(stat.label)}</div>
                 </div>
               ))}
             </motion.div>

@@ -53,7 +53,7 @@ export default function Footer() {
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
-              Karting Las Américas, 20 años en el mercado y se est
+              Karting Las Américas — más de 20 años ofreciendo la mejor experiencia de karting en Tenerife.
             </p>
             {/* Social / Watermark link with Glow Hover */}
             <div className="mt-6 flex gap-4">

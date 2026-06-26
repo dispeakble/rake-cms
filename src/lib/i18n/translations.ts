@@ -31,6 +31,7 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // ─── About section ───
   "about.title": { es: "Sobre nosotros", en: "About us", ro: "Despre noi", hu: "Rólunk" },
+  "about.subtitle": { es: "Foto del establecimiento", en: "Photo of the venue", ro: "Fotografia locației", hu: "A helyszín fényképe" },
   "about.stats.clients": { es: "Clientes satisfechos", en: "Happy clients", ro: "Clienți mulțumiți", hu: "Elégedett ügyfelek" },
   "about.stats.experience": { es: "Años de experiencia", en: "Years of experience", ro: "Ani de experiență", hu: "Éves tapasztalat" },
   "about.stats.satisfaction": { es: "Satisfacción", en: "Satisfaction", ro: "Satisfacție", hu: "Elégedettség" },
