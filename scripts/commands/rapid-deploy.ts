@@ -668,7 +668,7 @@ function guessTypeFromName(name: string): string | null {
   const restaurant = ["grill", "restaurant", "cafe", "bistro", "pizza", "sushi", "steakhouse", "bbq", "bar", "pub", "churrascaria", "rodizio", "diner", "bakery", "brasserie"];
   const retail = ["store", "shop", "boutique", "market", "mart", "outlet", "mall"];
   const travel = ["travel", "viajes", "viaje", "turismo", "tour", "excursion", "vacation", "holiday", "cruise", "tours", "trips", "agency"];
-  const service = ["service", "repair", "cleaning", "salon", "spa", "barber", "laundry", "taxi"];
+  const service = ["service", "repair", "cleaning", "salon", "spa", "barber", "laundry", "taxi", "kart", "karting", "circuit", "racing", "track"];
   const healthcare = ["clinic", "doctor", "dental", "dentist", "hospital", "medical", "pharmacy", "care"];
   const education = ["school", "academy", "college", "university", "institute", "center", "centre", "kindergarten", "preschool"];
   const professional = ["law", "legal", "attorney", "accounting", "consulting", "insurance", "financial", "broker", "realty"];

@@ -1374,6 +1374,12 @@ function generateAbout(content: GeneratedContent, photo: string | null, site: Sc
   const p1 = aboutParagraphs[0] || "";
   const p2 = aboutParagraphs[1] || "";
   const p3 = aboutParagraphs[2] || "";
+  // Use site.languageContent for bilingual paragraphs if available
+  const esPars = site?.languageContent?.es?.paragraphs || [];
+  const enPars = site?.languageContent?.en?.paragraphs || [];
+  const bilP1 = esPars[0] && enPars[0] ? { es: esPars[0], en: enPars[0] } : { es: p1, en: p1 };
+  const bilP2 = esPars[1] && enPars[1] ? { es: esPars[1], en: enPars[1] } : { es: p2, en: p2 };
+  const bilP3 = esPars[2] && enPars[2] ? { es: esPars[2], en: enPars[2] } : { es: p3, en: p3 };
   const businessName = escapeJsx(site?.businessName || site?.pages?.[0]?.title || content.aboutHeading || "Our Business");
   const imgHtml = photo
     ? `<motion.div
@@ -1448,9 +1454,9 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // ─── Per-site about content (embedded from scraped data) ───
-  const ABOUT_P1 = { es: ${JSON.stringify(p1)}, en: ${JSON.stringify(p1)} };
-  const ABOUT_P2 = { es: ${JSON.stringify(p2)}, en: ${JSON.stringify(p2)} };
-  const ABOUT_P3 = { es: ${JSON.stringify(p3)}, en: ${JSON.stringify(p3)} };
+  const ABOUT_P1 = ${JSON.stringify(bilP1)};
+  const ABOUT_P2 = ${JSON.stringify(bilP2)};
+  const ABOUT_P3 = ${JSON.stringify(bilP3)};
 
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
@@ -1548,7 +1554,7 @@ export default function About() {
 
 // ─── Services — 3D TILT + GLOWING BORDERS + PULSE DOTS ───────────
 
-function generateServices(content: GeneratedContent, config: ThemeConfig): string {
+function generateServices(content: GeneratedContent, config: ThemeConfig, site: ScrapedSite | null = null): string {
   const SERVICE_KEYS = [
     "service_1",
     "service_2",
@@ -1559,6 +1565,20 @@ function generateServices(content: GeneratedContent, config: ThemeConfig): strin
   ];
   const bizName = escapeJsx(config.name || "Our Business");
   const servicesData = content.services || [];
+
+  // Build bilingual services from languageContent if available
+  const bilingualServices = site?.languageContent?.es?.services?.length
+    ? site.languageContent.es.services.map((esSvc: any, i: number) => {
+        const enSvc = site?.languageContent?.en?.services?.[i];
+        return {
+          title: { es: esSvc.title, en: enSvc?.title || esSvc.title },
+          description: { es: esSvc.description, en: enSvc?.description || esSvc.description },
+        };
+      })
+    : servicesData.map((s: any) => ({
+        title: { es: s.title, en: s.title },
+        description: { es: s.description, en: s.description },
+      }));
 
   return `// ============================================================
 //  Services — 3D Perspective Tilt + Glowing Borders + Pulse Dots
@@ -1572,7 +1592,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 // ─── Per-site services (embedded from scraped content) ───
-const SERVICES = ${JSON.stringify(servicesData.map(s => ({ title: { es: s.title, en: s.title }, description: { es: s.description, en: s.description } })))};
+const SERVICES = ${JSON.stringify(bilingualServices)};
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -1994,42 +2014,30 @@ function generateFooter(business: BusinessData | null, name: string, pageSlugs: 
 	    "block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
 	  );
 
-	  // Build full text from scraped data (preserve ALL original text)
-	  const nameSlug = name.toLowerCase().replace(/\s+/g, '');
-	  const scrapedText = site?.allText || "";
-	  const scrapedParagraphs = site?.pages?.flatMap(p => p.paragraphs) || [];
-	  const allFooterText = scrapedParagraphs.length > 0
-	    ? scrapedParagraphs.join("\\n\\n")
-	    : scrapedText
-	      ? scrapedText.substring(0, 2000)
-	      : `${name} — Todos los derechos reservados.`;
+	  // Find copyright text from scraped data (extract © line from headings)
+	  const copyrightLine = site?.pages?.flatMap(p => p.headings.map(h => h.text)).find(h => h.includes('©')) || '';
+	  const scrapedAddr = site?.pages?.[0]?.contactInfo?.address?.[0] || business?.address;
+	  	  const allFooterText = copyrightLine;
+	  	  // Legacy variables (kept for template compatibility)
+	  	  const legalPdfUrl = "";
+	  	  const transparenciaPdfUrl = "";
 
-	  // Legal PDF links
-	  const legalPdfUrl = `https://${nameSlug}.com/docs/Legal-Term-${name.replace(/\s+/g, '-')}-Esp.pdf`;
-	  const transparenciaPdfUrl = `https://${nameSlug}.com/docs/MEMORIA-TRANSPARENCIA-${name.replace(/\s+/g, '-').toUpperCase()}.pdf`;
-
-	  // Full legal notice text
-	  const legalText = `NOTA LEGAL Y CONDICIONES DE USO. ${name} (en adelante, "la Empresa") con CIF/NIF correspondiente y domicilio social en la dirección registrada, pone a disposición de los usuarios del presente sitio web el presente documento con el que pretende dar cumplimiento a las obligaciones dispuestas en la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), así como informar a todos los usuarios acerca de las condiciones de uso del sitio web. El acceso y uso del portal atribuye la condición de usuario e implica la aceptación plena y sin reservas de todas y cada una de las disposiciones incluidas en este Aviso Legal. Quien no acepte estas condiciones deberá abstenerse de utilizar el portal. ${name} se reserva el derecho de modificar en cualquier momento las condiciones de uso del sitio web. CIF: B-12345678 | I-AV: I-AV-0001234.4`;
+	  // No fake legal text — use empty if no real copyright found
+	  const legalText = copyrightLine;
 
 	  // Full address
-	  const scrapedAddr = site?.pages?.[0]?.contactInfo?.address?.[0] || business?.address;
 	  const fullAddress = scrapedAddr
 	    ? `${name}, ${scrapedAddr}`
-	    : `${name} - Dirección disponible próximamente`;
+	    : `${name}`;
 
-	  // ─── Per-language hero subtitle map ───
-	  const heroSubtitleMap: Record<string, string> = { es: content.heroSubtitle || "Welcome to our establishment. We look forward to serving you." };
-	  if (site?.languageContent) {
-	    for (const [code, lc] of Object.entries(site.languageContent)) {
-	      const langContent = lc as { heroSubtitle?: string; tagline?: string };
-	      if (langContent.heroSubtitle) heroSubtitleMap[code] = langContent.heroSubtitle;
-	      else if (langContent.tagline) heroSubtitleMap[code] = langContent.tagline;
-	    }
-	  }
+	  	  // Build bilingual footer description from scraped data
+	  	  const footerDescEs = site?.languageContent?.es?.heroSubtitle || site?.languageContent?.es?.tagline || content.tagline || "";
+	  	  const footerDescEn = site?.languageContent?.en?.heroSubtitle || site?.languageContent?.en?.tagline || footerDescEs;
+	  	  const footerDesc = { es: footerDescEs, en: footerDescEn };
 
-	  return `// ============================================================
-//  Footer — Gradient Background + Glow Links + Animated Border
-//  MAXIMUM WOW EDITION — Full Legal + Transparencia + PDFs
+	  	  return `// ============================================================
+	  	  //  Footer — Gradient Background + Glow Links + Animated Border
+	  	  //  MAXIMUM WOW EDITION
 // ============================================================
 
 "use client";
@@ -2078,7 +2086,7 @@ export default function Footer() {
               <span className="gradient-text-gold">${escapeJsx(name)}</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              {__(${JSON.stringify(heroSubtitleMap)})}
+              {__(footerDesc)}
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
@@ -2122,84 +2130,12 @@ export default function Footer() {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.links")}</h4>
             <div className="space-y-3 text-sm">
               ${quickLinks}
-            </div>
-          </div>
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.legal_heading")}</h4>
-            <div className="space-y-3 text-sm text-gray-400">
-              <a
-                href="${escapeJsx(legalPdfUrl)}"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.legal")}</a>
-              <a
-                href="${escapeJsx(transparenciaPdfUrl)}"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.transparency")}</a>
-              <Link
-                href="/legal"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.legal_notice")}</Link>
-              <Link
-                href="/privacy"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.privacy")}</Link>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* ── Full Legal Text Section (preserved from original site) ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-8 border-t border-white/10 pt-6"
-        >
-          <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
-              <a
-                href="${escapeJsx(legalPdfUrl)}"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
-              >{t("footer.legal")}</a>
-              <span className="text-gray-600 text-xs">|</span>
-              <a
-                href="${escapeJsx(transparenciaPdfUrl)}"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
-              >{t("footer.transparency")}</a>
-            </div>
-            <p>
-              {__(${JSON.stringify({ es: "De conformidad con lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico, se informa al usuario que el titular del presente sitio web es " + name + " S.L.U., con domicilio en la dirección registrada, con CIF/NIF correspondiente, Agencia de Viajes legalmente constituida. La actividad comprende la organización y comercialización de viajes combinados. Así mismo se informa que se encuentra a disposición de nuestros clientes las correspondientes hojas de reclamaciones debidamente autorizadas.", en: "In accordance with the provisions of Article 10 of Law 34/2002, of July 11, on information society services and electronic commerce, the user is informed that the owner of this website is " + name + " S.L.U., with registered address, with corresponding Tax ID, Travel Agency legally constituted. The activity includes the organization and marketing of package tours. Likewise, complaint forms duly authorized are available to our customers.", ro: "În conformitate cu prevederile articolului 10 din Legea 34/2002 din 11 iulie privind serviciile societății informaționale și comerțul electronic, utilizatorul este informat că proprietarul acestui site web este " + name + " S.L.U., cu sediul social la adresa înregistrată, cu CIF/NIF corespunzător, Agenție de Turism constituită legal. Activitatea include organizarea și comercializarea de pachete turistice. De asemenea, formularele de reclamații autorizate sunt puse la dispoziția clienților noștri.", hu: "A 34/2002. számú, július 11-i törvény 10. cikkének rendelkezéseivel összhangban, amely az információs társadalom szolgáltatásairól és az elektronikus kereskedelemmel foglalkozik, a felhasználó tájékoztatást kap arról, hogy a weboldal tulajdonosa " + name + " S.L.U., bejegyzett címmel, megfelelő CIF/NIF számmal, jogilag megalapított Utazási Iroda. A tevékenység magában foglalja az utazási csomagok szervezését és értékesítését. Továbbá, a megfelelően engedélyezett panaszfüzetek ügyfeleink rendelkezésére állnak." })})}
-            </p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed"
-        >
-          <p className="mt-4">&copy; ${year} ${escapeJsx(name)}. {t("footer.copyright")}</p>
-          <p className="mt-2">CIF: B-12345678 | I-AV: I-AV-0001234.4</p>
-          <p className="mt-2">${escapeJsx(fullAddress)}</p>
-          <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
-        </motion.div>
+    <p className="text-xs text-gray-500 mt-4">${escapeJsx(copyrightLine)}</p><div className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed">
+          <p className="mt-4">${escapeJsx(copyrightLine)}</p>
+          <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:"pointer"}}>alexawebservers.com</a></p>
+        </div>
       </div>
-    </footer>
-  );
+    </footer>;
 }
 `;
 }
@@ -2400,7 +2336,7 @@ export async function generateTheme(
     { name: "Hero.tsx", content: generateHero(content, config, heroPhoto, site) },
     { name: "About.tsx", content: generateAbout(content, aboutPhoto, site) },
     ...(businessType === "travel" ? [{ name: "Islands.tsx", content: generateIslands() }] : []),
-    { name: "Services.tsx", content: generateServices(content, config) },
+    { name: "Services.tsx", content: generateServices(content, config, site) },
     { name: "Reviews.tsx", content: generateReviews(reviews) },
     { name: "Contact.tsx", content: generateContact(site, business, config) },
     { name: "Footer.tsx", content: generateFooter(business, name, pageSlugs, content, businessType, site) },

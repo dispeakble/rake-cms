@@ -45,9 +45,9 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // ─── Per-site about content (embedded from scraped data) ───
-  const ABOUT_P1 = { es: "Te garantizamos eventos, competiciones y cursos de máxima calidad.", en: "We guarantee top-quality events, competitions, and courses." };
-  const ABOUT_P2 = { es: "Te garantizamos eventos, competiciones y cursos de máxima calidad.", en: "We guarantee top-quality events, competitions, and courses." };
-  const ABOUT_P3 = { es: "Precio especial para residentes", en: "Special price for residents" };
+  const ABOUT_P1 = {"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"We guarantee top-quality events, competitions, and courses."};
+  const ABOUT_P2 = {"es":"Precio especial para residentes","en":"Special price for residents"};
+  const ABOUT_P3 = {"es":"Events Karts es una empresa que lleva más de 20 años en el mercado y se está expandiendo buscando nuevos retos.","en":"We are a fun, exciting family-owned business, and we help you develop your driving skills."};
 
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
@@ -79,7 +79,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              {"Rake CMS"}
+              {"Karting Las Américas"}
             </motion.span>
             <motion.h2
               variants={springUp}

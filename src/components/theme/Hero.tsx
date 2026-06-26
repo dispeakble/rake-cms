@@ -23,8 +23,8 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Per-site content (embedded from scraped data) ───
-  const TAGLINE = { es: "A modern CMS like WordPress built with Next.js", en: "A modern CMS like WordPress built with Next.js" };
-  const HERO_SUBTITLE = { es: "Karting Las Américas — A modern CMS like WordPress built with Next.js", en: "Karting Las Américas — A modern CMS like WordPress built with Next.js" };
+  const TAGLINE = { es: "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!" };
+  const HERO_SUBTITLE = { es: "Karting Las Américas — Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Karting Las Américas — Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!" };
 
   // ─── Carousel State ───
   const slides = ["/media/kartinglasamericas/c-img-1.jpg","/media/kartinglasamericas/c-img-2.jpg","/media/kartinglasamericas/c-img-3.jpg"];
@@ -224,7 +224,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad."}).split("").map((char, i) => (
+          {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"Circuitos Kart"}).split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
