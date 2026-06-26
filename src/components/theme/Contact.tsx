@@ -92,7 +92,7 @@ export default function Contact() {
               <div className="space-y-3 text-sm text-gray-300">
                 <p>{t("contact.info_text")}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">{t("contact.response_time")}</p>
+                  <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
                 </div>
               </div>
             </motion.div>
