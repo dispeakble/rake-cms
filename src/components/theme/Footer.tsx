@@ -1,6 +1,6 @@
 // ============================================================
 //  Footer — Gradient Background + Glow Links + Animated Border
-//  MAXIMUM WOW EDITION — Full Legal + Transparencia + PDFs
+//  MAXIMUM WOW EDITION
 // ============================================================
 
 "use client";
@@ -49,7 +49,7 @@ export default function Footer() {
               <span className="gradient-text-gold">Karting Las Américas</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad."})}
+              {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"We guarantee top-quality events, competitions, and courses."})}
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
@@ -93,82 +93,14 @@ export default function Footer() {
             <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.links")}</h4>
             <div className="space-y-3 text-sm">
               <Link href="/#about" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.about")}</Link>
-          <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.services")}</Link>
-            </div>
-          </div>
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.legal_heading")}</h4>
-            <div className="space-y-3 text-sm text-gray-400">
-              <a
-                href="https://kartinglasaméricas.com/docs/Legal-Term-Karting-Las-Américas-Esp.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.legal")}</a>
-              <a
-                href="https://kartinglasaméricas.com/docs/MEMORIA-TRANSPARENCIA-KARTING-LAS-AMÉRICAS.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.transparency")}</a>
-              <Link
-                href="/legal"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.legal_notice")}</Link>
-              <Link
-                href="/privacy"
-                className="block transition-all duration-200 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
-                style={{cursor:'pointer'}}
-              >{t("footer.privacy")}</Link>
+              <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.services")}</Link>
             </div>
           </div>
         </motion.div>
-
-        {/* ── Full Legal Text Section (preserved from original site) ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-8 border-t border-white/10 pt-6"
-        >
-          <div className="max-w-full text-xs text-gray-500 leading-relaxed space-y-3">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-2">
-              <a
-                href="https://kartinglasaméricas.com/docs/Legal-Term-Karting-Las-Américas-Esp.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
-              >{t("footer.legal")}</a>
-              <span className="text-gray-600 text-xs">|</span>
-              <a
-                href="https://kartinglasaméricas.com/docs/MEMORIA-TRANSPARENCIA-KARTING-LAS-AMÉRICAS.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 font-medium text-xs uppercase tracking-wider hover:text-[var(--color-gold)] transition-colors cursor-pointer"
-              >{t("footer.transparency")}</a>
-            </div>
-            <p>
-              {__({"es":"De conformidad con lo dispuesto en el artículo 10 de la Ley 34/2002, de 11 de julio, de servicios de la sociedad de la información y de comercio electrónico, se informa al usuario que el titular del presente sitio web es Karting Las Américas S.L.U., con domicilio en la dirección registrada, con CIF/NIF correspondiente, Agencia de Viajes legalmente constituida. La actividad comprende la organización y comercialización de viajes combinados. Así mismo se informa que se encuentra a disposición de nuestros clientes las correspondientes hojas de reclamaciones debidamente autorizadas.","en":"In accordance with the provisions of Article 10 of Law 34/2002, of July 11, on information society services and electronic commerce, the user is informed that the owner of this website is Karting Las Américas S.L.U., with registered address, with corresponding Tax ID, Travel Agency legally constituted. The activity includes the organization and marketing of package tours. Likewise, complaint forms duly authorized are available to our customers.","ro":"În conformitate cu prevederile articolului 10 din Legea 34/2002 din 11 iulie privind serviciile societății informaționale și comerțul electronic, utilizatorul este informat că proprietarul acestui site web este Karting Las Américas S.L.U., cu sediul social la adresa înregistrată, cu CIF/NIF corespunzător, Agenție de Turism constituită legal. Activitatea include organizarea și comercializarea de pachete turistice. De asemenea, formularele de reclamații autorizate sunt puse la dispoziția clienților noștri.","hu":"A 34/2002. számú, július 11-i törvény 10. cikkének rendelkezéseivel összhangban, amely az információs társadalom szolgáltatásairól és az elektronikus kereskedelemmel foglalkozik, a felhasználó tájékoztatást kap arról, hogy a weboldal tulajdonosa Karting Las Américas S.L.U., bejegyzett címmel, megfelelő CIF/NIF számmal, jogilag megalapított Utazási Iroda. A tevékenység magában foglalja az utazási csomagok szervezését és értékesítését. Továbbá, a megfelelően engedélyezett panaszfüzetek ügyfeleink rendelkezésére állnak."})}
-            </p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed"
-        >
-          <p className="mt-4">&copy; 2026 Karting Las Américas. {t("footer.copyright")}</p>
-          <p className="mt-2">CIF: B-12345678 | I-AV: I-AV-0001234.4</p>
-          <p className="mt-2">Karting Las Américas, 20 años en el mercado y se est</p>
+        <div className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed">
+          <p className="mt-4">© 2023 Design by Zinkers. All Rights Reserved.</p>
           <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );

@@ -17,7 +17,7 @@
 	    const { theme, toggleTheme } = useTheme();
 	    const [open, setOpen] = useState(false);
 	    const [langOpen, setLangOpen] = useState(false);
-	    const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
+	    const langs = [{code:"en",flag:"🇬🇧",label:"EN"},{code:"es",flag:"🇪🇸",label:"ES"}];
 
 	    const doSwitchLang = (next: Lang) => {
 	      setLangOpen(false);
