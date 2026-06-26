@@ -68,11 +68,11 @@ export default function Contact() {
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>20 años en el mercado y se est</span>
+                  <span>Carr. General, S/N, salida 78, 38670 Fañabé, Santa Cruz de Tenerife</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
+                  <a href="tel:(+34) 922 713 096" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">(+34) 922 713 096</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
