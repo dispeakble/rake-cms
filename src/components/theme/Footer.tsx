@@ -7,12 +7,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 export default function Footer() {
   const { t, lang } = useLanguage();
   const __ = (m: Record<string,string>) => m[lang] || m.es || "";
+  const footerDesc = { es: "Cocina casera tradicional en Adeje. Especialidad en tortillas, paellas y carnes.", en: "Traditional home cooking in Adeje. Specializing in tortillas, paella and meats." };
   return (
     <footer className="relative px-4 py-16 overflow-hidden">
       {/* Animated Gradient Background */}
@@ -46,16 +46,14 @@ export default function Footer() {
         >
           <div className="md:col-span-2">
             <h4 className="mb-4 text-lg font-semibold text-white">
-              <span className="gradient-text-gold">Karting Las Américas</span>
+              <span className="gradient-text-gold">Restaurante Casa Adolfo</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-gray-400">
-              {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"We guarantee top-quality events, competitions, and courses."})}
+              {__(footerDesc)}
             </p>
-            {/* Address */}
             <p className="mt-4 text-xs text-gray-500 leading-relaxed">
-              Karting Las Américas — más de 20 años ofreciendo la mejor experiencia de karting en Tenerife.
+              Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife
             </p>
-            {/* Social / Watermark link with Glow Hover */}
             <div className="mt-6 flex gap-4">
               <motion.a
                 href="https://facebook.com"
@@ -94,12 +92,12 @@ export default function Footer() {
             <div className="space-y-3 text-sm">
               <Link href="/#about" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.about")}</Link>
               <Link href="/#services" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.services")}</Link>
+              <Link href="/#menu" className="block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.menu")}</Link>
             </div>
           </div>
         </motion.div>
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed">
-          <p className="mt-4">© 2023 Design by Zinkers. All Rights Reserved.</p>
-          <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:'pointer'}}>alexawebservers.com</a></p>
+          <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer">alexawebservers.com</a></p>
         </div>
       </div>
     </footer>

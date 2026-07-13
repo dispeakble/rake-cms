@@ -23,7 +23,6 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative px-4 py-24 overflow-hidden">
-      {/* Animated Background Pattern */}
       <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -45,11 +44,10 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Karting Las Américas</p>
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">Restaurante Casa Adolfo</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
-          {/* Contact Details */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -57,31 +55,29 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
             className="space-y-8"
           >
-            {/* Business location — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📍</span> Karting Las Américas
+                <span className="text-[var(--color-gold)]">📍</span> Restaurante Casa Adolfo
               </h3>
               <div className="space-y-3 text-sm text-gray-300">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>Carr. General, S/N, salida 78, 38670 Fañabé, Santa Cruz de Tenerife</span>
+                  <span>Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:(+34) 922 713 096" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">(+34) 922 713 096</a>
+                  <a href="tel:+34922715228" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">(+34) 922 71 52 28</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <a href="mailto:info@kartingamericas.com" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">info@kartingamericas.com</a>
+                  <span className="text-gray-400">Contacto a través del restaurante</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Additional contact info — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
@@ -98,7 +94,6 @@ export default function Contact() {
             </motion.div>
           </motion.div>
 
-          {/* Contact form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -153,7 +148,6 @@ export default function Contact() {
                   className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
-              {/* Real Google reCAPTCHA */}
               <div className="flex justify-center rounded-lg border border-white/10 bg-black/30 px-4 py-4">
                 <div
                   className="g-recaptcha"
