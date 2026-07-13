@@ -17,7 +17,7 @@
 	    const { theme, toggleTheme } = useTheme();
 	    const [open, setOpen] = useState(false);
 	    const [langOpen, setLangOpen] = useState(false);
-	    const langs = [{code:"en",flag:"🇬🇧",label:"EN"},{code:"es",flag:"🇪🇸",label:"ES"}];
+	    const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
 
 	    const doSwitchLang = (next: Lang) => {
 	      setLangOpen(false);
@@ -35,10 +35,10 @@
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
-            <img src="/media/kartinglasamericas/logo.png" alt="Karting Las Américas" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
+            <img src="/media/restaurantecasaadolfo,callelacruz,s/n,38679adeje,santacruzdetenerife/logo.png" alt="Restaurante Casa Adolfo, Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
             
             <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
-              Karting Las Américas
+              Restaurante Casa Adolfo, Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife
             </span>
             <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-light)] transition-all duration-300 group-hover:w-full" />
           </Link>
@@ -51,6 +51,7 @@
             <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.home")}</Link>
             <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.about")}</Link>
           <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.services")}</Link>
+          <Link href="/#menu" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.menu")}</Link>
             <Link href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.contact")}</Link>
             {/* ─── Language Dropdown ─── */}
             <div className="relative">
@@ -145,6 +146,7 @@
                 <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.home")}</Link>
                 <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.about")}</Link>
           <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.services")}</Link>
+          <Link href="/#menu" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.menu")}</Link>
                 <Link href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.contact")}</Link>
                 <div className="relative">
                   <button

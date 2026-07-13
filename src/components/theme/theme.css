@@ -1,22 +1,22 @@
-/* Rake CMS — Theme: Karting Las Américas - MAXIMUM WOW EDITION */
+/* Rake CMS — Theme: Restaurante Casa Adolfo, Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife - MAXIMUM WOW EDITION */
 /* ============================================================
    Light mode :root = default (light) | .dark overrides for dark
    ============================================================ */
 
 :root {
   /* ── Brand colors stay the same across themes ── */
-  --color-primary: #000000;
-  --color-primary-rgb: 0, 0, 0;
-  --color-secondary: #abb8c3;
-  --color-secondary-rgb: 171, 184, 195;
-  --color-accent: #ffffff;
-  --color-gold: #abb8c3;
-  --color-gold-rgb: 171, 184, 195;
-  --color-gold-light: #d3e0eb;
-  --color-glow: rgba(171, 184, 195, 0.3);
-  --color-glow-intense: rgba(171, 184, 195, 0.6);
-  --gradient-main: linear-gradient(135deg, #000000, #abb8c3);
-  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(171, 184, 195, 0.15), transparent 70%);
+  --color-primary: #d82828;
+  --color-primary-rgb: 216, 40, 40;
+  --color-secondary: #d82828;
+  --color-secondary-rgb: 216, 40, 40;
+  --color-accent: #1a1a2e;
+  --color-gold: #d82828;
+  --color-gold-rgb: 216, 40, 40;
+  --color-gold-light: #ff5050;
+  --color-glow: rgba(216, 40, 40, 0.3);
+  --color-glow-intense: rgba(216, 40, 40, 0.6);
+  --gradient-main: linear-gradient(135deg, #d82828, #d82828);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(216, 40, 40, 0.15), transparent 70%);
   --border-angle: 0deg;
 
   /* ── LIGHT MODE (default) ── */
@@ -207,7 +207,7 @@
 
 /* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #000000, #abb8c3, #000000, #abb8c3);
+  background: linear-gradient(135deg, #d82828, #d82828, #d82828, #d82828);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -298,7 +298,7 @@
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #000000, #abb8c3); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d82828, #d82828); border-radius: 3px; }
 
 /* ── Selection ── */
 ::selection { background: var(--selection-bg); color: white; }

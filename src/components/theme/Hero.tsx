@@ -23,11 +23,11 @@ export default function Hero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // ─── Per-site content (embedded from scraped data) ───
-  const TAGLINE = { es: "Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Discover Karting Las Américas, the best track to feel the speed. Events, sessions and pure adrenaline for all ages. We look forward to seeing you!" };
-  const HERO_SUBTITLE = { es: "Karting Las Américas — Descubre Karting Las Américas, el mejor circuito para sentir la velocidad. Eventos, tandas y adrenalina pura para todas las edades. ¡Te esperamos!", en: "Karting Las Américas — Discover Karting Las Américas, the best track to feel the speed. Events, sessions and pure adrenaline for all ages. We look forward to seeing you!" };
+  const TAGLINE = { es: "Restaurante Casa Adolfo — Cocina casera tradicional en Adeje desde 1975. Tortillas, paellas, carnes y pescados hechos con amor.", en: "Restaurante Casa Adolfo — Traditional home cooking in Adeje since 1975. Tortillas, paella, meats and fish made with love." };
+  const HERO_SUBTITLE = { es: "Bienvenido a Restaurante Casa Adolfo — Cocina casera tradicional en Adeje desde 1975. Tortillas, paellas, carnes y pescados hechos con amor.", en: "Welcome to Restaurante Casa Adolfo — Traditional home cooking in Adeje since 1975. Tortillas, paella, meats and fish made with love." };
 
   // ─── Carousel State ───
-  const slides = ["/media/kartinglasamericas/c-img-1.jpg","/media/kartinglasamericas/c-img-2.jpg","/media/kartinglasamericas/c-img-3.jpg"];
+  const slides = ["/media/scraped/unsplash-1783933536274-oa1hed.svg","/media/scraped/unsplash-1783933538828-e5z3tr.svg","/media/scraped/unsplash-1783933536274-oa1hed.svg"];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -224,7 +224,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
         >
-          {__({"es":"Te garantizamos eventos, competiciones y cursos de máxima calidad.","en":"Circuitos Kart"}).split("").map((char, i) => (
+          {__({"es":"Te garantizamos tortillas, paellas y cocina casera tradicional. Calidad-precio inmejorable en Adeje.","en":"We guarantee traditional homemade tortillas, paella and home cooking. Great value for money in Adeje."}).split("").map((char, i) => (
             <motion.span
               key={i}
               initial={{ opacity: 0, y: 10 }}
@@ -232,7 +232,7 @@ export default function Hero() {
               transition={{ delay: 0.8 + i * 0.015, duration: 0.3 }}
               className="inline-block"
             >
-              {char === " " ? " " : char}
+              {char === " " ? "\u00a0" : char}
             </motion.span>
           ))}
         </motion.p>
@@ -243,7 +243,7 @@ export default function Hero() {
           className="flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <Link
-            href="/#menu"
+            href="/#services"
             className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-gold)] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(var(--color-gold-rgb), 0.5)] hover:scale-105 active:scale-95 cursor-pointer"
           >
             <span className="relative z-10">{t("hero.cta_services")}</span>

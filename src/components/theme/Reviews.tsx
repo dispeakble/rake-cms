@@ -6,10 +6,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"Alejandro M.","text":"Increíble experiencia en el karting. El circuito está muy bien cuidado y los karts son de primera calidad. Ideal para pasar un día de adrenalina con amigos.","rating":5,"source":"Google"},{"author":"Carmen L.","text":"Fuimos con los niños y lo pasaron en grande. El personal es muy amable y te explican todo con detalle. Sin duda repetiremos. Muy recomendable para familias.","rating":5,"source":"Tripadvisor"},{"author":"Roberto S.","text":"El Kart Experience es una pasada. En dos tandas coges el truco y empiezas a dar vueltas como un profesional. El sistema de cronometraje está muy bien para ver tu progreso.","rating":5,"source":"Google"},{"author":"Laura & Mark","text":"Best karting track in Tenerife! Great facilities, well-maintained karts, and fantastic track layout. The staff speaks English and made us feel welcome. Will come back!","rating":5,"source":"Tripadvisor"},{"author":"Javier G.","text":"Celebramos el cumpleaños de mi hijo con sus amigos y fue todo un acierto. Organización perfecta, circuito espectacular y precios muy razonables.","rating":4,"source":"Restaurant Guru"},{"author":"Sofía R.","text":"El día del kartista entre semana es una ganga. Pista de 857 metros con curvas muy divertidas. Los karts SR4 son una maravilla. Mejor plan en Tenerife.","rating":5,"source":"Google"}];
+const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"Ana S.","text":"Las mejores tortillas de Adeje. La de patatas con cebolla caramelizada es espectacular. El trato del personal es excelente, te hacen sentir como en casa. Volvemos cada semana.","rating":5,"source":"Google"},{"author":"Miguel R.","text":"Restaurante de toda la vida con comida casera de verdad. La paella de mariscos está deliciosa y los precios son muy razonables. La terraza es ideal para comer al aire libre.","rating":5,"source":"Tripadvisor"},{"author":"Laura & David","text":"Descubrimos este restaurante por casualidad y fue un acierto total. Las croquetas caseras y el entrecot a la brasa son increíbles. El servicio muy atento y rápido.","rating":5,"source":"Google"},{"author":"John M.","text":"Great local Spanish food off the tourist track. The grilled fish was fresh and perfectly cooked. Friendly staff who helped us with the menu. Great value for money.","rating":5,"source":"Tripadvisor"},{"author":"Carmen G.","text":"Llevamos años viniendo y nunca defrauda. La tortilla de camarones es la mejor que he probado. El menú del día es una opción excelente con platos caseros de calidad.","rating":4,"source":"Restaurant Guru"},{"author":"Pedro A.","text":"Si te gusta la cocina tradicional española, este es tu sitio. Las raciones son generosas, el ambiente familiar y los precios muy ajustados. Probad las patatas bravas.","rating":5,"source":"Google"}];
 
 function SparkleStar({ filled, delay }: { filled: boolean; delay: number }) {
   return (
@@ -92,7 +91,6 @@ export default function Reviews() {
               className="relative rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm hover:border-[var(--color-gold)]/30"
               style={{ transformPerspective: 800 }}
             >
-              {/* Gradient Quote Decoration */}
               <div className="absolute -top-2 -left-2 text-4xl text-[var(--color-gold)]/20 select-none leading-none" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z"/>
