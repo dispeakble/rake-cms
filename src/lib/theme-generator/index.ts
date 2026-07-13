@@ -1402,7 +1402,7 @@ export default function Hero() {
 
 // ─── About — SPRING REVEAL + COUNTERS + GLASSMORPHISM ────────────
 
-function generateAbout(content: GeneratedContent, photo: string | null, site: ScrapedSite | null = null): string {
+function generateAbout(content: GeneratedContent, photo: string | null, site: ScrapedSite | null = null, business: BusinessData | null = null): string {
   const aboutParagraphs = content.aboutParagraphs || [];
   const p1 = aboutParagraphs[0] || "";
   const p2 = aboutParagraphs[1] || "";
@@ -2402,7 +2402,7 @@ export async function generateTheme(
     { name: "theme.css", content: generateCss(config) },
     { name: "Header.tsx", content: generateHeader(name, pageSlugs, businessType, site) },
     { name: "Hero.tsx", content: generateHero(content, config, heroPhoto, site) },
-    { name: "About.tsx", content: generateAbout(content, aboutPhoto, site) },
+    { name: "About.tsx", content: generateAbout(content, aboutPhoto, site, business) },
     ...(businessType === "travel" ? [{ name: "Islands.tsx", content: generateIslands() }] : []),
     { name: "Services.tsx", content: generateServices(content, config, site) },
     { name: "Reviews.tsx", content: generateReviews(reviews) },
