@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 // ─── Per-site services (embedded from scraped content) ───
-const SERVICES = [{"title":{"es":"Eventos","en":"Events"},"description":{"es":"Organizamos cumpleaños, despedidas y eventos empresariales. Una experiencia emocionante para todas las edades y ocasiones.","en":"We organize birthdays, stag parties and corporate events. An exciting experience for all ages and occasions."}},{"title":{"es":"Tandas de Kart","en":"Kart Sessions"},"description":{"es":"Sesiones de 10 minutos en nuestro circuito. El Kart Experience incluye dos tandas para obtener el carnet de Events Karts.","en":"10-minute sessions on our track. The Kart Experience includes two sessions to obtain your Events Karts license."}},{"title":{"es":"Circuito Profesional","en":"Professional Track"},"description":{"es":"Circuito de 857 metros con 8 curvas (5 derechas, 3 izquierdas) y 8 metros de anchura. Sistema de iluminación y cronometraje.","en":"857-meter track with 8 curves (5 right, 3 left) and 8 meters width. Lighting and timing systems."}},{"title":{"es":"Flota de Karts","en":"Kart Fleet"},"description":{"es":"Amplia variedad de karts incluyendo modelos SR4, LR5 y 2DR con los más altos estándares de seguridad.","en":"Wide variety of karts including SR4, LR5 and 2DR models with the highest safety standards."}},{"title":{"es":"Karting Itinerante","en":"Mobile Karting"},"description":{"es":"Llevamos la experiencia del karting a tu empresa o evento con nuestro karting itinerante.","en":"We bring the karting experience to your company or event with our mobile karting service."}}];
+const SERVICES = [{"title":{"es":"Tortillas Caseras","en":"Homemade Tortillas"},"description":{"es":"Nuestras tortillas son famosas en Adeje. Tortilla de patatas, tortilla de camarones y muchas variedades más. Hechas al momento con ingredientes frescos.","en":"Our tortillas are famous in Adeje. Potato tortilla, shrimp tortilla and many more varieties. Made to order with fresh ingredients."}},{"title":{"es":"Paellas y Arroces","en":"Paella & Rice Dishes"},"description":{"es":"Paella valenciana, arroz con mariscos y arroz a banda. Preparados con ingredientes de primera calidad y el toque tradicional de la cocina española.","en":"Valencian paella, seafood rice and arroz a banda. Prepared with top-quality ingredients and the traditional touch of Spanish cuisine."}},{"title":{"es":"Carnes a la Brasa","en":"Grilled Meats"},"description":{"es":"Selección de carnes a la brasa: entrecot, pollo, cerdo y nuestras brochetas caseras. Acompañadas de patatas fritas o ensalada.","en":"Selection of grilled meats: entrecote, chicken, pork and our homemade skewers. Served with fries or salad."}},{"title":{"es":"Pescados Frescos","en":"Fresh Fish"},"description":{"es":"Pescado fresco del día, preparado a la plancha o frito. Especialidad en cherne, dorada y calamares a la romana.","en":"Fresh fish of the day, grilled or fried. Specialty in sea bream, grouper and fried squid."}},{"title":{"es":"Tapas y Raciones","en":"Tapas & Sharing Plates"},"description":{"es":"Amplia variedad de tapas: croquetas, jamón ibérico, queso manchego, chorizo al vino, patatas bravas y mucho más para compartir.","en":"Wide variety of tapas: croquettes, Iberian ham, Manchego cheese, chorizo in wine, patatas bravas and more to share."}}];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -55,7 +55,6 @@ export default function Services() {
   const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
-      {/* Animated Background Mesh */}
       <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-20"
@@ -71,7 +70,6 @@ export default function Services() {
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
-        {/* ── Our Services ── */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -87,7 +85,7 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              Karting Las Américas
+              Restaurante Casa Adolfo
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
