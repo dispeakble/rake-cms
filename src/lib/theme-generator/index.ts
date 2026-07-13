@@ -1423,7 +1423,7 @@ export default function Hero() {
         {/* ── Two Shimmer CTA Buttons ── */}
         <motion.div
           variants={childVariants}
-          className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+          className="flex flex-col items-center justify-center gap-4 sm:flex-row mb-24"
         >
           <Link
             href="/#menu"
@@ -1442,7 +1442,7 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2"
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
       >

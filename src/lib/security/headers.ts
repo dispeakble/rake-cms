@@ -14,7 +14,7 @@ export const CSP = [
   "img-src 'self' blob: data: https: http:",
   "font-src 'self' data:",
   "connect-src 'self' https: http:",
-  "frame-src 'self' https://www.youtube.com https://youtube.com https://player.vimeo.com https://maps.google.com",
+  "frame-src 'self' https://www.youtube.com https://youtube.com https://player.vimeo.com https://maps.google.com https://www.openstreetmap.org",
   "media-src 'self' https: http:",
   "object-src 'none'",
   "base-uri 'self'",
