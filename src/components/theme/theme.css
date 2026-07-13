@@ -31,8 +31,27 @@
   --card-border: rgba(0, 0, 0, 0.08);
   --muted: #6b5d52;
   --muted-lighter: #8c7a6c;
-  --color-gray-300: #7a6a5e;
-  --color-gray-400: #8c7a6c;
+  --color-gray-300: #4b5563;
+  --color-gray-400: #6b7280;
+
+  /* ── SURFACE HIERARCHY ── */
+  --surface-bg: rgba(0, 0, 0, 0.03);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+  --surface-overlay: rgba(255, 255, 255, 0.95);
+  --surface-overlay-90: rgba(255, 255, 255, 0.90);
+  --surface-overlay-50: rgba(0, 0, 0, 0.05);
+  --surface-overlay-45: rgba(0, 0, 0, 0.04);
+  --surface-overlay-30: rgba(0, 0, 0, 0.03);
+
+  /* ── BORDER HIERARCHY ── */
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-default: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.20);
+
+  /* ── TEXT HIERARCHY ── */
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --text-quaternary: #9ca3af;
   --input-bg: #ffffff;
   --input-border: rgba(0, 0, 0, 0.12);
   --scrollbar-track: #f5f0ea;
@@ -70,6 +89,25 @@
   --recaptcha-border: rgba(255, 255, 255, 0.1);
   --recaptcha-bg: rgba(0, 0, 0, 0.3);
   --headings: #f5f0ea;
+
+  /* ── DARK SURFACES ── */
+  --surface-bg: rgba(255, 255, 255, 0.05);
+  --surface-hover: rgba(255, 255, 255, 0.10);
+  --surface-overlay: rgba(0, 0, 0, 0.95);
+  --surface-overlay-90: rgba(0, 0, 0, 0.90);
+  --surface-overlay-50: rgba(0, 0, 0, 0.50);
+  --surface-overlay-45: rgba(0, 0, 0, 0.45);
+  --surface-overlay-30: rgba(0, 0, 0, 0.30);
+
+  /* ── DARK BORDERS ── */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.25);
+
+  /* ── DARK TEXT ── */
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-quaternary: #6b7280;
 }
 
 /* ── Theme-aware utility classes ── */
@@ -90,6 +128,25 @@
 .border-recaptcha { border-color: var(--recaptcha-border); }
 .text-heading { color: var(--headings); }
 
+/* ── Surface Utility Classes ── */
+.bg-surface { background: var(--surface-bg); }
+.bg-surface-hover { background: var(--surface-hover); }
+.bg-overlay { background: var(--surface-overlay); }
+.bg-overlay-90 { background: var(--surface-overlay-90); }
+.bg-overlay-50 { background: var(--surface-overlay-50); }
+.bg-overlay-45 { background: var(--surface-overlay-45); }
+.bg-overlay-30 { background: var(--surface-overlay-30); }
+
+/* ── Border Utility Classes ── */
+.border-subtle { border-color: var(--border-subtle) !important; }
+.border-default { border-color: var(--border-default) !important; }
+.border-strong { border-color: var(--border-strong) !important; }
+
+/* ── Text Hierarchy Utility Classes ── */
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-quaternary { color: var(--text-quaternary); }
+
 /* ── Light mode: auto-fix hardcoded white/gray text inside card contexts ── */
 :root .bg-card .text-white,
 :root .bg-card-inner .text-white,
@@ -103,12 +160,12 @@
 :root .bg-card-inner h4.text-white {
   color: var(--headings) !important;
 }
-:root .bg-card .text-gray-300,
-:root .bg-card-inner .text-gray-300,
-:root .bg-card .text-gray-400,
-:root .bg-card-inner .text-gray-400,
-:root .bg-card .text-gray-500,
-:root .bg-card-inner .text-gray-500 {
+:root .bg-card .text-secondary,
+:root .bg-card-inner .text-secondary,
+:root .bg-card .text-tertiary,
+:root .bg-card-inner .text-tertiary,
+:root .bg-card .text-quaternary,
+:root .bg-card-inner .text-quaternary {
   color: var(--muted) !important;
 }
 :root .bg-card .text-gray-600,

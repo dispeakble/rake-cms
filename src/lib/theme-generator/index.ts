@@ -494,6 +494,25 @@ function generateCss(config: ThemeConfig): string {
   --recaptcha-border: ${lightRecaptchaBorder};
   --recaptcha-bg: ${lightRecaptchaBg};
   --headings: ${lightHeadings};
+
+  /* ── SURFACE HIERARCHY (card backgrounds, hover states, overlays) ── */
+  --surface-bg: rgba(0, 0, 0, 0.03);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+  --surface-overlay: rgba(255, 255, 255, 0.95);
+  --surface-overlay-90: rgba(255, 255, 255, 0.90);
+  --surface-overlay-50: rgba(0, 0, 0, 0.05);
+  --surface-overlay-45: rgba(0, 0, 0, 0.04);
+  --surface-overlay-30: rgba(0, 0, 0, 0.03);
+
+  /* ── BORDER HIERARCHY ── */
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-default: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.20);
+
+  /* ── TEXT HIERARCHY ── */
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --text-quaternary: #9ca3af;
 }
 
 .dark {
@@ -520,6 +539,25 @@ function generateCss(config: ThemeConfig): string {
   --recaptcha-border: ${darkRecaptchaBorder};
   --recaptcha-bg: ${darkRecaptchaBg};
   --headings: ${darkHeadings};
+
+  /* ── DARK SURFACES ── */
+  --surface-bg: rgba(255, 255, 255, 0.05);
+  --surface-hover: rgba(255, 255, 255, 0.10);
+  --surface-overlay: rgba(0, 0, 0, 0.95);
+  --surface-overlay-90: rgba(0, 0, 0, 0.90);
+  --surface-overlay-50: rgba(0, 0, 0, 0.50);
+  --surface-overlay-45: rgba(0, 0, 0, 0.45);
+  --surface-overlay-30: rgba(0, 0, 0, 0.30);
+
+  /* ── DARK BORDERS ── */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.15);
+  --border-strong: rgba(255, 255, 255, 0.25);
+
+  /* ── DARK TEXT ── */
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-quaternary: #6b7280;
 }
 
 /* ── Theme-aware utility classes ── */
@@ -540,6 +578,25 @@ function generateCss(config: ThemeConfig): string {
 .border-recaptcha { border-color: var(--recaptcha-border); }
 .text-heading { color: var(--headings); }
 
+/* ── Surface Utility Classes ── */
+.bg-surface { background: var(--surface-bg); }
+.bg-surface-hover { background: var(--surface-hover); }
+.bg-overlay { background: var(--surface-overlay); }
+.bg-overlay-90 { background: var(--surface-overlay-90); }
+.bg-overlay-50 { background: var(--surface-overlay-50); }
+.bg-overlay-45 { background: var(--surface-overlay-45); }
+.bg-overlay-30 { background: var(--surface-overlay-30); }
+
+/* ── Border Utility Classes ── */
+.border-subtle { border-color: var(--border-subtle) !important; }
+.border-default { border-color: var(--border-default) !important; }
+.border-strong { border-color: var(--border-strong) !important; }
+
+/* ── Text Hierarchy Utility Classes ── */
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-quaternary { color: var(--text-quaternary); }
+
 /* ── Light mode: auto-fix hardcoded white/gray text inside card contexts ── */
 :root .bg-card .text-white,
 :root .bg-card-inner .text-white,
@@ -553,12 +610,12 @@ function generateCss(config: ThemeConfig): string {
 :root .bg-card-inner h4.text-white {
   color: var(--headings) !important;
 }
-:root .bg-card .text-gray-300,
-:root .bg-card-inner .text-gray-300,
-:root .bg-card .text-gray-400,
-:root .bg-card-inner .text-gray-400,
-:root .bg-card .text-gray-500,
-:root .bg-card-inner .text-gray-500 {
+:root .bg-card .text-secondary,
+:root .bg-card-inner .text-secondary,
+:root .bg-card .text-tertiary,
+:root .bg-card-inner .text-tertiary,
+:root .bg-card .text-quaternary,
+:root .bg-card-inner .text-quaternary {
   color: var(--muted) !important;
 }
 :root .bg-card .text-gray-600,
@@ -1435,7 +1492,7 @@ function generateAbout(content: GeneratedContent, photo: string | null, site: Sc
                   <svg className="w-16 h-16 mx-auto mb-4 text-[var(--color-gold)]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <p className="text-xs text-gray-500">{t("about.subtitle")}</p>
+                  <p className="text-xs text-quaternary">{t("about.subtitle")}</p>
                 </div>
               </div>
             </motion.div>`;
@@ -1544,19 +1601,19 @@ export default function About() {
             </motion.h2>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-gray-300"
+              className="mb-4 leading-relaxed text-secondary"
             >
               {__(ABOUT_P1)}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-gray-300"
+              className="mb-4 leading-relaxed text-secondary"
             >
               {__(ABOUT_P2)}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="leading-relaxed text-gray-300"
+              className="leading-relaxed text-secondary"
             >
               {__(ABOUT_P3)}
             </motion.p>
@@ -1578,7 +1635,7 @@ export default function About() {
                       <AnimatedCounterWithDecimal end={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
                     )}
                   </div>
-                  <div className="mt-1 text-xs text-gray-400">{stat.label.en ? __(stat.label) : stat.label}</div>
+                  <div className="mt-1 text-xs text-tertiary">{stat.label.en ? __(stat.label) : stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -1725,7 +1782,7 @@ export default function Services() {
                 <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
                   <h3 className="mb-3 text-xl font-bold text-white">{__(svc.title)}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{__(svc.description)}</p>
+                  <p className="text-sm leading-relaxed text-secondary">{__(svc.description)}</p>
                 </div>
               </TiltCard>
             ))}
@@ -1813,7 +1870,7 @@ export default function Reviews() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("reviews.subtitle")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("reviews.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("reviews.tagline")}</p>
+          <p className="mx-auto mt-3 max-w-xl text-tertiary">{t("reviews.tagline")}</p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -1845,8 +1902,8 @@ export default function Reviews() {
               </div>
 
               <StarRating rating={review.rating} />
-              <p className="mt-3 text-sm leading-relaxed text-gray-300 relative z-10">"{review.text}"</p>
-              <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-gray-400">
+              <p className="mt-3 text-sm leading-relaxed text-secondary relative z-10">"{review.text}"</p>
+              <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-tertiary">
                 <span className="font-medium text-white">— {review.author}</span>
                 <span className="text-[var(--color-gold)]/80">{review.source}</span>
               </div>
@@ -1914,7 +1971,7 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">${escapeJsx(config.name)}</p>
+          <p className="mx-auto mt-3 max-w-xl text-tertiary">${escapeJsx(config.name)}</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -1934,7 +1991,7 @@ export default function Contact() {
               <h3 className="mb-4 text-lg font-bold text-white">
                 <span className="text-[var(--color-gold)]">📍</span> ${escapeJsx(config.name || "Our Location")}
               </h3>
-              <div className="space-y-3 text-sm text-gray-300">
+              <div className="space-y-3 text-sm text-secondary">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
                   <span>${escapeJsx(addr)}</span>
@@ -1967,7 +2024,7 @@ export default function Contact() {
                   allowFullScreen
                 />
               </div>
-              <p className="mt-2 text-center text-[10px] text-gray-500">
+              <p className="mt-2 text-center text-[10px] text-quaternary">
                 <a href="https://www.openstreetmap.org/?mlat=28.1230&amp;mlon=-16.7218#map=16/28.1230/-16.7218&amp;layers=T" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
               </p>
             </motion.div>
@@ -1980,10 +2037,10 @@ export default function Contact() {
               <h3 className="mb-4 text-lg font-bold text-white">
                 <span className="text-[var(--color-gold)]">📋</span> {t("contact.info_title")}
               </h3>
-              <div className="space-y-3 text-sm text-gray-300">
+              <div className="space-y-3 text-sm text-secondary">
                 <p>{t("contact.info_text")}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">{t("contact.response_time")}</p>
+                  <p className="text-xs text-tertiary">{t("contact.response_time")}</p>
                 </div>
               </div>
             </motion.div>
@@ -2000,7 +2057,7 @@ export default function Contact() {
             <h3 className="mb-6 text-lg font-semibold text-white">{t("contact.form_title")}</h3>
             <form className="space-y-5">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_name_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_name_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_name_placeholder")}
@@ -2009,7 +2066,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_surname_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_surname_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_surname_placeholder")}
@@ -2018,7 +2075,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_email_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_email_label")}</label>
                 <motion.input
                   type="email"
                   placeholder={t("contact.form_email_placeholder")}
@@ -2027,7 +2084,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_phone_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_phone_label")}</label>
                 <motion.input
                   type="tel"
                   placeholder={t("contact.form_phone_placeholder")}
@@ -2036,7 +2093,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_message_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_message_label")}</label>
                 <motion.textarea
                   placeholder={t("contact.form_message_placeholder")}
                   rows={4}
@@ -2079,7 +2136,7 @@ function generateFooter(business: BusinessData | null, name: string, pageSlugs: 
 	  const navLinks = buildNavLinks(pageSlugs, businessType);
 	  const quickLinks = renderNavLinks(
 	    navLinks,
-	    "block text-sm text-gray-400 transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
+	    "block text-sm text-tertiary transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer"
 	  );
 
 	  // Find copyright text from scraped data (extract © line from headings)
@@ -2153,11 +2210,11 @@ export default function Footer() {
             <h4 className="mb-4 text-lg font-semibold text-white">
               <span className="gradient-text-gold">${escapeJsx(name)}</span>
             </h4>
-            <p className="max-w-sm text-sm leading-relaxed text-gray-400">
+            <p className="max-w-sm text-sm leading-relaxed text-tertiary">
               {__(footerDesc)}
             </p>
             {/* Address */}
-            <p className="mt-4 text-xs text-gray-500 leading-relaxed">
+            <p className="mt-4 text-xs text-quaternary leading-relaxed">
               ${escapeJsx(fullAddress)}
             </p>
             {/* Social / Watermark link with Glow Hover */}
@@ -2167,7 +2224,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2, y: -2 }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-tertiary transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
                 style={{cursor:'pointer'}}
               >
                 f
@@ -2177,7 +2234,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2, y: -2 }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-tertiary transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
                 style={{cursor:'pointer'}}
               >
                 ig
@@ -2187,7 +2244,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.2, y: -2 }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-400 transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-tertiary transition-all duration-300 hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)] hover:shadow-[0_0_15px_rgba(var(--color-gold-rgb), 0.3)] cursor-pointer"
                 style={{cursor:'pointer'}}
               >
                 ta
@@ -2195,10 +2252,10 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">{t("footer.links")}</h4>
+            <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-tertiary">{t("footer.links")}</h4>
             <div className="space-y-3 text-sm">
               ${quickLinks}
-    <p className="text-xs text-gray-500 mt-4">${escapeJsx(copyrightLine)}</p><div className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-gray-500 leading-relaxed">
+    <p className="text-xs text-quaternary mt-4">${escapeJsx(copyrightLine)}</p><div className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-quaternary leading-relaxed">
           <p className="mt-4">${escapeJsx(copyrightLine)}</p>
           <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:"pointer"}}>alexawebservers.com</a></p>
         </div>
@@ -2250,7 +2307,7 @@ export default function Islands() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("excursions.subtitle")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("islands.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">
+          <p className="mx-auto mt-3 max-w-xl text-tertiary">
             {t("excursions.text")}
           </p>
         </motion.div>
@@ -2280,11 +2337,11 @@ export default function Islands() {
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-sm leading-relaxed text-gray-300">
+                <p className="text-sm leading-relaxed text-secondary">
                   {t(island.descKey)}
                 </p>
                 <div className="mt-4 border-t border-white/10 pt-4">
-                  <p className="text-xs leading-relaxed text-gray-400 italic">
+                  <p className="text-xs leading-relaxed text-tertiary italic">
                     {t(island.extraKey)}
                   </p>
                 </div>
