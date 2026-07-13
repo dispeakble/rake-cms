@@ -752,6 +752,50 @@ function generateCss(config: ThemeConfig): string {
 
 /* ── Selection ── */
 ::selection { background: var(--selection-bg); color: white; }
+
+/* ── Map Container ── */
+.map-container { width: 100%; height: 250px; border-radius: 0.75rem; overflow: hidden; }
+.map-container iframe { width: 100%; height: 100%; border: 0; }
+
+/* ── Circular toggle fix ── */
+.theme-toggle-btn {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(${goldRgb}, 0.4) !important;
+  box-shadow: 0 0 12px rgba(${goldRgb}, 0.25) !important;
+}
+.theme-toggle-btn:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(${goldRgb}, 0.5) !important;
+}
+.theme-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(${goldRgb}, 0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.theme-toggle-btn:hover::after {
+  opacity: 1;
+}
 `;
 }
 
@@ -823,8 +867,8 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
   );
 
   // Logo URL
-  const logoUrl = `/media/${name.toLowerCase().replace(/\s+/g, '')}/logo.png`;
-  const hasLogo = false;
+  const logoUrl = `/media/scraped/generated/logo.svg`;
+  const hasLogo = true;
 
   const navLinkClass = `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`;
   const mobileNavLinkClass = `text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer`;
@@ -944,11 +988,10 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
                 </div>
               )}
             </div>
-            {/* ── Theme Toggle ── */}
+            {/* ── Theme Toggle (perfect circle) ── */}
             <button
               onClick={toggleTheme}
-              className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 hover:bg-white/10 cursor-pointer bg-transparent border-none"
-              style={{cursor:'pointer'}}
+              className="theme-toggle-btn"
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {theme === 'dark' ? (
@@ -1073,9 +1116,9 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
   // Carousel images base path
   const nameSlug = config.name.toLowerCase().replace(/[\s']/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const carouselImages = [
-    `/media/${nameSlug}/c-img-1.jpg`,
-    `/media/${nameSlug}/c-img-2.jpg`,
-    `/media/${nameSlug}/c-img-3.jpg`,
+    `/media/scraped/generated/slide1.svg`,
+    `/media/scraped/generated/slide2.svg`,
+    `/media/scraped/generated/slide3.svg`,
   ];
 
   // ─── Per-language hero subtitle map ───
@@ -1164,7 +1207,7 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-4"
+      className="relative flex h-[75vh] min-h-[500px] items-center justify-center overflow-hidden px-4"
     >
       {/* ── Carousel Slides ── */}
       <AnimatePresence custom={direction} mode="wait">
@@ -1307,27 +1350,17 @@ export default function Hero() {
         {/* ── Animated Gradient Text on Tagline ── */}
         <motion.h1
           variants={childVariants}
-          className="mb-6 text-5xl font-black tracking-tight md:text-7xl lg:text-8xl"
+          className="mb-4 text-4xl font-black tracking-tight md:text-5xl lg:text-6xl leading-tight"
         >
           {__(TAGLINE)}
         </motion.h1>
 
-        {/* ── Typewriter / Staggered Subtitle ── */}
+        {/* ── Subtitle ── */}
         <motion.p
           variants={childVariants}
-          className="mx-auto mb-12 max-w-2xl text-lg text-white/70 md:text-xl"
+          className="mx-auto mb-8 max-w-2xl text-base text-white/70 md:text-lg"
         >
-          {__(${JSON.stringify(heroSubtitleMap)}).split("").map((char, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + i * 0.015, duration: 0.3 }}
-              className="inline-block"
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
-          ))}
+          {__(${JSON.stringify(heroSubtitleMap)})}
         </motion.p>
 
         {/* ── Two Shimmer CTA Buttons ── */}
@@ -1418,7 +1451,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
+function AnimatedCounterWithDecimal({ end, suffix = "", decimals = 0 }: { end: number; suffix?: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
@@ -1435,15 +1468,15 @@ function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string })
         setCount(end);
         clearInterval(timer);
       } else {
-        setCount(Math.floor(current));
+        setCount(parseFloat(current.toFixed(decimals)));
       }
     }, duration / steps);
     return () => clearInterval(timer);
-  }, [isInView, end]);
+  }, [isInView, end, decimals]);
 
   return (
     <span ref={ref} className="tabular-nums">
-      {count}{suffix}
+      {count.toFixed(decimals)}{suffix}
     </span>
   );
 }
@@ -1457,6 +1490,19 @@ export default function About() {
   const ABOUT_P1 = ${JSON.stringify(bilP1)};
   const ABOUT_P2 = ${JSON.stringify(bilP2)};
   const ABOUT_P3 = ${JSON.stringify(bilP3)};
+
+  // ─── Stats ───
+  ${business && business.totalRatings ? `
+  const stats = [
+    { value: ${business.totalRatings || 500}, label: { es: "Opiniones", en: "Reviews" }, suffix: "+", decimals: 0 },
+    { value: ${Math.min(Math.ceil((business.rating || 45) * 10), 99)}, label: { es: "Años de tradición", en: "Years of tradition" }, suffix: "", decimals: 0 },
+    { value: ${Math.round((business.rating || 4.5) * 10)}, label: { es: "Puntuación", en: "Rating" }, suffix: "/5", decimals: 1, divider: 10 },
+  ];` : `
+  const stats = [
+    { value: 500, label: { es: "Clientes satisfechos", en: "Happy clients" }, suffix: "+", decimals: 0 },
+    { value: 15, label: { es: "Años de experiencia", en: "Years experience" }, suffix: "+", decimals: 0 },
+    { value: 99, label: { es: "Satisfacción", en: "Satisfaction" }, suffix: "%", decimals: 0 },
+  ];`}
 
   const springUp = {
     hidden: { opacity: 0, y: 60, scale: 0.95 } as const,
@@ -1520,19 +1566,19 @@ export default function About() {
               variants={springUp}
               className="mt-8 grid grid-cols-3 gap-4"
             >
-              {[
-                { value: 500, label: t("about.stats.clients"), suffix: "+" },
-                { value: 15, label: t("about.stats.experience"), suffix: "+" },
-                { value: 99, label: t("about.stats.satisfaction"), suffix: "%" },
-              ].map((stat) => (
+              {stats.map((stat) => (
                 <div
-                  key={stat.label}
+                  key={stat.label.en || stat.label}
                   className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
                 >
                   <div className="text-2xl font-black text-[var(--color-gold)]">
-                    <AnimatedCounter end={stat.value} suffix={stat.suffix} />
+                    {stat.decimals === 1 ? (
+                      <span className="tabular-nums">{(stat.value / (stat.divider || 1)).toFixed(1)}{stat.suffix}</span>
+                    ) : (
+                      <AnimatedCounterWithDecimal end={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
+                    )}
                   </div>
-                  <div className="mt-1 text-xs text-gray-400">{stat.label}</div>
+                  <div className="mt-1 text-xs text-gray-400">{stat.label.en ? __(stat.label) : stat.label}</div>
                 </div>
               ))}
             </motion.div>
@@ -1902,6 +1948,28 @@ export default function Contact() {
                   <a href="mailto:${escapeJsx(email)}" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">${escapeJsx(email)}</a>
                 </div>
               </div>
+            </motion.div>
+
+            {/* ── Map ── */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30 overflow-hidden"
+            >
+              <div className="map-container">
+                <iframe
+                  title="${escapeJsx(config.name || "Our Location")} - Ubicación"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=-16.7268%2C28.1180%2C-16.7168%2C28.1280&amp;layer=transportmap&amp;marker=28.1230%2C-16.7218"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+              <p className="mt-2 text-center text-[10px] text-gray-500">
+                <a href="https://www.openstreetmap.org/?mlat=28.1230&amp;mlon=-16.7218#map=16/28.1230/-16.7218&amp;layers=T" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
+              </p>
             </motion.div>
 
             {/* Additional contact info — Hover Lift Card */}

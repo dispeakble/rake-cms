@@ -1,75 +1,75 @@
-/* Rake CMS — Theme: Restaurante Casa Adolfo, Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife - MAXIMUM WOW EDITION */
+/* Rake CMS — Theme: Restaurante Casa Adolfo - WARM SPANISH TRADITION */
 /* ============================================================
    Light mode :root = default (light) | .dark overrides for dark
    ============================================================ */
 
 :root {
-  /* ── Brand colors stay the same across themes ── */
-  --color-primary: #d82828;
-  --color-primary-rgb: 216, 40, 40;
-  --color-secondary: #d82828;
-  --color-secondary-rgb: 216, 40, 40;
+  /* ── Brand colors — warm restaurant palette ── */
+  --color-primary: #8B1A1A;
+  --color-primary-rgb: 139, 26, 26;
+  --color-secondary: #D4A017;
+  --color-secondary-rgb: 212, 160, 23;
   --color-accent: #1a1a2e;
-  --color-gold: #d82828;
-  --color-gold-rgb: 216, 40, 40;
-  --color-gold-light: #ff5050;
-  --color-glow: rgba(216, 40, 40, 0.3);
-  --color-glow-intense: rgba(216, 40, 40, 0.6);
-  --gradient-main: linear-gradient(135deg, #d82828, #d82828);
-  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(216, 40, 40, 0.15), transparent 70%);
+  --color-gold: #E5A100;
+  --color-gold-rgb: 229, 161, 0;
+  --color-gold-light: #F5C842;
+  --color-glow: rgba(229, 161, 0, 0.3);
+  --color-glow-intense: rgba(229, 161, 0, 0.6);
+  --gradient-main: linear-gradient(135deg, #8B1A1A, #D4A017);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(229, 161, 0, 0.15), transparent 70%);
   --border-angle: 0deg;
 
   /* ── LIGHT MODE (default) ── */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(0, 0, 0, 0.08);
-  --page-bg: #ffffff;
-  --page-text: #111827;
-  --section-bg-start: #f8fafc;
-  --section-bg-mid: #ffffff;
-  --section-bg-end: #f8fafc;
+  --page-bg: #faf7f2;
+  --page-text: #1f1a14;
+  --section-bg-start: #f5f0ea;
+  --section-bg-mid: #faf7f2;
+  --section-bg-end: #f5f0ea;
   --card-bg: rgba(255, 255, 255, 0.9);
   --card-border: rgba(0, 0, 0, 0.08);
-  --muted: #475569;
-  --muted-lighter: #64748b;
-  --color-gray-300: #4b5563;
-  --color-gray-400: #6b7280;
+  --muted: #6b5d52;
+  --muted-lighter: #8c7a6c;
+  --color-gray-300: #7a6a5e;
+  --color-gray-400: #8c7a6c;
   --input-bg: #ffffff;
   --input-border: rgba(0, 0, 0, 0.12);
-  --scrollbar-track: #f1f5f9;
+  --scrollbar-track: #f5f0ea;
   --selection-bg: var(--color-primary);
   --header-bg: rgba(var(--color-primary-rgb), 0.85);
   --header-border: rgba(0, 0, 0, 0.08);
   --mobile-menu-bg: rgba(255, 255, 255, 0.95);
-  --card-inner-bg: #f8fafc;
+  --card-inner-bg: #faf7f2;
   --recaptcha-border: rgba(0, 0, 0, 0.08);
   --recaptcha-bg: rgba(255, 255, 255, 0.9);
-  --headings: #0f172a;
+  --headings: #1f1a14;
 }
 
 .dark {
   /* ── DARK MODE ── */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
-  --page-bg: #000000;
-  --page-text: #ffffff;
-  --section-bg-start: #0d0d0d;
-  --section-bg-mid: #1a0a0a;
-  --section-bg-end: #0d0d0d;
+  --page-bg: #0d0a08;
+  --page-text: #f5f0ea;
+  --section-bg-start: #120d0a;
+  --section-bg-mid: #1a120e;
+  --section-bg-end: #120d0a;
   --card-bg: rgba(255, 255, 255, 0.03);
   --card-border: rgba(255, 255, 255, 0.1);
-  --muted: #94a3b8;
-  --muted-lighter: #64748b;
+  --muted: #a09080;
+  --muted-lighter: #8c7a6c;
   --input-bg: rgba(0, 0, 0, 0.4);
   --input-border: rgba(255, 255, 255, 0.1);
-  --scrollbar-track: #0a0a0f;
+  --scrollbar-track: #0d0a08;
   --selection-bg: var(--color-primary);
-  --header-bg: rgba(var(--color-primary-rgb), 0.55);
+  --header-bg: rgba(var(--color-primary-rgb), 0.6);
   --header-border: rgba(255, 255, 255, 0.1);
   --mobile-menu-bg: rgba(0, 0, 0, 0.95);
-  --card-inner-bg: #0a0a0f;
+  --card-inner-bg: #120d0a;
   --recaptcha-border: rgba(255, 255, 255, 0.1);
   --recaptcha-bg: rgba(0, 0, 0, 0.3);
-  --headings: #ffffff;
+  --headings: #f5f0ea;
 }
 
 /* ── Theme-aware utility classes ── */
@@ -207,7 +207,7 @@
 
 /* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #d82828, #d82828, #d82828, #d82828);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-primary));
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -298,7 +298,51 @@
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d82828, #d82828); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--color-primary), var(--color-secondary)); border-radius: 3px; }
 
 /* ── Selection ── */
 ::selection { background: var(--selection-bg); color: white; }
+
+/* ── Map Container ── */
+.map-container { width: 100%; height: 250px; border-radius: 0.75rem; overflow: hidden; }
+.map-container iframe { width: 100%; height: 100%; border: 0; }
+
+/* ── Circular toggle fix ── */
+.theme-toggle-btn {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(229, 161, 0, 0.4) !important;
+  box-shadow: 0 0 12px rgba(229, 161, 0, 0.25) !important;
+}
+.theme-toggle-btn:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(229, 161, 0, 0.5) !important;
+}
+.theme-toggle-btn::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(229, 161, 0, 0.15), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.theme-toggle-btn:hover::after {
+  opacity: 1;
+}

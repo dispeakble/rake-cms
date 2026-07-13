@@ -1,28 +1,28 @@
 // ============================================================
-	  //  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
-	  //  MAXIMUM WOW EDITION
-	  // ============================================================
+//  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
+//  MAXIMUM WOW EDITION
+// ============================================================
 
-	  "use client";
+  "use client";
 
-	  import Link from "next/link";
-	  import { useState } from "react";
-	  import { motion, AnimatePresence } from "framer-motion";
-	  import { useLanguage } from "@/lib/i18n";
-	  import { useTheme } from "@/components/theme/ThemeProvider";
-	  import type { Lang } from "@/lib/i18n";
+  import Link from "next/link";
+  import { useState } from "react";
+  import { motion, AnimatePresence } from "framer-motion";
+  import { useLanguage } from "@/lib/i18n";
+  import { useTheme } from "@/components/theme/ThemeProvider";
+  import type { Lang } from "@/lib/i18n";
 
-	  export default function Header() {
-	    const { lang, switchLang, t } = useLanguage();
-	    const { theme, toggleTheme } = useTheme();
-	    const [open, setOpen] = useState(false);
-	    const [langOpen, setLangOpen] = useState(false);
-	    const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
+  export default function Header() {
+    const { lang, switchLang, t } = useLanguage();
+    const { theme, toggleTheme } = useTheme();
+    const [open, setOpen] = useState(false);
+    const [langOpen, setLangOpen] = useState(false);
+    const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
 
-	    const doSwitchLang = (next: Lang) => {
-	      setLangOpen(false);
-	      switchLang(next);
-	    };
+    const doSwitchLang = (next: Lang) => {
+      setLangOpen(false);
+      switchLang(next);
+    };
 
   return (
     <motion.header
@@ -35,12 +35,7 @@
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
-            <img src="/media/restaurantecasaadolfo,callelacruz,s/n,38679adeje,santacruzdetenerife/logo.png" alt="Restaurante Casa Adolfo, Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
-            
-            <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
-              Restaurante Casa Adolfo, Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife
-            </span>
-            <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-light)] transition-all duration-300 group-hover:w-full" />
+            <img src="/media/scraped/generated/logo.svg" alt="Restaurante Casa Adolfo" className="h-10 w-auto object-contain" style={{minWidth:'140px'}} />
           </Link>
 
           {/* ── Spacer between logo and menu ── */}
@@ -81,11 +76,10 @@
                 </div>
               )}
             </div>
-            {/* ── Theme Toggle ── */}
+            {/* ── Theme Toggle (perfect circle) ── */}
             <button
               onClick={toggleTheme}
-              className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 hover:bg-white/10 cursor-pointer bg-transparent border-none"
-              style={{cursor:'pointer'}}
+              className="theme-toggle-btn"
               aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
               {theme === 'dark' ? (

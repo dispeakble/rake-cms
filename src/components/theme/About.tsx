@@ -9,7 +9,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string }) {
+function AnimatedCounter({ end, suffix = "", decimals = 0 }: { end: number; suffix?: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
@@ -26,15 +26,15 @@ function AnimatedCounter({ end, suffix = "" }: { end: number; suffix?: string })
         setCount(end);
         clearInterval(timer);
       } else {
-        setCount(Math.floor(current));
+        setCount(parseFloat(current.toFixed(decimals)));
       }
     }, duration / steps);
     return () => clearInterval(timer);
-  }, [isInView, end]);
+  }, [isInView, end, decimals]);
 
   return (
     <span ref={ref} className="tabular-nums">
-      {count}{suffix}
+      {count.toFixed(decimals)}{suffix}
     </span>
   );
 }
@@ -50,9 +50,9 @@ export default function About() {
   const ABOUT_P3 = {"es":"Ven a disfrutar de nuestra terraza en Calle La Cruz y descubre por qué nuestros clientes nos eligen desde hace generaciones. Calidad-precio inmejorable y el sabor de siempre.","en":"Come enjoy our terrace on Calle La Cruz and discover why our customers have chosen us for generations. Great value for money and the taste you remember."};
 
   const stats = [
-    { value: 446, label: { es: "Opiniones en Google", en: "Google reviews" }, suffix: "+" },
-    { value: 49, label: { es: "Años de tradición", en: "Years of tradition" }, suffix: "" },
-    { value: 45, label: { es: "Puntuación", en: "Rating" }, suffix: "/5" },
+    { value: 446, label: { es: "Opiniones en Google", en: "Google reviews" }, suffix: "+", decimals: 0 },
+    { value: 49, label: { es: "Años de tradición", en: "Years of tradition" }, suffix: "", decimals: 0 },
+    { value: 45, label: { es: "Puntuación", en: "Rating" }, suffix: "/5", decimals: 1, divider: 10 },
   ];
 
   const springUp = {
@@ -119,7 +119,11 @@ export default function About() {
                   className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
                 >
                   <div className="text-2xl font-black text-[var(--color-gold)]">
-                    <AnimatedCounter end={stat.value} suffix={stat.suffix} />
+                    {stat.value === 45 ? (
+                      <span className="tabular-nums">4.5/5</span>
+                    ) : (
+                      <AnimatedCounter end={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
+                    )}
                   </div>
                   <div className="mt-1 text-xs text-gray-400">{__(stat.label)}</div>
                 </div>
@@ -137,7 +141,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/unsplash-1783933538828-e5z3tr.svg" alt="Restaurante Casa Adolfo" className="h-full w-full object-cover" />
+                <img src="/media/scraped/generated/about.svg" alt="Restaurante Casa Adolfo" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>
