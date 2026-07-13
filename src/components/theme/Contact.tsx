@@ -1,5 +1,5 @@
 // ============================================================
-//  Contact — Animated Gradient Fields + Pulse Button + Hover Lift
+//  Contact — Animated Gradient Fields + Pulse Button + Map
 //  MAXIMUM WOW EDITION
 // ============================================================
 
@@ -69,13 +69,35 @@ export default function Contact() {
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:+34922715228" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">(+34) 922 71 52 28</a>
+                  <a href="tel:+349****5228" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">(+34) 922 71 52 28</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
                   <span className="text-gray-400">Contacto a través del restaurante</span>
                 </div>
               </div>
+            </motion.div>
+
+            {/* ── Map ── */}
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30 overflow-hidden"
+            >
+              <div className="map-container">
+                <iframe
+                  title="Restaurante Casa Adolfo - Ubicación"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=-16.7268%2C28.1180%2C-16.7168%2C28.1280&amp;layer=transportmap&amp;marker=28.1230%2C-16.7218"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+              <p className="mt-2 text-center text-[10px] text-gray-500">
+                <a href="https://www.openstreetmap.org/?mlat=28.1230&amp;mlon=-16.7218#map=16/28.1230/-16.7218&amp;layers=T" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
+              </p>
             </motion.div>
 
             <motion.div
@@ -161,7 +183,7 @@ export default function Contact() {
                 whileTap={{ scale: 0.97 }}
                 animate={{ boxShadow: ["0 0 15px rgba(var(--color-gold-rgb), 0.2)", "0 0 25px rgba(var(--color-gold-rgb), 0.4)", "0 0 15px rgba(var(--color-gold-rgb), 0.2)"] }}
                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[var(--color-gold)] hover:via-[var(--color-gold-light)] hover:to-[var(--color-gold)]"
+                className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-primary)] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[var(--color-gold)] hover:via-[var(--color-gold-light)] hover:to-[var(--color-gold)]"
               >
                 <span className="relative z-10">{t("contact.form_submit")}</span>
               </motion.button>

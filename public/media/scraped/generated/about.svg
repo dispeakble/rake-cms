@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bgAbout" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d0f0f;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#1a0a0a;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#2d1a0a;stop-opacity:1"/>
+    </linearGradient>
+    <radialGradient id="glowAbout" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#8B1A1A;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#8B1A1A;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bgAbout)"/>
+  <rect width="800" height="600" fill="url(#glowAbout)"/>
+
+  <!-- Restaurant interior abstraction -->
+  <g opacity="0.08">
+    <!-- Table -->
+    <rect x="250" y="370" width="300" height="15" rx="3" fill="#D4A017"/>
+    <!-- Chairs -->
+    <rect x="220" y="320" width="50" height="65" rx="5" fill="#D4A017"/>
+    <rect x="530" y="320" width="50" height="65" rx="5" fill="#D4A017"/>
+    <!-- Candle on table -->
+    <rect x="395" y="340" width="10" height="30" rx="2" fill="#D4A017"/>
+    <ellipse cx="400" cy="338" rx="5" ry="8" fill="#E5A100"/>
+    <!-- Wine glasses -->
+    <path d="M340 355 C340 340 350 335 360 335 C370 335 380 340 380 355 L375 370 L345 370 Z" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+    <path d="M420 355 C420 340 430 335 440 335 C450 335 460 340 460 355 L455 370 L425 370 Z" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+    <!-- Wall frame -->
+    <rect x="300" y="120" width="200" height="150" rx="5" fill="none" stroke="#D4A017" stroke-width="1.5"/>
+    <!-- Picture inside frame -->
+    <rect x="320" y="140" width="160" height="110" rx="2" fill="#2d0f0f" stroke="#D4A017" stroke-width="0.5" opacity="0.5"/>
+    <circle cx="400" cy="180" r="20" fill="none" stroke="#D4A017" stroke-width="0.5" opacity="0.3"/>
+    <!-- Warm light fixtures -->
+    <ellipse cx="400" cy="80" rx="15" ry="10" fill="#D4A017" opacity="0.15"/>
+  </g>
+
+  <!-- Decorative text -->
+  <text x="400" y="500" font-family="Georgia, serif" font-size="18" fill="#D4A017" opacity="0.15" text-anchor="middle">COCINA · TRADICIÓN · SABOR</text>
+</svg>

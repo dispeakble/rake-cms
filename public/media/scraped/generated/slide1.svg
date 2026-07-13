@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a0a0a;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#2d0f0f;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#1a0a0a;stop-opacity:1"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="40%" r="60%">
+      <stop offset="0%" style="stop-color:#8B1A1A;stop-opacity:0.4"/>
+      <stop offset="100%" style="stop-color:#8B1A1A;stop-opacity:0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="70%" cy="60%" r="50%">
+      <stop offset="0%" style="stop-color:#D4A017;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#D4A017;stop-opacity:0"/>
+    </radialGradient>
+    <pattern id="dots1" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1" fill="#D4A017" opacity="0.08"/>
+    </pattern>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg1)"/>
+  <rect width="1920" height="1080" fill="url(#glow1)"/>
+  <rect width="1920" height="1080" fill="url(#glow2)"/>
+  <rect width="1920" height="1080" fill="url(#dots1)"/>
+
+  <!-- Decorative fork & knife silhouette -->
+  <g transform="translate(960, 540) scale(0.8)" opacity="0.06">
+    <path d="M-40-80 C-35-80 -30-70 -30-55 L-30 40 L-40 40 L-40-55 C-40-65 -42-70 -45-70 L-50-70 L-50 40 L-60 40 L-60-70 L-65-70 C-68-70 -70-65 -70-55 L-70 40 L-80 40 L-80-55 C-80-70 -75-80 -65-80 Z" fill="#D4A017"/>
+    <path d="M20-80 C25-75 30-60 30-40 L25 40 L15 40 L20-35 C18-20 15-5 15 5 L15 40 L5 40 L5-40 C10-55 15-70 20-80 Z" fill="#D4A017"/>
+  </g>
+</svg>
