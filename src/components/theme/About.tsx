@@ -9,7 +9,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-function AnimatedCounter({ end, suffix = "", decimals = 0 }: { end: number; suffix?: string; decimals?: number }) {
+function AnimatedCounterWithDecimal({ end, suffix = "", decimals = 0 }: { end: number; suffix?: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
@@ -45,14 +45,16 @@ export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // ─── Per-site about content (embedded from scraped data) ───
-  const ABOUT_P1 = {"es":"Restaurante Casa Adolfo es un bar-restaurante tradicional en Adeje, especializado en cocina casera española. Desde 1975 ofrecemos tortillas, paellas, carnes, pescados y tapas hechas con recetas de toda la vida.","en":"Restaurante Casa Adolfo is a traditional bar-restaurant in Adeje, specialized in Spanish home cooking. Since 1975 we offer tortillas, paella, meats, fish and tapas made with traditional recipes."};
-  const ABOUT_P2 = {"es":"Nuestra especialidad son las tortillas y las paellas, pero también destacamos por nuestras carnes a la brasa y pescados frescos. Todo ello acompañado de un servicio cercano y un ambiente familiar.","en":"Our specialties are tortillas and paella, but we also excel at grilled meats and fresh fish. All served with friendly service and a family atmosphere."};
-  const ABOUT_P3 = {"es":"Ven a disfrutar de nuestra terraza en Calle La Cruz y descubre por qué nuestros clientes nos eligen desde hace generaciones. Calidad-precio inmejorable y el sabor de siempre.","en":"Come enjoy our terrace on Calle La Cruz and discover why our customers have chosen us for generations. Great value for money and the taste you remember."};
+  const ABOUT_P1 = {"es":"Daria's Bakery & Bistro | Breakfast & Lunch is a beloved dining destination. We take pride in serving fresh, flavorful dishes made with locally sourced ingredients. Our welcoming atmosphere and friendly staff make every visit special.","en":"Daria's Bakery & Bistro | Breakfast & Lunch is a beloved dining destination. We take pride in serving fresh, flavorful dishes made with locally sourced ingredients. Our welcoming atmosphere and friendly staff make every visit special."};
+  const ABOUT_P2 = {"es":"Whether you're joining us for a casual lunch, romantic dinner, or special celebration, our team is here to make your experience unforgettable.","en":"Whether you're joining us for a casual lunch, romantic dinner, or special celebration, our team is here to make your experience unforgettable."};
+  const ABOUT_P3 = {"es":"","en":""};
 
+  // ─── Stats ───
+  
   const stats = [
-    { value: 446, label: { es: "Opiniones en Google", en: "Google reviews" }, suffix: "+", decimals: 0 },
-    { value: 49, label: { es: "Años de tradición", en: "Years of tradition" }, suffix: "", decimals: 0 },
-    { value: 45, label: { es: "Puntuación", en: "Rating" }, suffix: "/5", decimals: 1, divider: 10 },
+    { value: 500, label: { es: "Clientes satisfechos", en: "Happy clients" }, suffix: "+", decimals: 0 },
+    { value: 15, label: { es: "Años de experiencia", en: "Years experience" }, suffix: "+", decimals: 0 },
+    { value: 99, label: { es: "Satisfacción", en: "Satisfaction" }, suffix: "%", decimals: 0 },
   ];
 
   const springUp = {
@@ -67,6 +69,7 @@ export default function About() {
 
   return (
     <section id="about" ref={sectionRef} className="relative px-4 py-24 overflow-hidden">
+      {/* Background */}
       <div className="absolute inset-0 bg-section opacity-90" />
       <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle at 30% 50%, rgba(var(--color-gold-rgb), 0.05), transparent 50%)" }} />
 
@@ -77,12 +80,14 @@ export default function About() {
           viewport={{ once: true, margin: "-100px" }}
           className="grid items-center gap-12 md:grid-cols-2"
         >
+          {/* Left Content */}
           <div>
+            {/* ── 5. Gradient Text on Heading ── */}
             <motion.span
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              {"Restaurante Casa Adolfo"}
+              {"About Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch"}
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -92,45 +97,47 @@ export default function About() {
             </motion.h2>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-gray-300"
+              className="mb-4 leading-relaxed text-secondary"
             >
               {__(ABOUT_P1)}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="mb-4 leading-relaxed text-gray-300"
+              className="mb-4 leading-relaxed text-secondary"
             >
               {__(ABOUT_P2)}
             </motion.p>
             <motion.p
               variants={springUp}
-              className="leading-relaxed text-gray-300"
+              className="leading-relaxed text-secondary"
             >
               {__(ABOUT_P3)}
             </motion.p>
 
+            {/* ── 2. Animated Counter Stats ── */}
             <motion.div
               variants={springUp}
               className="mt-8 grid grid-cols-3 gap-4"
             >
               {stats.map((stat) => (
                 <div
-                  key={stat.label.en}
+                  key={typeof stat.label === 'string' ? stat.label : stat.label.en}
                   className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
                 >
                   <div className="text-2xl font-black text-[var(--color-gold)]">
-                    {stat.value === 45 ? (
-                      <span className="tabular-nums">4.5/5</span>
+                    {stat.decimals === 1 ? (
+                      <span className="tabular-nums">{(stat.value / ((stat as any).divider || 1)).toFixed(1)}{stat.suffix}</span>
                     ) : (
-                      <AnimatedCounter end={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
+                      <AnimatedCounterWithDecimal end={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
                     )}
                   </div>
-                  <div className="mt-1 text-xs text-gray-400">{__(stat.label)}</div>
+                  <div className="mt-1 text-xs text-tertiary">{typeof stat.label === 'string' ? stat.label : __(stat.label)}</div>
                 </div>
               ))}
             </motion.div>
           </div>
 
+          {/* Right Image with Rotating Glow */}
           <motion.div
             variants={springUp}
           >
@@ -141,7 +148,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/generated/about.svg" alt="Restaurante Casa Adolfo" className="h-full w-full object-cover" />
+                <img src="/media/scraped/unsplash-1783965197068-keyufb.svg" alt="About Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch" className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>

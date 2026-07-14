@@ -1,28 +1,28 @@
 // ============================================================
-//  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
-//  MAXIMUM WOW EDITION
-// ============================================================
+	  //  Header — Matte Glass Always On + Shimmer Nav Hover + Lang Toggle
+	  //  MAXIMUM WOW EDITION
+	  // ============================================================
 
-  "use client";
+	  "use client";
 
-  import Link from "next/link";
-  import { useState } from "react";
-  import { motion, AnimatePresence } from "framer-motion";
-  import { useLanguage } from "@/lib/i18n";
-  import { useTheme } from "@/components/theme/ThemeProvider";
-  import type { Lang } from "@/lib/i18n";
+	  import Link from "next/link";
+	  import { useState } from "react";
+	  import { motion, AnimatePresence } from "framer-motion";
+	  import { useLanguage } from "@/lib/i18n";
+	  import { useTheme } from "@/components/theme/ThemeProvider";
+	  import type { Lang } from "@/lib/i18n";
 
-  export default function Header() {
-    const { lang, switchLang, t } = useLanguage();
-    const { theme, toggleTheme } = useTheme();
-    const [open, setOpen] = useState(false);
-    const [langOpen, setLangOpen] = useState(false);
-    const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
+	  export default function Header() {
+	    const { lang, switchLang, t } = useLanguage();
+	    const { theme, toggleTheme } = useTheme();
+	    const [open, setOpen] = useState(false);
+	    const [langOpen, setLangOpen] = useState(false);
+	    const langs = [{code:"es",flag:"🇪🇸",label:"ES"},{code:"en",flag:"🇬🇧",label:"EN"}];
 
-    const doSwitchLang = (next: Lang) => {
-      setLangOpen(false);
-      switchLang(next);
-    };
+	    const doSwitchLang = (next: Lang) => {
+	      setLangOpen(false);
+	      switchLang(next);
+	    };
 
   return (
     <motion.header
@@ -35,7 +35,8 @@
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
-            <img src="/media/scraped/generated/logo.svg" alt="Restaurante Casa Adolfo" className="h-10 w-auto object-contain" style={{minWidth:'140px'}} />
+            <img src="/media/scraped/generated/logo.svg" alt="Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
+            
           </Link>
 
           {/* ── Spacer between logo and menu ── */}

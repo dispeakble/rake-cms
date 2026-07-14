@@ -1,5 +1,5 @@
 // ============================================================
-//  Contact — Animated Gradient Fields + Pulse Button + Map
+//  Contact — Animated Gradient Fields + Pulse Button + Hover Lift
 //  MAXIMUM WOW EDITION
 // ============================================================
 
@@ -23,6 +23,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative px-4 py-24 overflow-hidden">
+      {/* Animated Background Pattern */}
       <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -44,10 +45,11 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">Restaurante Casa Adolfo</p>
+          <p className="mx-auto mt-3 max-w-xl text-tertiary">Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
+          {/* Contact Details */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -55,25 +57,26 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15 }}
             className="space-y-8"
           >
+            {/* Business location — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
-              <h3 className="mb-4 text-lg font-bold text-white">
-                <span className="text-[var(--color-gold)]">📍</span> Restaurante Casa Adolfo
+              <h3 className="mb-4 text-lg font-bold text-heading">
+                <span className="text-[var(--color-gold)]">📍</span> Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch
               </h3>
-              <div className="space-y-3 text-sm text-gray-300">
+              <div className="space-y-3 text-sm text-secondary">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>Calle La Cruz, s/n, 38679 Adeje, Santa Cruz de Tenerife</span>
+                  <span>Dirección disponible próximamente</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
-                  <a href="tel:+349****5228" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]">(+34) 922 71 52 28</a>
+                  <a href="tel:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">✉️</span>
-                  <span className="text-gray-400">Contacto a través del restaurante</span>
+                  <a href="mailto:" className="text-[var(--color-gold)] transition hover:text-[var(--color-gold-light)]"></a>
                 </div>
               </div>
             </motion.div>
@@ -85,37 +88,39 @@ export default function Contact() {
             >
               <div className="map-container">
                 <iframe
-                  title="Restaurante Casa Adolfo - Ubicación"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=-16.7268%2C28.1180%2C-16.7168%2C28.1280&amp;layer=transportmap&amp;marker=28.1230%2C-16.7218"
+                  title="Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch - Ubicación"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=-0.006%2C-0.006%2C0.006%2C0.006&amp;layer=mapnik&amp;marker=0%2C0"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
+                  referrerPolicy="unsafe-url"
                   allowFullScreen
                 />
               </div>
-              <p className="mt-2 text-center text-[10px] text-gray-500">
-                <a href="https://www.openstreetmap.org/?mlat=28.1230&amp;mlon=-16.7218#map=16/28.1230/-16.7218&amp;layers=T" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
+              <p className="mt-2 text-center text-[10px] text-quaternary">
+                <a href="https://www.openstreetmap.org/?mlat=0&amp;mlon=0#map=16/0/0" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
               </p>
             </motion.div>
 
+            {/* Additional contact info — Hover Lift Card */}
             <motion.div
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
-              <h3 className="mb-4 text-lg font-bold text-white">
+              <h3 className="mb-4 text-lg font-bold text-heading">
                 <span className="text-[var(--color-gold)]">📋</span> {t("contact.info_title")}
               </h3>
-              <div className="space-y-3 text-sm text-gray-300">
+              <div className="space-y-3 text-sm text-secondary">
                 <p>{t("contact.info_text")}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-gray-400">{t("contact.info_response")}</p>
+                  <p className="text-xs text-tertiary">{t("contact.response_time")}</p>
                 </div>
               </div>
             </motion.div>
           </motion.div>
 
+          {/* Contact form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -123,10 +128,10 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">{t("contact.form_title")}</h3>
+            <h3 className="mb-6 text-lg font-semibold text-heading">{t("contact.form_title")}</h3>
             <form className="space-y-5">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_name_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_name_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_name_placeholder")}
@@ -135,7 +140,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_surname_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_surname_label")}</label>
                 <motion.input
                   type="text"
                   placeholder={t("contact.form_surname_placeholder")}
@@ -144,7 +149,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_email_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_email_label")}</label>
                 <motion.input
                   type="email"
                   placeholder={t("contact.form_email_placeholder")}
@@ -153,7 +158,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_phone_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_phone_label")}</label>
                 <motion.input
                   type="tel"
                   placeholder={t("contact.form_phone_placeholder")}
@@ -162,7 +167,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-300">{t("contact.form_message_label")}</label>
+                <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_message_label")}</label>
                 <motion.textarea
                   placeholder={t("contact.form_message_placeholder")}
                   rows={4}
@@ -170,6 +175,7 @@ export default function Contact() {
                   className="w-full rounded-lg border border-white/10 bg-[var(--color-primary)]/80 px-4 py-3 text-sm text-white placeholder-white/60 transition-all duration-300 focus:border-[var(--color-gold)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-gold)]/20 focus:shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.15)]"
                 />
               </div>
+              {/* Real Google reCAPTCHA */}
               <div className="flex justify-center rounded-lg border border-white/10 bg-black/30 px-4 py-4">
                 <div
                   className="g-recaptcha"
@@ -183,7 +189,7 @@ export default function Contact() {
                 whileTap={{ scale: 0.97 }}
                 animate={{ boxShadow: ["0 0 15px rgba(var(--color-gold-rgb), 0.2)", "0 0 25px rgba(var(--color-gold-rgb), 0.4)", "0 0 15px rgba(var(--color-gold-rgb), 0.2)"] }}
                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-primary)] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[var(--color-gold)] hover:via-[var(--color-gold-light)] hover:to-[var(--color-gold)]"
+                className="shimmer-btn shimmer-btn-gold relative w-full rounded-lg bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:from-[var(--color-gold)] hover:via-[var(--color-gold-light)] hover:to-[var(--color-gold)]"
               >
                 <span className="relative z-10">{t("contact.form_submit")}</span>
               </motion.button>

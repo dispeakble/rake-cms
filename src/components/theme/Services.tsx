@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 // ─── Per-site services (embedded from scraped content) ───
-const SERVICES = [{"title":{"es":"Tortillas Caseras","en":"Homemade Tortillas"},"description":{"es":"Nuestras tortillas son famosas en Adeje. Tortilla de patatas, tortilla de camarones y muchas variedades más. Hechas al momento con ingredientes frescos.","en":"Our tortillas are famous in Adeje. Potato tortilla, shrimp tortilla and many more varieties. Made to order with fresh ingredients."}},{"title":{"es":"Paellas y Arroces","en":"Paella & Rice Dishes"},"description":{"es":"Paella valenciana, arroz con mariscos y arroz a banda. Preparados con ingredientes de primera calidad y el toque tradicional de la cocina española.","en":"Valencian paella, seafood rice and arroz a banda. Prepared with top-quality ingredients and the traditional touch of Spanish cuisine."}},{"title":{"es":"Carnes a la Brasa","en":"Grilled Meats"},"description":{"es":"Selección de carnes a la brasa: entrecot, pollo, cerdo y nuestras brochetas caseras. Acompañadas de patatas fritas o ensalada.","en":"Selection of grilled meats: entrecote, chicken, pork and our homemade skewers. Served with fries or salad."}},{"title":{"es":"Pescados Frescos","en":"Fresh Fish"},"description":{"es":"Pescado fresco del día, preparado a la plancha o frito. Especialidad en cherne, dorada y calamares a la romana.","en":"Fresh fish of the day, grilled or fried. Specialty in sea bream, grouper and fried squid."}},{"title":{"es":"Tapas y Raciones","en":"Tapas & Sharing Plates"},"description":{"es":"Amplia variedad de tapas: croquetas, jamón ibérico, queso manchego, chorizo al vino, patatas bravas y mucho más para compartir.","en":"Wide variety of tapas: croquettes, Iberian ham, Manchego cheese, chorizo in wine, patatas bravas and more to share."}}];
+const SERVICES = [{"title":{"es":"Menú del Día","en":"Menú del Día"},"description":{"es":"Delicioso menú diario con platos frescos de temporada. Entrante, principal y postre, elaborados con ingredientes locales y recetas tradicionales.","en":"Delicioso menú diario con platos frescos de temporada. Entrante, principal y postre, elaborados con ingredientes locales y recetas tradicionales."}},{"title":{"es":"Especialidades de la Casa","en":"Especialidades de la Casa"},"description":{"es":"Nuestros platos estrella preparados con recetas únicas que combinan tradición e innovación. Pregunte a nuestro servicio por las sugerencias del chef.","en":"Nuestros platos estrella preparados con recetas únicas que combinan tradición e innovación. Pregunte a nuestro servicio por las sugerencias del chef."}},{"title":{"es":"Postres Artesanales","en":"Postres Artesanales"},"description":{"es":"Repostería casera elaborada cada día con ingredientes naturales. Tartas, pasteles y dulces tradicionales que ponen el broche de oro a su comida.","en":"Repostería casera elaborada cada día con ingredientes naturales. Tartas, pasteles y dulces tradicionales que ponen el broche de oro a su comida."}},{"title":{"es":"Carta de Vinos","en":"Carta de Vinos"},"description":{"es":"Cuidada selección de vinos locales e internacionales para acompañar su experiencia gastronómica. También disponibles cervezas artesanales y cócteles.","en":"Cuidada selección de vinos locales e internacionales para acompañar su experiencia gastronómica. También disponibles cervezas artesanales y cócteles."}},{"title":{"es":"Eventos y Celebraciones","en":"Eventos y Celebraciones"},"description":{"es":"Organizamos eventos privados, cumpleaños, reuniones de empresa y celebraciones especiales. Menús personalizados y atención exclusiva para su grupo.","en":"Organizamos eventos privados, cumpleaños, reuniones de empresa y celebraciones especiales. Menús personalizados y atención exclusiva para su grupo."}},{"title":{"es":"Take Away","en":"Take Away"},"description":{"es":"Disfrute de nuestra cocina en casa. Todos nuestros platos están disponibles para llevar, con un servicio rápido y empaquetado cuidadoso.","en":"Disfrute de nuestra cocina en casa. Todos nuestros platos están disponibles para llevar, con un servicio rápido y empaquetado cuidadoso."}}];
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -55,6 +55,7 @@ export default function Services() {
   const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   return (
     <section id="services" className="relative px-4 py-24 overflow-hidden">
+      {/* Animated Background Mesh */}
       <div className="absolute inset-0 bg-section" />
       <div
         className="absolute inset-0 opacity-20"
@@ -70,6 +71,7 @@ export default function Services() {
       />
 
       <div className="relative z-10 container mx-auto max-w-6xl">
+        {/* ── Our Services ── */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,7 +87,7 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              Restaurante Casa Adolfo
+              Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>
@@ -94,8 +96,8 @@ export default function Services() {
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{__(svc.title)}</h3>
-                  <p className="text-sm leading-relaxed text-gray-300">{__(svc.description)}</p>
+                  <h3 className="mb-3 text-xl font-bold text-heading">{__(svc.title)}</h3>
+                  <p className="text-sm leading-relaxed text-secondary">{__(svc.description)}</p>
                 </div>
               </TiltCard>
             ))}

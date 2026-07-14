@@ -37,7 +37,7 @@ export default function Islands() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("excursions.subtitle")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("islands.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">
+          <p className="mx-auto mt-3 max-w-xl text-tertiary">
             {t("excursions.text")}
           </p>
         </motion.div>
@@ -67,11 +67,11 @@ export default function Islands() {
                 </div>
               </div>
               <div className="p-6">
-                <p className="text-sm leading-relaxed text-gray-300">
+                <p className="text-sm leading-relaxed text-secondary">
                   {t(island.descKey)}
                 </p>
                 <div className="mt-4 border-t border-white/10 pt-4">
-                  <p className="text-xs leading-relaxed text-gray-400 italic">
+                  <p className="text-xs leading-relaxed text-tertiary italic">
                     {t(island.extraKey)}
                   </p>
                 </div>
