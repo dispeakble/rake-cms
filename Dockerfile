@@ -31,6 +31,7 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
 
 # Create a non-root user for security
 RUN addgroup --system --gid 1001 nodejs && \
@@ -57,4 +58,4 @@ USER nextjs
 
 EXPOSE 3000
 
-CMD ["npx", "next", "start", "-p", "3000"]
+CMD ["sh", "-c", "npx next start -p ${PORT:-3000}"]

@@ -6,9 +6,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
-const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"Ana S.","text":"Las mejores tortillas de Adeje. La de patatas con cebolla caramelizada es espectacular. El trato del personal es excelente, te hacen sentir como en casa. Volvemos cada semana.","rating":5,"source":"Google"},{"author":"Miguel R.","text":"Restaurante de toda la vida con comida casera de verdad. La paella de mariscos está deliciosa y los precios son muy razonables. La terraza es ideal para comer al aire libre.","rating":5,"source":"Tripadvisor"},{"author":"Laura & David","text":"Descubrimos este restaurante por casualidad y fue un acierto total. Las croquetas caseras y el entrecot a la brasa son increíbles. El servicio muy atento y rápido.","rating":5,"source":"Google"},{"author":"John M.","text":"Great local Spanish food off the tourist track. The grilled fish was fresh and perfectly cooked. Friendly staff who helped us with the menu. Great value for money.","rating":5,"source":"Tripadvisor"},{"author":"Carmen G.","text":"Llevamos años viniendo y nunca defrauda. La tortilla de camarones es la mejor que he probado. El menú del día es una opción excelente con platos caseros de calidad.","rating":4,"source":"Restaurant Guru"},{"author":"Pedro A.","text":"Si te gusta la cocina tradicional española, este es tu sitio. Las raciones son generosas, el ambiente familiar y los precios muy ajustados. Probad las patatas bravas.","rating":5,"source":"Google"}];
+const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"María G.","text":"Comida excelente y atención inmejorable. Los platos estaban deliciosos y el ambiente muy agradable. Sin duda repetiremos la experiencia.","rating":5,"source":"Google"},{"author":"Carlos R.","text":"Buena relación calidad-precio. El servicio fue rápido y profesional. Los postres caseros son espectaculares. Muy recomendable.","rating":5,"source":"Tripadvisor"},{"author":"Ana & Pedro","text":"Hemos ido varias veces y nunca defrauda. La calidad de la comida es constante y el personal siempre es amable. Un lugar perfecto para cualquier ocasión.","rating":5,"source":"Google"},{"author":"James T.","text":"Great food and amazing atmosphere! The service was top-notch and the portions were generous. Highly recommended for anyone visiting the area.","rating":5,"source":"Tripadvisor"},{"author":"Laura S.","text":"Un descubrimiento maravilloso. La comida es increíble y el trato al cliente es de primera. Los postres son caseros y deliciosos. Volveremos pronto.","rating":4,"source":"Restaurant Guru"},{"author":"David M.","text":"Ambiente acogedor y comida deliciosa. Probamos varios platos y todos estaban espectaculares. El personal muy atento y la relación calidad-precio excelente.","rating":5,"source":"Google"}];
 
 function SparkleStar({ filled, delay }: { filled: boolean; delay: number }) {
   return (
@@ -67,7 +68,7 @@ export default function Reviews() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("reviews.subtitle")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("reviews.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-gray-400">{t("reviews.tagline")}</p>
+          <p className="mx-auto mt-3 max-w-xl text-tertiary">{t("reviews.tagline")}</p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -91,6 +92,7 @@ export default function Reviews() {
               className="relative rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm hover:border-[var(--color-gold)]/30"
               style={{ transformPerspective: 800 }}
             >
+              {/* Gradient Quote Decoration */}
               <div className="absolute -top-2 -left-2 text-4xl text-[var(--color-gold)]/20 select-none leading-none" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z"/>
@@ -98,9 +100,9 @@ export default function Reviews() {
               </div>
 
               <StarRating rating={review.rating} />
-              <p className="mt-3 text-sm leading-relaxed text-gray-300 relative z-10">"{review.text}"</p>
-              <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-gray-400">
-                <span className="font-medium text-white">— {review.author}</span>
+              <p className="mt-3 text-sm leading-relaxed text-secondary relative z-10">"{review.text}"</p>
+              <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-tertiary">
+                <span className="font-medium text-heading">— {review.author}</span>
                 <span className="text-[var(--color-gold)]/80">{review.source}</span>
               </div>
             </motion.div>

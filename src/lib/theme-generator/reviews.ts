@@ -68,37 +68,37 @@ function getRestaurantReviews(name: string): Review[] {
   return [
     {
       author: "María G.",
-      text: "Espectacular rodizio brasileño. La picanha estaba en su punto perfecto y los acompañamientos tradicionales son deliciosos. El personal muy atento y el ambiente acogedor. Volveremos sin duda.",
+      text: `Comida excelente y atención inmejorable. Los platos estaban deliciosos y el ambiente muy agradable. Sin duda repetiremos la experiencia.`,
       rating: 5,
       source: "Google",
     },
     {
       author: "Carlos R.",
-      text: "Excelente relación calidad-precio. El rodizio no para de traer carnes hasta que dices basta. La caipirinha obligatoria. Muy recomendable para grupos grandes.",
+      text: "Buena relación calidad-precio. El servicio fue rápido y profesional. Los postres caseros son espectaculares. Muy recomendable.",
       rating: 5,
       source: "Tripadvisor",
     },
     {
       author: "Ana & Pedro",
-      text: "Hemos ido varias veces y nunca defrauda. La costilla y el pollo a la brasa son espectaculares. El servicio es rápido y muy profesional.",
+      text: "Hemos ido varias veces y nunca defrauda. La calidad de la comida es constante y el personal siempre es amable. Un lugar perfecto para cualquier ocasión.",
       rating: 5,
       source: "Google",
     },
     {
       author: "James T.",
-      text: "Best Brazilian BBQ in Tenerife! The meat keeps coming and everything is perfectly grilled. Great atmosphere and friendly staff. The garlic bread is amazing!",
+      text: "Great food and amazing atmosphere! The service was top-notch and the portions were generous. Highly recommended for anyone visiting the area.",
       rating: 5,
       source: "Tripadvisor",
     },
     {
       author: "Laura S.",
-      text: "Fuimos a celebrar un cumpleaños y fue una experiencia increíble. El trato del personal, la calidad de la carne y el postre de pudim... todo perfecto.",
+      text: "Un descubrimiento maravilloso. La comida es increíble y el trato al cliente es de primera. Los postres son caseros y deliciosos. Volveremos pronto.",
       rating: 4,
       source: "Restaurant Guru",
     },
     {
       author: "David M.",
-      text: "Increíble variedad de carnes. La alcatra y el lomo son mis favoritos. El pan de ajo que sirven de entrante ya es una experiencia. Los precios muy ajustados para la calidad.",
+      text: "Ambiente acogedor y comida deliciosa. Probamos varios platos y todos estaban espectaculares. El personal muy atento y la relación calidad-precio excelente.",
       rating: 5,
       source: "Google",
     },

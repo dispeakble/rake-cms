@@ -216,28 +216,28 @@ const TAGLINES: Record<BusinessType, string[]> = {
 const SERVICE_TEMPLATES: Record<BusinessType, { title: string; description: string }[]> = {
   restaurant: [
     {
-      title: "Picanha Premium",
-      description: "El corte estrella de nuestra casa. Picanha brasileña seleccionada, asada a la perfección en nuestros espetos verticales. Jugosa por dentro, crocante por fuera, servida en su punto exacto directamente de la parrilla a su mesa.",
+      title: "Menú del Día",
+      description: "Delicioso menú diario con platos frescos de temporada. Entrante, principal y postre, elaborados con ingredientes locales y recetas tradicionales.",
     },
     {
-      title: "Alcatra",
-      description: "Tierno corte de contrafilet bañado en una salsa de ajo y aceite de oliva que realza su sabor natural. Una experiencia que combina la tradición gaucha con un toque de sofisticación.",
+      title: "Especialidades de la Casa",
+      description: "Nuestros platos estrella preparados con recetas únicas que combinan tradición e innovación. Pregunte a nuestro servicio por las sugerencias del chef.",
     },
     {
-      title: "Costela de Res",
-      description: "Nuestra costilla de res se cocina lentamente durante horas hasta que la carne se desprende del hueso. Ahumada y caramelizada de forma natural, es uno de los platos más aclamados por nuestros comensales.",
+      title: "Postres Artesanales",
+      description: "Repostería casera elaborada cada día con ingredientes naturales. Tartas, pasteles y dulces tradicionales que ponen el broche de oro a su comida.",
     },
     {
-      title: "Medallones de Lomo",
-      description: "Jugosos medallones de lomo de ternera envueltos en panceta, asados a la parrilla hasta conseguir ese punto perfecto. Una delicia que combina textura y sabor en cada bocado.",
+      title: "Carta de Vinos",
+      description: "Cuidada selección de vinos locales e internacionales para acompañar su experiencia gastronómica. También disponibles cervezas artesanales y cócteles.",
     },
     {
-      title: "Entraña y Solomillo",
-      description: "Dos cortes emblemáticos de la parrilla argentina y brasileña. La entraña, tierna y sabrosa, junto al solomillo más selecto, servidos con chimichurri casero y farofa crujiente.",
+      title: "Eventos y Celebraciones",
+      description: "Organizamos eventos privados, cumpleaños, reuniones de empresa y celebraciones especiales. Menús personalizados y atención exclusiva para su grupo.",
     },
     {
-      title: "Postres y Carta de Vinos",
-      description: "Una cuidada selección de vinos españoles y sudamericanos para maridar cada corte. Nuestros postres caseros, como la tradicional delicia de maracuyá y el pudim de leche condensada, ponen el broche de oro a la experiencia.",
+      title: "Take Away",
+      description: "Disfrute de nuestra cocina en casa. Todos nuestros platos están disponibles para llevar, con un servicio rápido y empaquetado cuidadoso.",
     },
   ],
   retail: [
@@ -398,8 +398,10 @@ export function generateContent(
   // Detect language from business name + location
   const spanish = isSpanish(name, location);
 
-  // For travel type (Mario Viajes) with no scraped paragraphs, use curated content
+  // For travel type (Mario Viajes) with no scraped paragraphs, use curated content only for matching names
   if (businessType === "travel" && rawParagraphs.length < 3 && spanish) {
+    const nameLC = (business?.name || site?.businessName || "").toLowerCase();
+    if (nameLC.includes("mario") || nameLC.includes("viajes")) {
     const tagline = "Mario Viajes. Crea tu tipo de vacaciones.";
     const heroSubtitle = "Crea tu tipo de vacaciones. Descubra las Islas Canarias con nosotros.";
     const aboutHeading = "Sobre nosotros";
@@ -420,29 +422,34 @@ export function generateContent(
       seoDescription,
     };
   }
+  }
 
-  // For restaurant type, use curated Spanish churrascaria content
+  // For restaurant type, use curated content only if name explicitly references it
   if (businessType === "restaurant") {
-    const tagline = "CARNE SIN FIN, SABOR SIN LÍMITE";
-    const heroSubtitle = "Bienvenido a Churrasquería Rodeo Grill, donde el auténtico rodizio brasileño cobra vida en Costa Adeje. Déjese llevar por el incesante desfile de carnes premium asadas a la perfección por nuestros gauchos.";
-    const aboutHeading = "La Experiencia Rodizio";
-    const aboutParagraphs = [
-      "En Churrasquería Rodeo Grill hemos traído la esencia más pura del rodizio brasileño hasta el sur de Tenerife. Nuestra parrilla trabaja sin descanso para ofrecerle un festín de carnes seleccionadas, asadas lentamente sobre brasas naturales. Cada corte es preparado con el respeto y la maestría que la tradición gaucha exige, garantizando una experiencia que despierta todos los sentidos.",
-      "El servicio continuo es el alma de nuestra propuesta: nuestros passadores recorren las mesas con espetos humeantes de picanha, alcatra, costela de res, medallones de lomo y mucho más. Usted decide el ritmo, el corte y la cantidad. Cada pieza se sirve en su punto óptimo, recién salida del fuego, con ese sabor ahumado e intenso que solo el asado tradicional puede ofrecer.",
-      "Maridamos cada bocado con una cuidada selección de vinos, cervezas artesanales y cócteles tropicales que complementan la riqueza de la carne. Nuestra guarnición incluye clásicos brasileños como la farofa crujiente, la vinagreta fresca, el arroz con frijoles negros y el plátano frito caramelizado, creando un equilibrio perfecto de sabores y texturas.",
-      "El ambiente de Rodeo Grill evoca la calidez de las churrascuerías de São Paulo y Porto Alegre, con una decoración rústica y acogedora que invita a compartir. Ya sea para una cena en pareja, una reunión familiar o una celebración especial, nuestro equipo está dedicado a hacer de cada visita un momento inolvidable. Ven y descubre por qué somos el destino favorito de los amantes de la carne en Tenerife.",
-    ];
-    const services = getServices(site, businessType);
-    const seoDescription = `Churrasquería Rodeo Grill — CARNE SIN FIN, SABOR SIN LÍMITE. ${generateSeoDescription(name, businessType, location)}`;
+    const nameLC = (business?.name || site?.businessName || "").toLowerCase();
+    const isRodeo = nameLC.includes("rodeo") || nameLC.includes("churrasquería") || nameLC.includes("churrascaria");
+    if (isRodeo && rawParagraphs.length < 3) {
+      const tagline = "CARNE SIN FIN, SABOR SIN LÍMITE";
+      const heroSubtitle = "Bienvenido a Churrasquería Rodeo Grill, donde el auténtico rodizio brasileño cobra vida en Costa Adeje. Déjese llevar por el incesante desfile de carnes premium asadas a la perfección por nuestros gauchos.";
+      const aboutHeading = "La Experiencia Rodizio";
+      const aboutParagraphs = [
+        "En Churrasquería Rodeo Grill hemos traído la esencia más pura del rodizio brasileño hasta el sur de Tenerife. Nuestra parrilla trabaja sin descanso para ofrecerle un festín de carnes seleccionadas, asadas lentamente sobre brasas naturales. Cada corte es preparado con el respeto y la maestría que la tradición gaucha exige, garantizando una experiencia que despierta todos los sentidos.",
+        "El servicio continuo es el alma de nuestra propuesta: nuestros passadores recorren las mesas con espetos humeantes de picanha, alcatra, costela de res, medallones de lomo y mucho más. Usted decide el ritmo, el corte y la cantidad. Cada pieza se sirve en su punto óptimo, recién salida del fuego, con ese sabor ahumado e intenso que solo el asado tradicional puede ofrecer.",
+        "Maridamos cada bocado con una cuidada selección de vinos, cervezas artesanales y cócteles tropicales que complementan la riqueza de la carne. Nuestra guarnición incluye clásicos brasileños como la farofa crujiente, la vinagreta fresca, el arroz con frijoles negros y el plátano frito caramelizado, creando un equilibrio perfecto de sabores y texturas.",
+        "El ambiente de Rodeo Grill evoca la calidez de las churrascuerías de São Paulo y Porto Alegre, con una decoración rústica y acogedora que invita a compartir. Ya sea para una cena en pareja, una reunión familiar o una celebración especial, nuestro equipo está dedicado a hacer de cada visita un momento inolvidable. Ven y descubre por qué somos el destino favorito de los amantes de la carne en Tenerife.",
+      ];
+      const services = getServices(site, businessType);
+      const seoDescription = `Churrasquería Rodeo Grill — CARNE SIN FIN, SABOR SIN LÍMITE. ${generateSeoDescription(name, businessType, location)}`;
 
-    return {
-      tagline,
-      heroSubtitle,
-      aboutHeading,
-      aboutParagraphs,
-      services,
-      seoDescription,
-    };
+      return {
+        tagline,
+        heroSubtitle,
+        aboutHeading,
+        aboutParagraphs,
+        services,
+        seoDescription,
+      };
+    }
   }
 
   // Pick tagline — use scraped or random from industry templates

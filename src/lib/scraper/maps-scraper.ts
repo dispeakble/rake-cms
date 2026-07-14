@@ -10,6 +10,38 @@
  */
 import { fetchWithRetry } from "@/lib/reliability/retry";
 
+/** Nominatim geocoding result */
+interface NominatimResult {
+  lat: string;
+  lon: string;
+  display_name: string;
+  type?: string;
+}
+
+/**
+ * Geocode an address via OpenStreetMap's free Nominatim API.
+ * Returns null if geocoding fails.
+ */
+async function geocodeAddress(query: string, location?: string): Promise<{ lat: number; lng: number; displayName: string } | null> {
+  const searchQuery = location ? `${query}, ${location}` : query;
+  const url = `https://nominatim.openstreetmap.org/search.php?q=${encodeURIComponent(searchQuery)}&format=jsonv2&limit=1`;
+  try {
+    const res = await fetchWithRetry(url, { timeoutMs: 5000 });
+    const text = await res.text();
+    const data: NominatimResult[] = JSON.parse(text);
+    if (data && data.length > 0) {
+      return {
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon),
+        displayName: data[0].display_name,
+      };
+    }
+  } catch {
+    // Silently fail — fallback will use 0,0
+  }
+  return null;
+}
+
 export interface BusinessData {
   name: string;
   address: string;
@@ -52,7 +84,7 @@ export async function searchBusiness(
   if (!apiKey) {
     console.log("\n⚠️  GOOGLE_PLACES_API_KEY not set in environment.");
     console.log("   Falling back to basic business data from search query.");
-    return fallbackBusinessData(query, location);
+    return await fallbackBusinessData(query, location);
   }
 
   console.log(`\n📍 Searching Google Maps for: "${query}"${location ? ` in ${location}` : ""}`);
@@ -78,13 +110,13 @@ export async function searchBusiness(
 
     if (!searchResponse.ok) {
       console.warn(`   Places API error: ${searchResponse.status}`);
-      return fallbackBusinessData(query, location);
+      return await fallbackBusinessData(query, location);
     }
 
     const searchData = await searchResponse.json();
     if (!searchData.places || searchData.places.length === 0) {
       console.log("   No results found via Places API");
-      return fallbackBusinessData(query, location);
+      return await fallbackBusinessData(query, location);
     }
 
     const place = searchData.places[0];
@@ -105,7 +137,7 @@ export async function searchBusiness(
     if (!detailResponse.ok) {
       console.warn(`   Detail API error: ${detailResponse.status}`);
       return {
-        ...fallbackBusinessData(query, location)!,
+        ...(await fallbackBusinessData(query, location))!,
         name: place.displayName?.text || query,
         rating: place.rating || 0,
         totalRatings: place.userRatingCount || 0,
@@ -154,7 +186,7 @@ export async function searchBusiness(
     return business;
   } catch (error) {
     console.warn(`   Error: ${(error as Error).message}`);
-    return fallbackBusinessData(query, location);
+    return await fallbackBusinessData(query, location);
   }
 }
 
@@ -186,12 +218,17 @@ function parseAddress(address: string): { city: string; state: string; zip: stri
  * Fallback when no API key or API fails.
  * Creates a basic business data object from the search query.
  */
-function fallbackBusinessData(
+async function fallbackBusinessData(
   query: string,
   location?: string
-): BusinessData {
+): Promise<BusinessData> {
   const name = query.trim();
   const locParts = (location || "").split(",").map((p) => p.trim());
+
+  // Geocode the address via Nominatim to get real coordinates
+  const coords = await geocodeAddress(query, location);
+  const lat = coords?.lat ?? 0;
+  const lng = coords?.lng ?? 0;
 
   return {
     name,
@@ -211,7 +248,7 @@ function fallbackBusinessData(
     state: locParts[1] || "",
     zipCode: "",
     country: "US",
-    latitude: 0,
-    longitude: 0,
+    latitude: lat,
+    longitude: lng,
   };
 }

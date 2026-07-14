@@ -1389,7 +1389,7 @@ export default function Hero() {
 
       {/* ── Content ── */}
       <motion.div
-        className="relative z-10 mx-auto max-w-4xl text-center text-white"
+        className="relative z-10 mx-auto max-w-4xl text-center text-white pb-36"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -1423,7 +1423,7 @@ export default function Hero() {
         {/* ── Two Shimmer CTA Buttons ── */}
         <motion.div
           variants={childVariants}
-          className="flex flex-col items-center justify-center gap-4 sm:flex-row mb-24"
+          className="flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <Link
             href="/#menu"
@@ -1625,17 +1625,17 @@ export default function About() {
             >
               {stats.map((stat) => (
                 <div
-                  key={stat.label.en || stat.label}
+                  key={typeof stat.label === 'string' ? stat.label : stat.label.en}
                   className="rounded-xl border border-white/10 bg-white/5 p-4 text-center backdrop-blur-sm"
                 >
                   <div className="text-2xl font-black text-[var(--color-gold)]">
                     {stat.decimals === 1 ? (
-                      <span className="tabular-nums">{(stat.value / (stat.divider || 1)).toFixed(1)}{stat.suffix}</span>
+                      <span className="tabular-nums">{(stat.value / ((stat as any).divider || 1)).toFixed(1)}{stat.suffix}</span>
                     ) : (
                       <AnimatedCounterWithDecimal end={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
                     )}
                   </div>
-                  <div className="mt-1 text-xs text-tertiary">{stat.label.en ? __(stat.label) : stat.label}</div>
+                  <div className="mt-1 text-xs text-tertiary">{typeof stat.label === 'string' ? stat.label : __(stat.label)}</div>
                 </div>
               ))}
             </motion.div>
@@ -1781,7 +1781,7 @@ export default function Services() {
               <TiltCard key={i} className="rounded-2xl p-[1px] glow-card">
                 <div className="relative rounded-2xl bg-card-inner p-8 h-full">
                   <span className="mb-2 inline-block rounded bg-[var(--color-gold)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-gold)]">#{(i + 1).toString().padStart(2, "0")}</span>
-                  <h3 className="mb-3 text-xl font-bold text-white">{__(svc.title)}</h3>
+                  <h3 className="mb-3 text-xl font-bold text-heading">{__(svc.title)}</h3>
                   <p className="text-sm leading-relaxed text-secondary">{__(svc.description)}</p>
                 </div>
               </TiltCard>
@@ -1904,7 +1904,7 @@ export default function Reviews() {
               <StarRating rating={review.rating} />
               <p className="mt-3 text-sm leading-relaxed text-secondary relative z-10">"{review.text}"</p>
               <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-tertiary">
-                <span className="font-medium text-white">— {review.author}</span>
+                <span className="font-medium text-heading">— {review.author}</span>
                 <span className="text-[var(--color-gold)]/80">{review.source}</span>
               </div>
             </motion.div>
@@ -1924,6 +1924,16 @@ function generateContact(site: ScrapedSite | null, business: BusinessData | null
   const addr = business?.address || site?.pages?.[0]?.contactInfo?.address?.[0] || "Dirección disponible próximamente";
   const phone = business?.phone || site?.pages?.[0]?.contactInfo?.phone?.[0] || "";
   const email = site?.pages?.[0]?.contactInfo?.email?.[0] || "";
+  // Map coordinates — use scraped data, fall back to OSM Nominatim defaults
+  const mapLat = business?.latitude ?? 28.104766;
+  const mapLng = business?.longitude ?? -16.731893;
+  const bboxPad = 0.006;
+  const minLat = mapLat - bboxPad;
+  const maxLat = mapLat + bboxPad;
+  const minLng = mapLng - bboxPad;
+  const maxLng = mapLng + bboxPad;
+  const embedSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${minLng}%2C${minLat}%2C${maxLng}%2C${maxLat}&amp;layer=mapnik&amp;marker=${mapLat}%2C${mapLng}`;
+  const mapLink = `https://www.openstreetmap.org/?mlat=${mapLat}&amp;mlon=${mapLng}#map=16/${mapLat}/${mapLng}`;
   return `// ============================================================
 //  Contact — Animated Gradient Fields + Pulse Button + Hover Lift
 //  MAXIMUM WOW EDITION
@@ -1988,7 +1998,7 @@ export default function Contact() {
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
-              <h3 className="mb-4 text-lg font-bold text-white">
+              <h3 className="mb-4 text-lg font-bold text-heading">
                 <span className="text-[var(--color-gold)]">📍</span> ${escapeJsx(config.name || "Our Location")}
               </h3>
               <div className="space-y-3 text-sm text-secondary">
@@ -2015,17 +2025,17 @@ export default function Contact() {
               <div className="map-container">
                 <iframe
                   title="${escapeJsx(config.name || "Our Location")} - Ubicación"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=-16.7268%2C28.1180%2C-16.7168%2C28.1280&amp;layer=transportmap&amp;marker=28.1230%2C-16.7218"
+                  src="${embedSrc}"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
+                  referrerPolicy="unsafe-url"
                   allowFullScreen
                 />
               </div>
               <p className="mt-2 text-center text-[10px] text-quaternary">
-                <a href="https://www.openstreetmap.org/?mlat=28.1230&amp;mlon=-16.7218#map=16/28.1230/-16.7218&amp;layers=T" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
+                <a href="${mapLink}" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
               </p>
             </motion.div>
 
@@ -2034,7 +2044,7 @@ export default function Contact() {
               whileHover={{ y: -6, boxShadow: "0 20px 40px rgba(var(--color-gold-rgb), 0.1)" }}
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
-              <h3 className="mb-4 text-lg font-bold text-white">
+              <h3 className="mb-4 text-lg font-bold text-heading">
                 <span className="text-[var(--color-gold)]">📋</span> {t("contact.info_title")}
               </h3>
               <div className="space-y-3 text-sm text-secondary">
@@ -2054,7 +2064,7 @@ export default function Contact() {
             transition={{ type: "spring", stiffness: 80, damping: 15, delay: 0.2 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm"
           >
-            <h3 className="mb-6 text-lg font-semibold text-white">{t("contact.form_title")}</h3>
+            <h3 className="mb-6 text-lg font-semibold text-heading">{t("contact.form_title")}</h3>
             <form className="space-y-5">
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-secondary">{t("contact.form_name_label")}</label>
@@ -2211,7 +2221,7 @@ export default function Footer() {
               <span className="gradient-text-gold">${escapeJsx(name)}</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-tertiary">
-              {__(footerDesc)}
+              {__({es: ${JSON.stringify(footerDescEs)}, en: ${JSON.stringify(footerDescEn)}})}
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-quaternary leading-relaxed">
@@ -2260,7 +2270,11 @@ export default function Footer() {
           <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:"pointer"}}>alexawebservers.com</a></p>
         </div>
       </div>
-    </footer>;
+      </div>
+    </motion.div>
+    </div>
+    </footer>
+  );
 }
 `;
 }
@@ -2333,7 +2347,7 @@ export default function Islands() {
                   <span className="mb-2 inline-block rounded-full bg-[var(--color-gold)]/20 px-3 py-1 text-xs font-medium text-[var(--color-gold)]">
                     {t("island.badge")}
                   </span>
-                  <h3 className="text-xl font-bold text-white">{t(island.titleKey)}</h3>
+                  <h3 className="text-xl font-bold text-heading">{t(island.titleKey)}</h3>
                 </div>
               </div>
               <div className="p-6">
