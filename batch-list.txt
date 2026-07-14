@@ -1,0 +1,17 @@
+# Rake CMS — 10 Test Businesses
+# Format: Business Name, Full Address
+# Lines starting with # are ignored
+
+# Costa Adeje restaurants
+Daria's Bakery & Bistro | Breakfast & Lunch, C. el Sauce, 6, Costa Adeje
+Restaurante Casa Adolfo, Calle La Cruz, s/n, 38679 Adeje
+La Tajea, Pje. Cabezos Sau 10, Adeje
+El Gran Sol, Av. de España, 5, Los Cristianos
+Tasca El Colmado, C. San Sebastián, 2, La Laguna
+
+# Other types
+Farmacia Adeje, C. Grande, 1, 38670 Adeje
+Clínica Dental Adeje, Av. de los Pueblos, 12, Costa Adeje
+Autoescuela Adeje, C. el Sauce, 3, Costa Adeje
+Inmobiliaria Costa Adeje, Av. de España, 3, Los Cristianos
+Centro de Estética Adeje, C. Antonio Navarro, 5, Adeje
