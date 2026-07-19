@@ -625,7 +625,7 @@ function buildContactInfoHtml(site: ScrapedSite | null, business: BusinessData |
         </div>
     </div>
     ${lat && lng ? `<div class="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm overflow-hidden hover-lift">
-        <iframe title="${escAttr(name)} - Location" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAzSNn342NHMLnqCAhyBd14PMckXJ0IZXc&q=${lat},${lng}&zoom=15" width="100%" height="300" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
+        <iframe title="${escAttr(name)} - Location" src="https://www.google.com/maps/embed/v1/place?key=${config.googleMapsApiKey || ''}&q=${lat},${lng}&zoom=15" width="100%" height="300" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
         <p class="mt-2 text-center text-[10px] text-quaternary"><a href="https://www.google.com/maps?q=${lat},${lng}&z=15" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">View on Google Maps</a></p>
     </div>` : ''}
 </div>`;
