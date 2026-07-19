@@ -102,12 +102,13 @@ export async function generateWordPressTheme(
   // Detect if Spanish
   const isSpanish = !!(content.tagline?.match(/[áéíóúñ]/i) || content.aboutParagraphs?.[0]?.match(/[áéíóúñ]/i));
 
-  // Build nav items — sections + pages
+  // Build nav items — use fixed short labels, not business-name-derived
   const sections: { id: string; label: string }[] = [
-    { id: "about", label: content.aboutHeading || (isSpanish ? "Sobre nosotros" : "About Us") },
-    { id: "services", label: isSpanish ? "Nuestros servicios" : "Our Services" },
-    { id: "reviews", label: "Testimonials" },
-    { id: "contact", label: "Contact" },
+    { id: "about", label: isSpanish ? "Sobre nosotros" : "About Us" },
+    { id: "menu", label: isSpanish ? "Nuestra Carta" : "Our Menu" },
+    { id: "services", label: isSpanish ? "Servicios" : "Services" },
+    { id: "reviews", label: isSpanish ? "Opiniones" : "Reviews" },
+    { id: "contact", label: isSpanish ? "Contacto" : "Contact" },
   ];
   // Build CSS theme (inline in style.css)
   const css = buildWordPressCss(config, businessType, photos, heroPhoto, aboutPhoto);
@@ -314,6 +315,7 @@ function buildHeaderPhp(
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php wp_head(); ?>
+    <link rel="icon" href="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/generated/logo.svg" sizes="any" type="image/svg+xml">
     <style>
         html.dark { color-scheme: dark; }
         .dark body { background: var(--color-bg-page); color: var(--color-text-page); }
@@ -329,9 +331,8 @@ function buildHeaderPhp(
             <a class="flex-shrink-0" href="<?php echo esc_url(home_url('/')); ?>">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/generated/logo.svg" alt="${escHtml(name)}" class="h-8 w-auto" onerror="this.style.display='none'" loading="eager">
             </a>
-            <!-- Desktop Navigation (center) -->
-            <nav class="hidden items-center gap-4 md:flex">
-                ${extraNavLink}
+            <!-- Desktop Navigation -->
+            <nav class="hidden items-center gap-3 md:flex">
                 ${navItems}
             </nav>
             <!-- Right end: Lang toggle + Theme toggle + Hamburger -->
@@ -361,8 +362,7 @@ function buildHeaderPhp(
         <!-- Mobile Menu Panel -->
         <div id="mobile-menu" class="hidden border-t border-white/10 bg-header backdrop-blur-2xl md:hidden">
             <nav class="flex flex-col gap-1 px-4 py-4">
-                ${extraNavLink ? `<a href="#menu" class="rounded-lg px-3 py-2.5 text-sm text-white transition hover:bg-white/10">${isSpanish ? 'Nuestra Carta' : 'Our Menu'}</a>` : ''}
-                ${sections.map(s => `<a href="#${s.id}" class="rounded-lg px-3 py-2.5 text-sm text-white transition hover:bg-white/10">${escHtml(shortLabel(s.label))}</a>`).join('\\n                ')}
+                ${sections.map(s => `<a href="#${s.id}" class="rounded-lg px-3 py-2.5 text-sm text-white transition hover:bg-white/10">${escHtml(shortLabel(s.label))}</a>`).join('\n                ')}
             </nav>
         </div>
     </div>
@@ -1510,6 +1510,8 @@ body {
 .md\\:grid-cols-2 { }
 .md\\:grid-cols-3 { }
 .md\\:grid-cols-4 { }
+.hidden { display: none; }
+
 @media (min-width: 768px) {
     .md\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
     .md\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -1520,7 +1522,6 @@ body {
     .md\\:text-5xl { font-size: 3rem; }
 }
 @media (max-width: 767px) {
-    .hidden { display: none; }
 }
 
 /* ══════════════ FLEX ══════════════ */
