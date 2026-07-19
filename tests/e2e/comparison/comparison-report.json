@@ -1,0 +1,59 @@
+{
+  "url": "https://darias-bakery-bistro.alexawebservers.com",
+  "capturedAt": "2026-07-19T09:24:43.436Z",
+  "results": {
+    "passes": 30,
+    "failures": 1,
+    "total": 31
+  },
+  "passes": [
+    "Section \"hero\": Contains business name ✓",
+    "Section \"hero\": No placeholder text ✓",
+    "Section \"hero\": Content length 301 chars (ref: 370) ✓",
+    "Section \"about\": Contains business name ✓",
+    "Section \"about\": No placeholder text ✓",
+    "Section \"about\": Content length 505 chars (ref: 521) ✓",
+    "Section \"services\": Contains business name ✓",
+    "Section \"services\": No placeholder text ✓",
+    "Section \"services\": Content length 1075 chars (ref: 1081) ✓",
+    "Section \"reviews\": No placeholder text ✓",
+    "Section \"reviews\": Content length 1099 chars (ref: 1217) ✓",
+    "Section \"contact\": Contains business name ✓",
+    "Section \"contact\": No placeholder text ✓",
+    "Section \"footer\": Contains business name ✓",
+    "Section \"footer\": No placeholder text ✓",
+    "Section \"footer\": Content length 195 chars (ref: 263) ✓",
+    "Section \"navigation\": Contains business name ✓",
+    "Section \"navigation\": No placeholder text ✓",
+    "Section \"navigation\": Content length 83 chars (ref: 61) ✓",
+    "Page title: \"Daria's Bakery & Bistro | Breakfast & Lunch\" ✓",
+    "Language: es ✓",
+    "Images: 1 found ✓",
+    "Footer present ✓",
+    "Navigation present ✓",
+    "Required section \"hero\" present ✓",
+    "Required section \"about\" present ✓",
+    "Required section \"services\" present ✓",
+    "Required section \"reviews\" present ✓",
+    "Required section \"contact\" present ✓",
+    "Required section \"footer\" present ✓"
+  ],
+  "failures": [
+    "SHORT: Section \"contact\" too short (180 vs ref 405)"
+  ],
+  "wpSections": [
+    "hero",
+    "about",
+    "services",
+    "reviews",
+    "contact",
+    "footer",
+    "navigation"
+  ],
+  "wpMetadata": {
+    "title": "Daria's Bakery & Bistro | Breakfast & Lunch",
+    "description": "",
+    "lang": "es"
+  },
+  "wpImageCount": 1
+}

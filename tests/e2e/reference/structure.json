@@ -1,0 +1,592 @@
+{
+  "tag": "BODY",
+  "className": "antialiased font-sans",
+  "children": [
+    {
+      "tag": "DIV",
+      "className": ""
+    },
+    {
+      "tag": "DIV",
+      "className": "flex min-h-screen flex-col bg-page text-page",
+      "children": [
+        {
+          "tag": "HEADER",
+          "className": "fixed top-0 left-0 right-0 z-50",
+          "children": [
+            {
+              "tag": "DIV",
+              "className": "border-b border-white/30 bg-header backdrop-blur-2xl shadow-lg shadow-black/5",
+              "children": [
+                {
+                  "tag": "DIV",
+                  "className": "mx-auto flex h-16 max-w-6xl items-center justify-between px-4",
+                  "children": [
+                    {
+                      "tag": "A",
+                      "className": "group relative flex items-center gap-3 cursor-pointer",
+                      "children": [
+                        {
+                          "tag": "IMG",
+                          "truncated": true
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "DIV",
+                      "className": "shrink-0"
+                    },
+                    {
+                      "tag": "NAV",
+                      "className": "hidden items-center gap-8 md:flex",
+                      "children": [
+                        {
+                          "tag": "A",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "A",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "A",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "A",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "A",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "BUTTON",
+                          "truncated": true
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "BUTTON",
+                      "className": "relative z-50 flex h-10 w-10 items-center justify-center text-white md:hidden cursor-pointer",
+                      "children": [
+                        {
+                          "tag": "SPAN",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "SPAN",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "SPAN",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "MAIN",
+          "className": "flex-1",
+          "children": [
+            {
+              "tag": "SECTION",
+              "className": "relative flex h-[75vh] min-h-[500px] items-center justify-center overflow-hidden px-4",
+              "children": [
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "absolute inset-0 bg-black/50"
+                    }
+                  ]
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 opacity-60 pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute top-[15%] left-[10%] h-4 w-4 rounded-full pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute top-[25%] right-[15%] h-6 w-6 rounded-full pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute bottom-[30%] left-[20%] h-3 w-3 rounded-full pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute bottom-[20%] right-[25%] h-5 w-5 rounded-full pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute top-[40%] left-[40%] h-8 w-8 rounded-full pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute top-[60%] right-[10%] h-3 w-3 rounded-full pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 pointer-events-none"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 bg-black/50 pointer-events-none"
+                },
+                {
+                  "tag": "BUTTON",
+                  "className": "absolute left-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white ",
+                  "children": [
+                    {
+                      "tag": "svg",
+                      "children": [
+                        {
+                          "tag": "path",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "BUTTON",
+                  "className": "absolute right-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white",
+                  "children": [
+                    {
+                      "tag": "svg",
+                      "children": [
+                        {
+                          "tag": "path",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 gap-2",
+                  "children": [
+                    {
+                      "tag": "BUTTON",
+                      "className": "h-2 w-2 rounded-full transition-all duration-300 bg-white/40"
+                    },
+                    {
+                      "tag": "BUTTON",
+                      "className": "h-2 w-2 rounded-full transition-all duration-300 w-6 bg-[var(--color-gold)]"
+                    },
+                    {
+                      "tag": "BUTTON",
+                      "className": "h-2 w-2 rounded-full transition-all duration-300 bg-white/40"
+                    }
+                  ]
+                },
+                {
+                  "tag": "DIV",
+                  "className": "relative z-10 mx-auto max-w-4xl text-center text-white pb-36",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "mb-6 inline-block",
+                      "children": [
+                        {
+                          "tag": "SPAN",
+                          "truncated": true
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "H1",
+                      "className": "mb-4 text-4xl font-black tracking-tight md:text-5xl lg:text-6xl leading-tight",
+                      "text": "We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area."
+                    },
+                    {
+                      "tag": "P",
+                      "className": "mx-auto mb-8 max-w-2xl text-base text-white/70 md:text-lg",
+                      "text": "Daria's Bakery & Bistro | Breakfast & Lunch — We are Daria's Bakery & Bistro | Breakfast & Lunch, se"
+                    },
+                    {
+                      "tag": "DIV",
+                      "className": "flex flex-col items-center justify-center gap-4 sm:flex-row",
+                      "children": [
+                        {
+                          "tag": "A",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "A",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute bottom-4 left-1/2 -translate-x-1/2",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "flex flex-col items-center gap-2",
+                      "children": [
+                        {
+                          "tag": "SPAN",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "SECTION",
+              "id": "about",
+              "className": "relative px-4 py-24 overflow-hidden",
+              "children": [
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 bg-section opacity-90"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "relative z-10 container mx-auto max-w-6xl",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "grid items-center gap-12 md:grid-cols-2",
+                      "children": [
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "SECTION",
+              "id": "services",
+              "className": "relative px-4 py-24 overflow-hidden",
+              "children": [
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 bg-section"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 opacity-20"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "relative z-10 container mx-auto max-w-6xl",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "mb-20",
+                      "children": [
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "SECTION",
+              "id": "reviews",
+              "className": "relative px-4 py-24 overflow-hidden",
+              "children": [
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 bg-section"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 opacity-10"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "relative z-10 container mx-auto max-w-6xl",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "mb-12 text-center",
+                      "children": [
+                        {
+                          "tag": "SPAN",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "H2",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "P",
+                          "truncated": true
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "DIV",
+                      "className": "grid gap-6 md:grid-cols-2 lg:grid-cols-3",
+                      "children": [
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "SECTION",
+              "id": "contact",
+              "className": "relative px-4 py-24 overflow-hidden",
+              "children": [
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 bg-section"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "absolute inset-0 opacity-[0.03]"
+                },
+                {
+                  "tag": "DIV",
+                  "className": "relative z-10 container mx-auto max-w-6xl",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "mb-14 text-center",
+                      "children": [
+                        {
+                          "tag": "SPAN",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "H2",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "P",
+                          "truncated": true
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "DIV",
+                      "className": "grid gap-10 md:grid-cols-2",
+                      "children": [
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "FOOTER",
+          "className": "relative px-4 py-16 overflow-hidden",
+          "children": [
+            {
+              "tag": "DIV",
+              "className": "absolute inset-0 bg-section"
+            },
+            {
+              "tag": "DIV",
+              "className": "absolute inset-0 opacity-[0.08]"
+            },
+            {
+              "tag": "DIV",
+              "className": "absolute top-0 left-0 right-0 h-[2px]"
+            },
+            {
+              "tag": "DIV",
+              "className": "relative z-10 container mx-auto max-w-6xl",
+              "children": [
+                {
+                  "tag": "DIV",
+                  "className": "grid gap-10 md:grid-cols-4",
+                  "children": [
+                    {
+                      "tag": "DIV",
+                      "className": "md:col-span-2",
+                      "children": [
+                        {
+                          "tag": "H4",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "P",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "P",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "DIV",
+                      "className": "",
+                      "children": [
+                        {
+                          "tag": "H4",
+                          "truncated": true
+                        },
+                        {
+                          "tag": "DIV",
+                          "truncated": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "requestAnimationFrame(function(){$RT=performance.now()});"
+    },
+    {
+      "tag": "SCRIPT",
+      "id": "_R_",
+      "className": ""
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "(self.__next_f=self.__next_f||[]).push([0])"
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "self.__next_f.push([1,\"1:\\\"$Sreact.fragment\\\"\\n3:I[43645,[\\\"/_next/static/chunks/3ypdmm71juqes.js\\\","
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "self.__next_f.push([1,\"0:{\\\"P\\\":null,\\\"c\\\":[\\\"\\\",\\\"\\\"],\\\"q\\\":\\\"\\\",\\\"i\\\":false,\\\"f\\\":[[[\\\"\\\",{\\\"child"
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "self.__next_f.push([1,\"8:[[\\\"$\\\",\\\"meta\\\",\\\"0\\\",{\\\"charSet\\\":\\\"utf-8\\\"}],[\\\"$\\\",\\\"meta\\\",\\\"1\\\",{\\\"na"
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "self.__next_f.push([1,\"c:I[39756,[\\\"/_next/static/chunks/3ypdmm71juqes.js\\\",\\\"/_next/static/chunks/1"
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "self.__next_f.push([1,\"f:I[27201,[\\\"/_next/static/chunks/3ypdmm71juqes.js\\\",\\\"/_next/static/chunks/1"
+    },
+    {
+      "tag": "TITLE",
+      "className": "",
+      "text": "Rake CMS"
+    },
+    {
+      "tag": "META",
+      "className": ""
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "document.querySelectorAll('body link[rel=\"icon\"], body link[rel=\"apple-touch-icon\"]').forEach(el => "
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "$RB=[];$RV=function(a){$RT=performance.now();for(var b=0;b<a.length;b+=2){var c=a[b],e=a[b+1];null!="
+    },
+    {
+      "tag": "SCRIPT",
+      "className": "",
+      "text": "$RC(\"B:0\",\"S:0\")"
+    },
+    {
+      "tag": "NEXT-ROUTE-ANNOUNCER",
+      "className": ""
+    }
+  ]
+}
