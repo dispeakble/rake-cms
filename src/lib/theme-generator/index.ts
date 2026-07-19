@@ -17,6 +17,8 @@ export interface ThemeConfig {
   fontFamily: string;
   layout: "centered" | "full-width";
   businessType: BusinessType;
+  /** Google Maps Embed API key — loaded from GOOGLE_PLACES_API_KEY env var */
+  googleMapsApiKey?: string;
 }
 
 /** A page the site will have — only these get linked in nav/footer */
@@ -2457,6 +2459,7 @@ export async function generateTheme(
     fontFamily: INDUSTRY_FONTS[businessType],
     layout: "centered",
     businessType,
+    googleMapsApiKey: process.env.GOOGLE_PLACES_API_KEY,
   };
 
   const content = generateContent(site, business, businessType);
