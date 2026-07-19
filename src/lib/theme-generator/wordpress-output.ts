@@ -322,7 +322,14 @@ get_header();
 <section class="relative flex h-[75vh] min-h-[500px] items-center justify-center overflow-hidden px-4">
     <div class="absolute inset-0 bg-black/50"></div>
     <?php
-    \$hero_files = glob(get_template_directory() . '/assets/images/website-*.jpeg');
+    \$hero_files = glob(get_template_directory() . '/assets/images/website-*.{jpeg,jpg,png,webp,svg}');
+    if (empty(\$hero_files)) {
+        \$hero_files = glob(get_template_directory() . '/assets/images/unsplash-*.svg');
+        if (!empty(\$hero_files)) {
+            sort(\$hero_files);
+            \$hero_files = [\$hero_files[0]];
+        }
+    }
     if (!empty(\$hero_files)): ?>
     <div class="absolute inset-0" style="background-image:url(<?php echo str_replace(get_template_directory(), get_template_directory_uri(), \$hero_files[0]); ?>);background-size:cover;background-position:center;"></div>
     <?php endif; ?>
@@ -360,7 +367,7 @@ get_header();
             </div>
             <div>
                 <div class="relative overflow-hidden rounded-2xl">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images${aboutImgPath || '/placeholder.svg'}" alt="About ${escHtml(name)}" class="h-full w-full object-cover" onerror="this.src='data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" fill="' + config.secondaryColor + '"><rect width="800" height="600"/><text x="400" y="300" text-anchor="middle" fill="white" font-size="24">' + escHtml(name) + '</text></svg>')}'" />
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/${aboutImgPath || 'placeholder.svg'}" alt="About ${escHtml(name)}" class="h-full w-full object-cover" onerror="this.src='data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" fill="' + config.secondaryColor + '"><rect width="800" height="600"/><text x="400" y="300" text-anchor="middle" fill="white" font-size="24">' + escHtml(name) + '</text></svg>')}'" />
                 </div>
             </div>
         </div>
