@@ -1,0 +1,52 @@
+{
+  "url": "https://darias-bakery-bistro.alexawebservers.com",
+  "capturedAt": "2026-07-19T08:51:25.294Z",
+  "viewport": "1440x900@2x",
+  "mobileViewport": "390x844@2x",
+  "metadata": {
+    "title": "Rake CMS",
+    "description": "A modern CMS like WordPress built with Next.js",
+    "lang": "es",
+    "charset": "UTF-8",
+    "favicon": "/favicon.ico"
+  },
+  "cssVariables": 159,
+  "images": [
+    {
+      "src": "/media/scraped/generated/logo.svg",
+      "alt": "Daria's Bakery & Bistro | Breakfast & Lunch",
+      "width": 200,
+      "height": 60
+    },
+    {
+      "src": "/media/scraped/generated/slide2.svg",
+      "alt": "",
+      "width": 1440,
+      "height": 675
+    },
+    {
+      "src": "/media/scraped/unsplash-1783965197068-keyufb.svg",
+      "alt": "About Daria's Bakery & Bistro | Breakfast & Lunch",
+      "width": 800,
+      "height": 600
+    }
+  ],
+  "sections": [
+    "hero",
+    "about",
+    "services",
+    "reviews",
+    "contact",
+    "footer",
+    "navigation"
+  ],
+  "sectionCharLengths": {
+    "hero": 370,
+    "about": 521,
+    "services": 1081,
+    "reviews": 1217,
+    "contact": 405,
+    "footer": 263,
+    "navigation": 61
+  }
+}
