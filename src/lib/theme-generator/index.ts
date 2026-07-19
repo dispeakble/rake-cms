@@ -2466,6 +2466,20 @@ export async function generateTheme(
   // Build review data
   const reviews = getReviews(name, businessType);
 
+  // ─── Feature flag: WordPress output mode ─────────────────────────────
+  const generatorOutput = process.env.GENERATOR_OUTPUT || "nextjs";
+
+  if (generatorOutput === "wordpress") {
+    const { generateWordPressTheme } = await import("@/lib/theme-generator/wordpress-output");
+    await generateWordPressTheme(
+      config, name, businessType, site, business,
+      content, reviews, photos, pageSlugs,
+      heroPhoto, aboutPhoto, outputDir,
+    );
+    return config;
+  }
+
+  // ─── Default: Next.js component output ──────────────────────────────
   const themeDir = path.join(outputDir, "src", "components", "theme");
   await fs.mkdir(themeDir, { recursive: true });
 
