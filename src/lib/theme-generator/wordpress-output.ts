@@ -1591,7 +1591,7 @@ body {
 
 .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
 .shadow-black\\/5 { box-shadow: 0 0 0 1px rgba(0,0,0,0.05); }
-.shadow-\\[0_0_20px_rgba\\(var\\(--color-gold-rgb\\),_0\\.3\\)\\] { box-shadow: 0 0 20px rgba(212, 160, 23, 0.3); }
+.shadow-\\[0_0_20px_rgba\\(var\\(--color-gold-rgb\\),0\\.3\\)\\] { box-shadow: 0 0 20px rgba(222, 102, 72, 0.3); }
 
 /* ══════════════ TRANSITIONS ══════════════ */
 
@@ -1630,8 +1630,8 @@ input:hover, textarea:hover {
 .object-cover { object-fit: cover; }
 .h-full { height: 100%; }
 .w-full { width: 100%; }
-.h-\\[75vh\\] { height: 75vh; }
-.min-h-\\[500px\\] { min-height: 500px; }
+.h-\\[90vh\\] { height: 90vh; }
+.min-h-\\[600px\\] { min-height: 600px; }
 .min-h-screen { min-height: 100vh; }
 
 /* ══════════════ ANIMATED GRADIENT BACKGROUND ══════════════ */
