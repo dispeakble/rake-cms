@@ -292,8 +292,15 @@ function buildHeaderPhp(
   businessType: BusinessType,
   config: ThemeConfig,
 ): string {
+  // Helper: produce a short nav label — truncate at '|' or first 28 chars
+  const shortLabel = (label: string): string => {
+    const pipeIdx = label.indexOf('|');
+    const base = pipeIdx !== -1 ? label.slice(0, pipeIdx).trim() : label.trim();
+    return base.length > 28 ? base.slice(0, 26) + '…' : base;
+  };
+
   const navItems = sections.map(s =>
-    `<li><a href="#${s.id}" class="nav-link">${escHtml(s.label)}</a></li>`
+    `<li><a href="#${s.id}" class="nav-link">${escHtml(shortLabel(s.label))}</a></li>`
   ).join("\n            ");
 
   // Business-type-specific nav link
@@ -318,14 +325,20 @@ function buildHeaderPhp(
 <header class="fixed top-0 left-0 right-0 z-50">
     <div class="border-b border-white/30 bg-header backdrop-blur-2xl shadow-lg shadow-black/5">
         <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-            <a class="flex items-center gap-3" href="<?php echo esc_url(home_url('/')); ?>">
+            <!-- Logo (left) -->
+            <a class="flex-shrink-0" href="<?php echo esc_url(home_url('/')); ?>">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/generated/logo.svg" alt="${escHtml(name)}" class="h-8 w-auto" onerror="this.style.display='none'" loading="eager">
-                <span class="text-xl font-black text-white">${escHtml(name)}</span>
             </a>
-            <div class="flex items-center gap-3">
+            <!-- Desktop Navigation (center) -->
+            <nav class="hidden items-center gap-4 md:flex">
+                ${extraNavLink}
+                ${navItems}
+            </nav>
+            <!-- Right end: Lang toggle + Theme toggle + Hamburger -->
+            <div class="flex items-center gap-2">
                 <!-- Language Toggle -->
                 <div class="relative" id="lang-toggle-container">
-                    <button id="lang-toggle" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/5 text-xs font-bold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10" aria-label="${isSpanish ? 'Cambiar idioma' : 'Toggle language'}">
+                    <button id="lang-toggle" class="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-xs font-bold text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10" aria-label="${isSpanish ? 'Cambiar idioma' : 'Toggle language'}">
                         ${isSpanish ? 'ES' : 'EN'}
                     </button>
                     <div id="lang-dropdown" class="absolute right-0 top-full mt-2 hidden w-28 rounded-lg border border-white/10 bg-black/90 p-1 backdrop-blur-xl shadow-lg" style="z-index:100;">
@@ -334,14 +347,9 @@ function buildHeaderPhp(
                     </div>
                 </div>
                 <!-- Theme Toggle -->
-                <button id="theme-toggle" class="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-white/5 text-sm text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10" aria-label="${isSpanish ? 'Cambiar tema' : 'Toggle theme'}">
+                <button id="theme-toggle" class="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white/5 text-sm text-white transition-all duration-300 hover:border-white/40 hover:bg-white/10" aria-label="${isSpanish ? 'Cambiar tema' : 'Toggle theme'}">
                     <span class="theme-icon">🌙</span>
                 </button>
-                <!-- Desktop Navigation -->
-                <nav class="hidden items-center gap-6 md:flex">
-                    ${extraNavLink}
-                    ${navItems}
-                </nav>
                 <!-- Mobile Hamburger (animated) -->
                 <button class="relative flex h-10 w-10 flex-col items-center justify-center text-white md:hidden" id="mobile-menu-toggle" aria-label="${isSpanish ? 'Abrir menú' : 'Toggle menu'}">
                     <span class="block h-0.5 w-6 bg-white rounded-full transition-all duration-300 origin-center hamburger-line-1"></span>
@@ -354,7 +362,7 @@ function buildHeaderPhp(
         <div id="mobile-menu" class="hidden border-t border-white/10 bg-header backdrop-blur-2xl md:hidden">
             <nav class="flex flex-col gap-1 px-4 py-4">
                 ${extraNavLink ? `<a href="#menu" class="rounded-lg px-3 py-2.5 text-sm text-white transition hover:bg-white/10">${isSpanish ? 'Nuestra Carta' : 'Our Menu'}</a>` : ''}
-                ${sections.map(s => `<a href="#${s.id}" class="rounded-lg px-3 py-2.5 text-sm text-white transition hover:bg-white/10">${escHtml(s.label)}</a>`).join('\n                ')}
+                ${sections.map(s => `<a href="#${s.id}" class="rounded-lg px-3 py-2.5 text-sm text-white transition hover:bg-white/10">${escHtml(shortLabel(s.label))}</a>`).join('\\n                ')}
             </nav>
         </div>
     </div>
@@ -419,7 +427,7 @@ get_header();
 ?>
 
 <!-- ═══════════ HERO ═══════════ -->
-<section class="relative flex h-[90vh] min-h-[600px] items-center justify-center overflow-hidden px-4" id="hero">
+<section class="relative flex h-[90vh] min-h-[600px] items-center justify-center overflow-hidden pt-20 px-6" id="hero">
     <!-- Animated gradient background -->
     <div class="absolute inset-0 pointer-events-none animated-gradient"></div>
 
@@ -483,10 +491,10 @@ get_header();
 </section>
 
 <!-- ═══════════ ABOUT ═══════════ -->
-<section id="about" class="relative px-4 py-24 overflow-hidden reveal fade-up">
+<section id="about" class="relative px-6 py-32 overflow-hidden reveal fade-up">
     <div class="absolute inset-0 bg-section opacity-90"></div>
     <div class="relative z-10 container mx-auto max-w-6xl">
-        <div class="grid items-center gap-12 md:grid-cols-2">
+        <div class="grid items-center gap-16 md:grid-cols-2">
             <div>
                 <span class="mb-4 block text-xs uppercase tracking-[0.3em] text-secondary/60">${escHtml(content.tagline || 'About')}</span>
                 <h2 class="mb-6 text-3xl font-bold md:text-4xl gradient-text">${escHtml(content.aboutHeading || 'About Us')}</h2>
@@ -511,7 +519,7 @@ get_header();
 </section>
 
 <!-- ═══════════ SERVICES ═══════════ -->
-<section id="services" class="relative px-4 py-24 overflow-hidden reveal fade-up">
+<section id="services" class="relative px-6 py-32 overflow-hidden reveal fade-up">
     <div class="absolute inset-0 bg-section"></div>
     <div class="relative z-10 container mx-auto max-w-6xl">
         <div class="mb-12 text-center">
@@ -525,7 +533,7 @@ get_header();
 </section>
 
 <!-- ═══════════ REVIEWS ═══════════ -->
-<section id="reviews" class="relative px-4 py-24 overflow-hidden reveal fade-up">
+<section id="reviews" class="relative px-6 py-32 overflow-hidden reveal fade-up">
     <div class="absolute inset-0 bg-section"></div>
     <div class="relative z-10 container mx-auto max-w-6xl">
         <div class="mb-12 text-center">
@@ -539,7 +547,7 @@ get_header();
 </section>
 
 <!-- ═══════════ CONTACT ═══════════ -->
-<section id="contact" class="relative px-4 py-24 overflow-hidden reveal fade-up">
+<section id="contact" class="relative px-6 py-32 overflow-hidden reveal fade-up">
     <div class="absolute inset-0 bg-section"></div>
     <div class="relative z-10 container mx-auto max-w-6xl">
         <div class="mb-14 text-center">
@@ -563,7 +571,7 @@ get_header();
 function buildServiceCardHtml(service: { title: string; description: string }, index: number, config: ThemeConfig): string {
   const num = String(index + 1).padStart(2, '0');
   return `<div class="rounded-2xl p-[1px] glow-card group">
-    <div class="relative rounded-2xl bg-card-inner p-8 h-full transition-all duration-300 hover:scale-[1.02]">
+    <div class="relative rounded-2xl bg-card-inner p-10 h-full transition-all duration-300 hover:scale-[1.02]">
         <span class="mb-3 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold" style="color:var(--color-gold);border:1px solid rgba(var(--color-gold-rgb),0.3);">${num}</span>
         <h3 class="mb-3 text-xl font-bold text-heading">${escHtml(service.title)}</h3>
         <p class="text-sm leading-relaxed text-secondary">${escHtml(service.description)}</p>
@@ -582,7 +590,7 @@ function buildReviewCardHtml(review: Review): string {
 
   const source = review.source || 'Google';
 
-  return `<div class="relative rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm hover-lift hover:border-white/30 group">
+  return `<div class="relative rounded-xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm hover-lift hover:border-white/30 group">
     <!-- SVG Quote Icon -->
     <div class="absolute -top-3 -left-3 text-4xl text-white/10 select-none leading-none">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
@@ -617,8 +625,8 @@ function buildContactInfoHtml(site: ScrapedSite | null, business: BusinessData |
         </div>
     </div>
     ${lat && lng ? `<div class="rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm overflow-hidden hover-lift">
-        <iframe title="${escAttr(name)} - Location" src="https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.01}%2C${lat - 0.01}%2C${lng + 0.01}%2C${lat + 0.01}&layer=mapnik&marker=${lat}%2C${lng}" width="100%" height="300" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
-        <p class="mt-2 text-center text-[10px] text-quaternary"><a href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=16/${lat}/${lng}" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">View on OpenStreetMap</a></p>
+        <iframe title="${escAttr(name)} - Location" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAzSNn342NHMLnqCAhyBd14PMckXJ0IZXc&q=${lat},${lng}&zoom=15" width="100%" height="300" style="border:0;border-radius:12px" loading="lazy" allowfullscreen></iframe>
+        <p class="mt-2 text-center text-[10px] text-quaternary"><a href="https://www.google.com/maps?q=${lat},${lng}&z=15" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">View on Google Maps</a></p>
     </div>` : ''}
 </div>`;
 }
@@ -626,7 +634,7 @@ function buildContactInfoHtml(site: ScrapedSite | null, business: BusinessData |
 // ═══════════ Helper: Contact form HTML ═══════════
 
 function buildContactFormHtml(isSpanish: boolean, config: ThemeConfig): string {
-  return `<div class="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm hover-lift">
+  return `<div class="rounded-2xl border border-white/10 bg-white/5 p-10 backdrop-blur-sm hover-lift">
     <h3 class="mb-6 text-lg font-semibold text-heading">${isSpanish ? 'Envíanos un mensaje' : 'Send us a message'}</h3>
     <form class="space-y-5" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <?php wp_nonce_field('rake_cms_contact', 'contact_nonce'); ?>
@@ -1479,9 +1487,18 @@ body {
 .max-w-xl { max-width: 36rem; }
 .max-w-sm { max-width: 24rem; }
 .px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
 .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
+.py-32 { padding-top: 8rem; padding-bottom: 8rem; }
 .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+.pt-20 { padding-top: 5rem; }
 .mx-auto { margin-left: auto; margin-right: auto; }
+
+/* ══════════════ PADDING ALL ══════════════ */
+
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.p-10 { padding: 2.5rem; }
 
 /* ══════════════ GRID ══════════════ */
 
@@ -1489,6 +1506,7 @@ body {
 .gap-6 { gap: 1.5rem; }
 .gap-10 { gap: 2.5rem; }
 .gap-12 { gap: 3rem; }
+.gap-16 { gap: 4rem; }
 .md\\:grid-cols-2 { }
 .md\\:grid-cols-3 { }
 .md\\:grid-cols-4 { }
@@ -1827,20 +1845,20 @@ function buildThemeJs(): string {
     var menu = document.getElementById('mobile-menu');
     if (!toggle || !menu) return;
     toggle.addEventListener('click', function () {
-      var isOpen = menu.classList.toggle('open');
+      menu.classList.toggle('hidden');
       toggle.classList.toggle('is-active');
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+      document.body.style.overflow = menu.classList.contains('hidden') ? '' : 'hidden';
     });
     var links = menu.querySelectorAll('a');
     for (var i = 0; i < links.length; i++) {
       links[i].addEventListener('click', function () {
-        menu.classList.remove('open');
+        menu.classList.add('hidden');
         toggle.classList.remove('is-active');
         document.body.style.overflow = '';
       });
     }
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && menu.classList.contains('open')) {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
         toggle.click();
       }
     });
@@ -1853,13 +1871,23 @@ function buildThemeJs(): string {
     if (!dropdown) return;
     toggle.addEventListener('click', function (e) {
       e.stopPropagation();
-      dropdown.classList.toggle('open');
+      dropdown.classList.toggle('hidden');
     });
     document.addEventListener('click', function (e) {
       if (!toggle.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.remove('open');
+        dropdown.classList.add('hidden');
       }
     });
+    var links = dropdown.querySelectorAll('a[data-lang]');
+    for (var i = 0; i < links.length; i++) {
+      links[i].addEventListener('click', function (e) {
+        e.preventDefault();
+        var lang = this.getAttribute('data-lang');
+        if (lang) {
+          window.location.href = window.location.pathname + '?lang=' + lang;
+        }
+      });
+    }
   }
 
   function initThemeToggle() {
