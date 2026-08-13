@@ -17,6 +17,8 @@ export interface ThemeConfig {
   fontFamily: string;
   layout: "centered" | "full-width";
   businessType: BusinessType;
+  /** Google Maps Embed API key for client-facing iframe embeds (use a separate restricted key; do not inline during generation). */
+  googleMapsApiKey?: string;
 }
 
 /** A page the site will have — only these get linked in nav/footer */
@@ -2457,6 +2459,7 @@ export async function generateTheme(
     fontFamily: INDUSTRY_FONTS[businessType],
     layout: "centered",
     businessType,
+    // googleMapsApiKey intentionally not read here to avoid inlining secrets into generated output.
   };
 
   const content = generateContent(site, business, businessType);

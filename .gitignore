@@ -9,10 +9,43 @@ node_modules/
 # Build artifacts
 .next/
 
-# Environment
+# Environment — NEVER commit real secrets
 .env
-.env.local
-.env.production
+.env.*
+!.env.example
+!.env.sample
+
+# Credentials & secrets — NEVER commit these
+*.pem
+*.key
+*.p12
+*.pfx
+*.p8
+*.pub
+id_rsa
+id_ed25519
+*.htpasswd
+.netrc
+*password*.txt
+*password*.md
+*credential*
+*secret*
+*api-key*
+*apikey*
+*.token
+*access-token*
+*.jks
+*.keystore
+*.crt
+*.csr
+*.srl
+
+# Secrets stored inside common config files
+docker-compose.override.yml
+config/production.json
+config/prod.json
+secrets/
+credentials/
 
 # IDE
 .idea/
@@ -30,3 +63,6 @@ npm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
+
+# Local scripts & scratch
+fix-key.*
