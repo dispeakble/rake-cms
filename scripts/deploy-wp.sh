@@ -76,6 +76,24 @@ if [ -z "$WP_CONTAINER" ]; then
 fi
 echo "   Container: $WP_CONTAINER"
 
+# ─── Drift detection: container port vs Apache vhost port ───
+# If a vhost already exists for this site, its ProxyPass target must match
+# the actual container port, otherwise the live site silently breaks (503).
+ACTUAL_PORT=$($SUDO docker port "$WP_CONTAINER" 80/tcp 2>/dev/null | grep -oE '127\.0\.0\.1:[0-9]+' | head -1 | cut -d: -f2)
+echo "   Container port: ${ACTUAL_PORT:-unknown}"
+VHOST_CONF="/etc/apache2/sites-available/${SLUG}.alexawebservers.com.conf"
+if [ -f "$VHOST_CONF" ] && [ -n "$ACTUAL_PORT" ]; then
+  VHOST_PORT=$(grep -oP '127\.0\.0\.1:\K\d+' "$VHOST_CONF" | head -1)
+  if [ -n "$VHOST_PORT" ] && [ "$VHOST_PORT" != "$ACTUAL_PORT" ]; then
+    echo "❌ DRIFT DETECTED: Apache vhost proxies to 127.0.0.1:${VHOST_PORT} but container is on 127.0.0.1:${ACTUAL_PORT}"
+    echo "   Fix with: sudo sed -i 's/127.0.0.1:${VHOST_PORT}/127.0.0.1:${ACTUAL_PORT}/g' $VHOST_CONF && sudo systemctl reload apache2"
+    echo "   ⚠️  Not proceeding until vhost matches container port."
+    exit 1
+  else
+    echo "   ✅ Vhost port matches container port ($ACTUAL_PORT)"
+  fi
+fi
+
 # Install WP-CLI inside the container
 echo ""
 echo "📥 Installing WP-CLI in container..."
