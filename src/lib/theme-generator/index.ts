@@ -2459,7 +2459,7 @@ export async function generateTheme(
     fontFamily: INDUSTRY_FONTS[businessType],
     layout: "centered",
     businessType,
-    googleMapsApiKey: process.env.GOOGLE_PLACES_API_KEY,
+    // googleMapsApiKey intentionally not read here to avoid inlining secrets into generated output.
   };
 
   const content = generateContent(site, business, businessType);
