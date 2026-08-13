@@ -17,7 +17,7 @@ export interface ThemeConfig {
   fontFamily: string;
   layout: "centered" | "full-width";
   businessType: BusinessType;
-  /** Google Maps Embed API key — loaded from GOOGLE_PLACES_API_KEY env var */
+  /** Google Maps Embed API key for client-facing iframe embeds (use a separate restricted key; do not inline during generation). */
   googleMapsApiKey?: string;
 }
 
