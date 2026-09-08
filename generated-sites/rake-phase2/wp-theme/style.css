@@ -1,0 +1,11 @@
+/*
+Theme Name: Rake AI Fresh
+Theme URI: https://alexawebservers.com/
+Author: Rake CMS
+Version: 1.0.0
+*/
+:root{--color-bg-page:#0b1020;--color-text-page:#e6eef8;--color-header:#0f1724}
+body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;background:var(--color-bg-page);color:var(--color-text-page);margin:0}
+.site-header{background:var(--color-header);padding:1rem}
+.site-main{padding:3rem;max-width:900px;margin:0 auto}
+.footer{padding:2rem;text-align:center;color:#98a0b2}
