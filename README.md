@@ -1,79 +1,104 @@
 # Rake CMS
 
-Rake CMS is a modern, Next.js-based content management system designed for rapid site creation and deployment. It scrapes source content, generates a Tailwind-based theme, and provides an automated pipeline to build and deploy static or server-rendered sites quickly.
+**A self-hostable, WordPress-style CMS built on Next.js — with a real WordPress importer.**
 
-Key points
-- Built with Next.js and Tailwind CSS
-- Rapid deployment pipeline (Docker-ready)
-- Pluggable content sources and scraping tools
-- CLI helpers for common tasks under `./cli`
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![React](https://img.shields.io/badge/React-19-149eca)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
-Quickstart (development)
+Rake CMS gives you the parts of a publishing platform that small sites actually use — posts, pages, categories, custom post types, nav menus, media, users, search, feeds, i18n — on a modern TypeScript stack you can deploy with Docker. It also ships a **scraper → theme generator → deploy** pipeline, so you can point it at an existing site, pull the content and structure across, and stand up a rebuilt version fast.
 
-1. Clone the repo
+Built and maintained by **[Alexa Web Servers](https://alexawebservers.com)** — a hosting company in Tenerife that uses it for client sites.
 
-   git clone https://github.com/dispeakble/rake-cms.git
-   cd rake-cms
+---
 
-2. Install dependencies
+## Why
 
-   npm install
+WordPress is great until you have to maintain a dozen client installs, each with its own plugin drift, its own PHP upgrade story, and its own way of breaking. Rake CMS is an attempt at the same workflow — content, themes, migration — on a stack that a modern web team can reason about: Next.js App Router, Drizzle ORM, Auth.js, and a database you already know (PostgreSQL **or** MariaDB/MySQL).
 
-3. Copy environment example and set secrets
+It is early software (v0.1.0). It is not trying to be a feature-complete WordPress replacement yet — see [Status](#status).
 
-   cp .env.example .env
-   # Edit .env to configure database, credentials, and API keys
+## Features
 
-4. Run the dev server
+- **Content**: posts, pages, categories, search, RSS/Atom feeds (`src/app/feed.xml`)
+- **Custom post types & nav menus** — first-class, not an afterthought (`src/lib/cpt`, `src/lib/nav-menus`)
+- **Block editor** — BlockNote-based editor (`src/lib/editor`)
+- **Auth & users** — Auth.js v5, with registration, login, profile, password reset (`src/lib/auth`)
+- **Media library** — local filesystem in dev, S3 in production (`src/lib/media`)
+- **i18n** — bilingual-ready routing and content (`src/lib/i18n`)
+- **Themes** — Tailwind-based theme generation and activation (`src/lib/theme-generator`)
+- **Scraper** — pull content/structure from an existing site with Cheerio (`src/lib/scraper`)
+- **WordPress migration** — import a WordPress database, files, and theme (`src/lib/migration`, CLI `import:wp`)
+- **Deployer** — build + deploy pipeline, Docker-ready (`src/lib/deployer`, `Dockerfile`, `scripts/deploy-wp.sh`)
+- **Security & reliability** — hardened auth paths and reliability helpers (`src/lib/security`, `src/lib/reliability`)
 
-   npm run dev
+## Quickstart
 
-5. Open http://localhost:3000
+```bash
+git clone https://github.com/dispeakble/rake-cms.git
+cd rake-cms
+npm install
+cp .env.example .env      # set DATABASE_URL, DATABASE_DIALECT, AUTH_SECRET
+npm run dev               # http://localhost:3000
+```
 
-Build & Docker
+`Dockerfile`, `docker-compose`-style setup, and an example Apache vhost (`cli/apache-vhost.conf`) are included for deployment.
 
-- Build static export
+## WordPress migration
 
-   npm run build
-   npm run export
+The main reason this project exists. The CLI can read a WordPress install and bring it across:
 
-- Docker (build + run)
+```bash
+npx tsx scripts/wp-clone.ts import:db      # import the WordPress database
+npx tsx scripts/wp-clone.ts import:files   # import uploads / media
+npx tsx scripts/wp-clone.ts import:theme   # import the WordPress theme
+npx tsx scripts/wp-clone.ts import:wp      # full migration
+```
 
-   docker build -t rake-cms .
-   docker run -p 3000:3000 --env-file .env rake-cms
+## CLI
 
-Configuration
+```bash
+npx tsx scripts/wp-clone.ts create:site                       # scaffold a site
+npx tsx scripts/wp-clone.ts create:post --title "Hello" --status publish
+npx tsx scripts/wp-clone.ts theme:activate my-theme
+npx tsx scripts/wp-clone.ts rapid:deploy
+```
 
-- See `drizzle.config.ts` for database schema and migrations.
-- Edit `.env` (from `.env.example`) to set credentials, API keys, and runtime options.
+Helpers live in `scripts/` (`batch-generate.sh`, `deploy-wp.sh`, `verify-deploy.ts`, `scan-secrets.sh`) and `scripts/commands/`.
 
-CLI
+## Database
 
-- The `./cli` folder contains convenience scripts for scraping, content import, and bulk operations. See `./cli/README.md` for specifics.
+Drizzle ORM supports both PostgreSQL and MariaDB/MySQL — set `DATABASE_DIALECT` and `DATABASE_URL` in `.env`.
 
-Testing
+```bash
+npm run db:generate   # generate migrations from schema
+npm run db:migrate    # apply migrations
+npm run db:studio     # browse data
+```
 
-- Run the test suite:
+## Testing
 
-   npm test
+End-to-end tests live in `tests/e2e` (Playwright) and are run against a running instance. There is no `npm test` script yet — that is on the roadmap.
 
-Contributing
+## Status
 
-Contributions welcome. Please follow these guidelines:
-- Fork the repo and create a feature branch (`feat/`, `fix/`, `docs/`)
-- Run tests locally before opening a PR
+v0.1.0, actively developed. Expect rough edges, and expect the schema to move. If you try it and something breaks, an issue with the exact command and error is genuinely useful.
+
+## Contributing
+
+Contributions welcome:
+
+- Fork, branch with a `feat/` / `fix/` / `docs/` prefix, open a PR
 - Use conventional commits (`feat:`, `fix:`, `docs:`)
+- Describe what changed, how to test it locally, and any migration/deploy notes
 
-Suggested PR body template
+## License
 
-- What did you change and why?
-- How to test locally
-- Any migration or deploy notes
+MIT — see [LICENSE](LICENSE).
 
-License
+## Links
 
-This project inherits the repository license. See the `LICENSE` file for details.
-
-Contact
-
-For questions or support, open an issue or contact the maintainers through GitHub.
+- Website & hosting: **[alexawebservers.com](https://alexawebservers.com)**
+- Companion project (private for now): `hermes-swarm` — multi-bot Telegram gateway
