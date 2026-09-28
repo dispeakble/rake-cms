@@ -1,7 +1,7 @@
 /**
  * Quick test: Generate a WordPress theme from the DB data for an existing site.
  */
-import { scrapeWebsite } from "@/lib/scraper/web-scraper";
+import { scrapeWebsite, type BusinessType } from "@/lib/scraper/web-scraper";
 import { searchBusiness } from "@/lib/scraper/maps-scraper";
 import { scrapePhotos } from "@/lib/scraper/photo-scraper";
 import { generateTheme } from "@/lib/theme-generator/index";
@@ -47,7 +47,7 @@ async function main() {
 
   // Scrape photos
   try {
-    photos = await scrapePhotos(site, business, siteRecord.businessType || "other", siteRecord.name);
+    photos = await scrapePhotos(site, business, (siteRecord.businessType as BusinessType) || "other", siteRecord.name);
   } catch (e) {
     console.log(`   ⚠️  Photos: ${(e as Error).message}`);
   }
@@ -59,7 +59,7 @@ async function main() {
     process.cwd(),
     photos as any,
     [],
-    siteRecord.businessType || undefined,
+    (siteRecord.businessType as BusinessType) || undefined,
   );
   console.log(`\n✅ Theme config: ${config.name} (primary=${config.primaryColor})`);
 }

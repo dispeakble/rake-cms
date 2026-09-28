@@ -53,6 +53,8 @@
     "playwright": "^1.61.1",
     "tailwindcss": "^4",
     "tsx": "^4.22.4",
-    "typescript": "^5"
-  }
+    "typescript": "^5",
+    "nx": "23.2.1"
+  },
+  "nx": {}
 }
