@@ -66,3 +66,7 @@ npm-debug.log*
 
 # Local scripts & scratch
 fix-key.*
+
+.nx/cache
+.nx/workspace-data
+.nx/migrate-runs
