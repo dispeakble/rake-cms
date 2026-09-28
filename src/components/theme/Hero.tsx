@@ -9,6 +9,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/lib/i18n";
+import siteContent from "@/lib/i18n/site-content.json";
 
 export default function Hero() {
   const { t, lang } = useLanguage();
@@ -22,12 +23,13 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0.2]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
-  // ─── Per-site content (embedded from scraped data) ───
-  const TAGLINE = { es: "We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area.", en: "We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area." };
-  const HERO_SUBTITLE = { es: "Daria's Bakery & Bistro | Breakfast & Lunch — We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area.", en: "Daria's Bakery & Bistro | Breakfast & Lunch — We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area." };
+  const TAGLINE = siteContent.hero.tagline;
+  const HERO_SUBTITLE = siteContent.hero.subtitle;
 
   // ─── Carousel State ───
-  const slides = ["/media/scraped/generated/slide1.svg","/media/scraped/generated/slide2.svg","/media/scraped/generated/slide3.svg"];
+  const slides = siteContent.images.heroSlides.length > 0
+    ? siteContent.images.heroSlides
+    : [siteContent.images.aboutImage];
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -163,7 +165,7 @@ export default function Hero() {
       <button
         onClick={prevSlide}
         className="absolute left-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-white/20 hover:border-[var(--color-gold)]/50 hover:scale-110"
-        aria-label="Previous slide"
+        aria-label={__(siteContent.hero.prevSlideAria)}
         style={{cursor:'pointer'}}
       >
         <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,7 +175,7 @@ export default function Hero() {
       <button
         onClick={nextSlide}
         className="absolute right-4 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md border border-white/20 transition-all duration-300 hover:bg-white/20 hover:border-[var(--color-gold)]/50 hover:scale-110"
-        aria-label="Next slide"
+        aria-label={__(siteContent.hero.nextSlideAria)}
         style={{cursor:'pointer'}}
       >
         <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,7 +190,7 @@ export default function Hero() {
             key={i}
             onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
             className={`h-2 w-2 rounded-full transition-all duration-300 ${i === current ? "w-6 bg-[var(--color-gold)]" : "bg-white/40"}`}
-            aria-label={`Go to slide ${i + 1}`}
+            aria-label={__(siteContent.hero.goToSlideAria).replace("{n}", String(i + 1))}
             style={{cursor:'pointer'}}
           />
         ))}
@@ -224,7 +226,7 @@ export default function Hero() {
           variants={childVariants}
           className="mx-auto mb-8 max-w-2xl text-base text-white/70 md:text-lg"
         >
-          {__({"es":"Daria's Bakery & Bistro | Breakfast & Lunch — We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area."})}
+          {__(siteContent.hero.subtitle)}
         </motion.p>
 
         {/* ── Two Shimmer CTA Buttons ── */}
@@ -236,13 +238,13 @@ export default function Hero() {
             href="/#menu"
             className="shimmer-btn shimmer-btn-gold relative inline-flex items-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-gold)] px-10 py-4 font-bold text-white shadow-[0_0_20px_rgba(var(--color-gold-rgb), 0.3)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(var(--color-gold-rgb), 0.5)] hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span className="relative z-10">Explora menú y precios</span>
+            <span className="relative z-10">{t("hero.cta_services")}</span>
           </Link>
           <Link
             href="/#contact"
             className="shimmer-btn relative inline-flex items-center rounded-xl border-2 border-white/30 px-10 py-4 font-bold text-white transition-all duration-300 hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 hover:shadow-[0_0_30px_rgba(var(--color-gold-rgb), 0.3)] hover:scale-105 active:scale-95 cursor-pointer"
           >
-            <span className="relative z-10">Reserve Your Table</span>
+            <span className="relative z-10">{t("hero.cta_contact")}</span>
           </Link>
         </motion.div>
       </motion.div>

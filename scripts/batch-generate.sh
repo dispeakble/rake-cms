@@ -5,31 +5,37 @@
 #   ./scripts/batch-generate.sh list.txt   # one business per line
 set -euo pipefail
 
-WORKDIR="/home/hermes/rake-cms-2"
+WORKDIR="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$WORKDIR"
 
-VERIFY_SCRIPT="/home/hermes/rake-cms-2/scripts/verify-content.sh"
+VERIFY_SCRIPT="$WORKDIR/scripts/verify-content.sh"
 
 # Create verification script
 cat > "$VERIFY_SCRIPT" << 'VERIFY'
 #!/bin/bash
-# Verify generated theme files don't contain stale/hardcoded Rodeo content
+# Verify generated theme files don't contain stale/hardcoded content
 SLUG="$1"
 NAME="$2"
 THEME_DIR="src/components/theme"
 
-cd /home/hermes/rake-cms-2
+cd "$WORKDIR"
 
-# Check if the slug appears in theme components
-if grep -q -i "rodeo\|churrasquería\|churrascaria\|rodizio\|picanha\|alcatra\|costela\|gaucho" "$THEME_DIR/Hero.tsx" "$THEME_DIR/About.tsx" "$THEME_DIR/Services.tsx" 2>/dev/null; then
-  echo "❌ STALE CONTENT DETECTED: Generated theme files contain Rodeo Grill content!"
-  echo "   This means the generator used hardcoded fallback instead of scraped data."
-  echo "   Slug: $SLUG, Name: $NAME"
-  exit 1
-fi
+NAME_LC=$(echo "$NAME" | tr '[:upper:]' '[:lower:]')
+
+# Check for known stale business names that should never leak between runs.
+for stale in "daria" "mario viajes" "rodeo grill"; do
+  if [[ "$NAME_LC" == *"$stale"* ]]; then
+    continue
+  fi
+  if grep -q -i "$stale" "$THEME_DIR/Hero.tsx" "$THEME_DIR/About.tsx" "$THEME_DIR/Services.tsx" "$THEME_DIR/Contact.tsx" "$THEME_DIR/Footer.tsx" 2>/dev/null; then
+    echo "❌ STALE CONTENT DETECTED: Generated theme files contain stale marker: $stale"
+    echo "   Slug: $SLUG, Name: $NAME"
+    exit 1
+  fi
+done
 
 # Check if the business name appears in the title/header
-if ! grep -q -i "$(echo "$NAME" | cut -c1-20)" "$THEME_DIR/Hero.tsx" 2>/dev/null; then
+if ! grep -q -i "$(echo "$NAME" | cut -c1-20)" "$THEME_DIR/Hero.tsx" "$THEME_DIR/Header.tsx" 2>/dev/null; then
   echo "⚠️  WARNING: Business name not found in Hero.tsx (may be using generic content)"
   echo "   Slug: $SLUG, Name: $NAME"
   # Don't fail — generic content is OK, just warn

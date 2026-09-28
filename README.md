@@ -1,104 +1,132 @@
 # Rake CMS
 
-**A self-hostable, WordPress-style CMS built on Next.js — with a real WordPress importer.**
+Rake CMS is a multi-tenant website generation and content management platform focused on WordPress-style parity and fast business-site production.
 
-![Next.js](https://img.shields.io/badge/Next.js-16-black)
-![React](https://img.shields.io/badge/React-19-149eca)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
-![License: MIT](https://img.shields.io/badge/License-MIT-green)
+Its core purpose is to take business inputs (URL, business name/address, and optional enrichment), generate a themed site experience, seed CMS content, and support deployment workflows for customer subdomains.
 
-Rake CMS gives you the parts of a publishing platform that small sites actually use — posts, pages, categories, custom post types, nav menus, media, users, search, feeds, i18n — on a modern TypeScript stack you can deploy with Docker. It also ships a **scraper → theme generator → deploy** pipeline, so you can point it at an existing site, pull the content and structure across, and stand up a rebuilt version fast.
+## Project Scope
 
-Built and maintained by **[Alexa Web Servers](https://alexawebservers.com)** — a hosting company in Tenerife that uses it for client sites.
+- Multi-tenant CMS model with per-site slug/domain records.
+- WordPress-like data model (posts, terms, comments, options, users, revisions, and related metadata).
+- Theme generation pipeline that writes business-specific UI components.
+- Content seeding pipeline for initial pages and site metadata.
+- Scraping/enrichment flow from website, maps data, and optional Brave search context.
+- Operational scripts for rapid generation, validation, and deployment support.
 
----
+## Primary Use Case
 
-## Why
+Generate and launch a business website quickly by running a single command pipeline:
 
-WordPress is great until you have to maintain a dozen client installs, each with its own plugin drift, its own PHP upgrade story, and its own way of breaking. Rake CMS is an attempt at the same workflow — content, themes, migration — on a stack that a modern web team can reason about: Next.js App Router, Drizzle ORM, Auth.js, and a database you already know (PostgreSQL **or** MariaDB/MySQL).
+1. Collect source data (website and/or business query).
+2. Create or update tenant site record.
+3. Generate themed frontend components.
+4. Seed CMS content.
+5. Optionally build, validate, and deploy.
 
-It is early software (v0.1.0). It is not trying to be a feature-complete WordPress replacement yet — see [Status](#status).
+## Tech Stack
 
-## Features
+- Next.js 16 + React 19 + TypeScript
+- Drizzle ORM + PostgreSQL (with MySQL/MariaDB compatibility paths in config)
+- Tailwind CSS 4 + Framer Motion
+- NextAuth/Auth.js integration
+- Playwright for crawl validation
+- Commander-based CLI tooling
 
-- **Content**: posts, pages, categories, search, RSS/Atom feeds (`src/app/feed.xml`)
-- **Custom post types & nav menus** — first-class, not an afterthought (`src/lib/cpt`, `src/lib/nav-menus`)
-- **Block editor** — BlockNote-based editor (`src/lib/editor`)
-- **Auth & users** — Auth.js v5, with registration, login, profile, password reset (`src/lib/auth`)
-- **Media library** — local filesystem in dev, S3 in production (`src/lib/media`)
-- **i18n** — bilingual-ready routing and content (`src/lib/i18n`)
-- **Themes** — Tailwind-based theme generation and activation (`src/lib/theme-generator`)
-- **Scraper** — pull content/structure from an existing site with Cheerio (`src/lib/scraper`)
-- **WordPress migration** — import a WordPress database, files, and theme (`src/lib/migration`, CLI `import:wp`)
-- **Deployer** — build + deploy pipeline, Docker-ready (`src/lib/deployer`, `Dockerfile`, `scripts/deploy-wp.sh`)
-- **Security & reliability** — hardened auth paths and reliability helpers (`src/lib/security`, `src/lib/reliability`)
+## Repository Highlights
 
-## Quickstart
+- App routes and API: src/app
+- Theme components: src/components/theme
+- Database schema and access: src/db
+- Business logic libraries: src/lib
+- CLI entrypoint: scripts/wp-clone.ts
+- Rapid pipeline command: scripts/commands/rapid-deploy.ts
+- Deployment helpers: scripts/redeploy.sh, scripts/verify-deploy.ts
+
+## Quick Start (Local)
+
+Prerequisites:
+
+- Node.js 20+
+- npm
+- PostgreSQL (or Docker to run PostgreSQL)
+
+Install dependencies:
 
 ```bash
-git clone https://github.com/dispeakble/rake-cms.git
-cd rake-cms
 npm install
-cp .env.example .env      # set DATABASE_URL, DATABASE_DIALECT, AUTH_SECRET
-npm run dev               # http://localhost:3000
 ```
 
-`Dockerfile`, `docker-compose`-style setup, and an example Apache vhost (`cli/apache-vhost.conf`) are included for deployment.
-
-## WordPress migration
-
-The main reason this project exists. The CLI can read a WordPress install and bring it across:
+Generate local environment file (if missing):
 
 ```bash
-npx tsx scripts/wp-clone.ts import:db      # import the WordPress database
-npx tsx scripts/wp-clone.ts import:files   # import uploads / media
-npx tsx scripts/wp-clone.ts import:theme   # import the WordPress theme
-npx tsx scripts/wp-clone.ts import:wp      # full migration
+node scripts/bootstrap-env.js
 ```
 
-## CLI
+Apply schema:
 
 ```bash
-npx tsx scripts/wp-clone.ts create:site                       # scaffold a site
-npx tsx scripts/wp-clone.ts create:post --title "Hello" --status publish
-npx tsx scripts/wp-clone.ts theme:activate my-theme
-npx tsx scripts/wp-clone.ts rapid:deploy
+npm run db:push
 ```
 
-Helpers live in `scripts/` (`batch-generate.sh`, `deploy-wp.sh`, `verify-deploy.ts`, `scan-secrets.sh`) and `scripts/commands/`.
-
-## Database
-
-Drizzle ORM supports both PostgreSQL and MariaDB/MySQL — set `DATABASE_DIALECT` and `DATABASE_URL` in `.env`.
+Run development server:
 
 ```bash
-npm run db:generate   # generate migrations from schema
-npm run db:migrate    # apply migrations
-npm run db:studio     # browse data
+npm run dev
 ```
 
-## Testing
+Build for production:
 
-End-to-end tests live in `tests/e2e` (Playwright) and are run against a running instance. There is no `npm test` script yet — that is on the roadmap.
+```bash
+npm run build
+```
 
-## Status
+## CLI Workflows
 
-v0.1.0, actively developed. Expect rough edges, and expect the schema to move. If you try it and something breaks, an issue with the exact command and error is genuinely useful.
+CLI entrypoint:
 
-## Contributing
+```bash
+npm run cli
+```
 
-Contributions welcome:
+Common commands:
 
-- Fork, branch with a `feat/` / `fix/` / `docs/` prefix, open a PR
-- Use conventional commits (`feat:`, `fix:`, `docs:`)
-- Describe what changed, how to test it locally, and any migration/deploy notes
+```bash
+npm run cli rapid:deploy -- --business "Business Name, Full Address"
+npm run cli rapid:deploy -- --url https://example.com --business "Business Name"
+npm run cli create:site
+npm run cli create:post -- --title "Hello" --status publish
+npm run cli import:wp
+npm run cli theme:activate -- my-theme
+```
 
-## License
+Notes:
 
-MIT — see [LICENSE](LICENSE).
+- rapid:deploy supports optional deploy/build/crawl switches.
+- Some deployment steps are host-specific (Virtualmin/Apache/Linux sudo paths).
 
-## Links
+## Testing and Validation
 
-- Website & hosting: **[alexawebservers.com](https://alexawebservers.com)**
-- Companion project (private for now): `hermes-swarm` — multi-bot Telegram gateway
+Install browser for Playwright:
+
+```bash
+npm run playwright:install
+```
+
+Run crawl validation:
+
+```bash
+npm run test:e2e:crawl
+```
+
+## Deployment Context
+
+This repository includes both local/dev and production-oriented deployment logic.
+
+- Local development focuses on Next.js + DB workflows.
+- Production-style automation in the rapid deploy path expects Linux-host services in certain phases (for example Apache/Virtualmin/sudo operations).
+
+If you are running on Windows, use local generation/build flows and adapt deployment phases to your target infrastructure.
+
+## Purpose Summary
+
+Rake CMS exists to reduce the time from business data to a branded, editable website by combining scraping, content generation, CMS seeding, and deploy-ready automation in one codebase.

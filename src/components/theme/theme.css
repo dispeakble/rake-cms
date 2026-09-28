@@ -1,22 +1,22 @@
-/* Rake CMS — Theme: Daria's Bakery & Bistro | Breakfast & Lunch - MAXIMUM WOW EDITION */
+/* Rake CMS — Theme: Acme Plumbing Austin, Austin, TX - MAXIMUM WOW EDITION */
 /* ============================================================
    Light mode :root = default (light) | .dark overrides for dark
    ============================================================ */
 
 :root {
   /* ── Brand colors stay the same across themes ── */
-  --color-primary: #d82828;
-  --color-primary-rgb: 216, 40, 40;
-  --color-secondary: #d82828;
-  --color-secondary-rgb: 216, 40, 40;
+  --color-primary: #d87808;
+  --color-primary-rgb: 216, 120, 8;
+  --color-secondary: #d87808;
+  --color-secondary-rgb: 216, 120, 8;
   --color-accent: #1a1a2e;
-  --color-gold: #d82828;
-  --color-gold-rgb: 216, 40, 40;
-  --color-gold-light: #ff5050;
-  --color-glow: rgba(216, 40, 40, 0.3);
-  --color-glow-intense: rgba(216, 40, 40, 0.6);
-  --gradient-main: linear-gradient(135deg, #d82828, #d82828);
-  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(216, 40, 40, 0.15), transparent 70%);
+  --color-gold: #d87808;
+  --color-gold-rgb: 216, 120, 8;
+  --color-gold-light: #ffa030;
+  --color-glow: rgba(216, 120, 8, 0.3);
+  --color-glow-intense: rgba(216, 120, 8, 0.6);
+  --gradient-main: linear-gradient(135deg, #d87808, #d87808);
+  --gradient-glow: radial-gradient(circle at 50% 50%, rgba(216, 120, 8, 0.15), transparent 70%);
   --border-angle: 0deg;
 
   /* ── LIGHT MODE (default) ── */
@@ -264,7 +264,7 @@
 
 /* ── Animated Gradient Background ── */
 .animated-gradient {
-  background: linear-gradient(135deg, #d82828, #d82828, #d82828, #d82828);
+  background: linear-gradient(135deg, #d87808, #d87808, #d87808, #d87808);
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
 }
@@ -355,7 +355,7 @@
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d82828, #d82828); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d87808, #d87808); border-radius: 3px; }
 
 /* ── Selection ── */
 ::selection { background: var(--selection-bg); color: white; }
@@ -383,19 +383,19 @@
 }
 .theme-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.15) !important;
-  border-color: rgba(216, 40, 40, 0.4) !important;
-  box-shadow: 0 0 12px rgba(216, 40, 40, 0.25) !important;
+  border-color: rgba(216, 120, 8, 0.4) !important;
+  box-shadow: 0 0 12px rgba(216, 120, 8, 0.25) !important;
 }
 .theme-toggle-btn:focus-visible {
   outline: none !important;
-  box-shadow: 0 0 0 2px rgba(216, 40, 40, 0.5) !important;
+  box-shadow: 0 0 0 2px rgba(216, 120, 8, 0.5) !important;
 }
 .theme-toggle-btn::after {
   content: '';
   position: absolute;
   inset: -2px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(216, 40, 40, 0.15), transparent 70%);
+  background: radial-gradient(circle, rgba(216, 120, 8, 0.15), transparent 70%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;

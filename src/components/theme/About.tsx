@@ -8,6 +8,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
+import siteContent from "@/lib/i18n/site-content.json";
 
 function AnimatedCounterWithDecimal({ end, suffix = "", decimals = 0 }: { end: number; suffix?: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -44,10 +45,9 @@ export default function About() {
   const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // ─── Per-site about content (embedded from scraped data) ───
-  const ABOUT_P1 = {"es":"Daria's Bakery & Bistro | Breakfast & Lunch is a beloved dining destination. We take pride in serving fresh, flavorful dishes made with locally sourced ingredients. Our welcoming atmosphere and friendly staff make every visit special.","en":"Daria's Bakery & Bistro | Breakfast & Lunch is a beloved dining destination. We take pride in serving fresh, flavorful dishes made with locally sourced ingredients. Our welcoming atmosphere and friendly staff make every visit special."};
-  const ABOUT_P2 = {"es":"Whether you're joining us for a casual lunch, romantic dinner, or special celebration, our team is here to make your experience unforgettable.","en":"Whether you're joining us for a casual lunch, romantic dinner, or special celebration, our team is here to make your experience unforgettable."};
-  const ABOUT_P3 = {"es":"","en":""};
+  const ABOUT_P1 = siteContent.about.paragraphs[0];
+  const ABOUT_P2 = siteContent.about.paragraphs[1];
+  const ABOUT_P3 = siteContent.about.paragraphs[2];
 
   // ─── Stats ───
   
@@ -87,7 +87,7 @@ export default function About() {
               variants={springUp}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/80"
             >
-              {"About Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch"}
+              {__(siteContent.header.aboutBadge)}
             </motion.span>
             <motion.h2
               variants={springUp}
@@ -148,7 +148,7 @@ export default function About() {
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-[var(--color-gold)]/20 via-[var(--color-primary)]/20 to-[var(--color-gold)]/20 rounded-2xl animate-[spin-slow_8s_linear_infinite] blur-2xl" />
               <div className="relative overflow-hidden rounded-2xl">
-                <img src="/media/scraped/unsplash-1783965197068-keyufb.svg" alt="About Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch" className="h-full w-full object-cover" />
+                <img src={siteContent.images.aboutImage} alt={__(siteContent.about.imageAlt)} className="h-full w-full object-cover" />
               </div>
             </motion.div>
           </motion.div>

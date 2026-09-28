@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Force-regenerate all theme files for Daria's Bakery & Bistro.
+ * Force-regenerate all theme files for a site slug.
  * Reads site data from DB, generates fresh theme files.
  */
 import 'dotenv/config';
@@ -13,9 +13,14 @@ import { join, dirname } from 'path';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 const THEME_DIR = join(__dirname, '..', 'src', 'components', 'theme');
-const slug = process.argv[2] || 'darias-bakery-bistro';
+const slug = process.argv[2];
 
 async function main() {
+  if (!slug) {
+    console.error('Usage: node scripts/force-regenerate-theme.mjs <site-slug>');
+    process.exit(1);
+  }
+
   const client = postgres(process.env.DATABASE_URL || 'postgres://postgres@localhost:5432/rake_cms');
   const db = drizzle(client, { schema });
 
@@ -39,15 +44,14 @@ async function main() {
 
   // Build content object
   const content = {
-    tagline: 'Breakfast & lunch in Costa Adeje',
-    heroSubtitle: 'Delicious homemade breakfast and lunch in Costa Adeje',
+    tagline: `${name} - quality service you can trust`,
+    heroSubtitle: `Welcome to ${name}. Explore our services and get in touch today.`,
   };
 
   const pageSlugs = [
-    { slug: 'about', label: 'Sobre nosotros' },
-    { slug: 'services', label: 'Qué ofrecemos' },
-    { slug: 'menu', label: 'Nuestra Carta' },
-    { slug: 'contact', label: 'Contacto' },
+    { slug: 'about', label: 'About' },
+    { slug: 'services', label: 'Services' },
+    { slug: 'contact', label: 'Contact' },
   ];
 
   // Generate all components

@@ -1,0 +1,205 @@
+{
+  "business": {
+    "name": "Acme Plumbing Austin, Austin, TX",
+    "location": "Acme Plumbing Austin, Austin, TX",
+    "description": {
+      "es": "We are Acme Plumbing Austin, Austin, TX, serving the local area.",
+      "en": "We are Acme Plumbing Austin, Austin, TX, serving the local area."
+    }
+  },
+  "header": {
+    "aboutBadge": {
+      "es": "About Acme Plumbing Austin, Austin, TX",
+      "en": "About Acme Plumbing Austin, Austin, TX"
+    },
+    "toggleMenuAria": {
+      "es": "Abrir/cerrar menú",
+      "en": "Toggle menu"
+    },
+    "switchToLightMode": {
+      "es": "Cambiar a modo claro",
+      "en": "Switch to light mode"
+    },
+    "switchToDarkMode": {
+      "es": "Cambiar a modo oscuro",
+      "en": "Switch to dark mode"
+    },
+    "lightModeLabel": {
+      "es": "Modo claro",
+      "en": "Light mode"
+    },
+    "darkModeLabel": {
+      "es": "Modo oscuro",
+      "en": "Dark mode"
+    }
+  },
+  "hero": {
+    "tagline": {
+      "es": "We are Acme Plumbing Austin, Austin, TX, serving the local area.",
+      "en": "We are Acme Plumbing Austin, Austin, TX, serving the local area."
+    },
+    "subtitle": {
+      "es": "Acme Plumbing Austin, Austin, TX — We are Acme Plumbing Austin, Austin, TX, serving the local area.",
+      "en": "Acme Plumbing Austin, Austin, TX — We are Acme Plumbing Austin, Austin, TX, serving the local area."
+    },
+    "prevSlideAria": {
+      "es": "Diapositiva anterior",
+      "en": "Previous slide"
+    },
+    "nextSlideAria": {
+      "es": "Siguiente diapositiva",
+      "en": "Next slide"
+    },
+    "goToSlideAria": {
+      "es": "Ir a la diapositiva {n}",
+      "en": "Go to slide {n}"
+    }
+  },
+  "images": {
+    "heroSlides": [
+      "/media/scraped/generated/slide1.svg",
+      "/media/scraped/generated/slide2.svg",
+      "/media/scraped/generated/slide3.svg"
+    ],
+    "aboutImage": "/media/scraped/unsplash-1784186148375-kspdpm.svg",
+    "islandCards": [
+      "/media/scraped/generated/slide1.svg",
+      "/media/scraped/generated/slide2.svg",
+      "/media/scraped/generated/slide3.svg"
+    ]
+  },
+  "about": {
+    "paragraphs": [
+      {
+        "es": "Acme Plumbing Austin, Austin, TX brings decades of construction expertise. We're known for quality craftsmanship, attention to detail, and completing projects on time and on budget.",
+        "en": "Acme Plumbing Austin, Austin, TX brings decades of construction expertise. We're known for quality craftsmanship, attention to detail, and completing projects on time and on budget."
+      },
+      {
+        "es": "From initial concept through final walkthrough, we work closely with clients to ensure every detail meets their vision and expectations.",
+        "en": "From initial concept through final walkthrough, we work closely with clients to ensure every detail meets their vision and expectations."
+      },
+      {
+        "es": "",
+        "en": ""
+      }
+    ],
+    "imageAlt": {
+      "es": "About Acme Plumbing Austin, Austin, TX",
+      "en": "About Acme Plumbing Austin, Austin, TX"
+    }
+  },
+  "services": {
+    "badge": {
+      "es": "Acme Plumbing Austin, Austin, TX",
+      "en": "Acme Plumbing Austin, Austin, TX"
+    },
+    "items": [
+      {
+        "title": {
+          "es": "New Construction",
+          "en": "New Construction"
+        },
+        "description": {
+          "es": "From foundation to finishing touches, we manage every aspect of new construction projects.",
+          "en": "From foundation to finishing touches, we manage every aspect of new construction projects."
+        }
+      },
+      {
+        "title": {
+          "es": "Renovation & Remodeling",
+          "en": "Renovation & Remodeling"
+        },
+        "description": {
+          "es": "Transform your space with our renovation services. Modern designs that respect your existing structure.",
+          "en": "Transform your space with our renovation services. Modern designs that respect your existing structure."
+        }
+      },
+      {
+        "title": {
+          "es": "Project Management",
+          "en": "Project Management"
+        },
+        "description": {
+          "es": "Keep your construction project on time and on budget. Our experienced managers oversee every detail.",
+          "en": "Keep your construction project on time and on budget. Our experienced managers oversee every detail."
+        }
+      }
+    ]
+  },
+  "reviews": {
+    "items": [
+      {
+        "author": "María G.",
+        "text": {
+          "es": "Excelente experiencia con Acme Plumbing Austin, Austin, TX. Atención rápida, comunicación clara y resultados de calidad.",
+          "en": "Excellent experience with Acme Plumbing Austin, Austin, TX. Quick response, clear communication, and quality results."
+        },
+        "rating": 5,
+        "source": "Google"
+      },
+      {
+        "author": "Carlos R.",
+        "text": {
+          "es": "Servicio profesional y puntual. El equipo resolvió todo de forma eficiente y con buen trato.",
+          "en": "Professional and punctual service. The team handled everything efficiently and with great communication."
+        },
+        "rating": 5,
+        "source": "Google"
+      },
+      {
+        "author": "Ana & Pedro",
+        "text": {
+          "es": "Muy recomendables. Nos explicaron cada paso y cumplieron exactamente lo acordado.",
+          "en": "Highly recommended. They explained every step and delivered exactly what was agreed."
+        },
+        "rating": 5,
+        "source": "Google"
+      },
+      {
+        "author": "James T.",
+        "text": {
+          "es": "Gran servicio de Acme Plumbing Austin, Austin, TX. Equipo profesional, precios justos y excelente seguimiento.",
+          "en": "Great service from Acme Plumbing Austin, Austin, TX. Professional team, fair pricing, and excellent follow-through."
+        },
+        "rating": 5,
+        "source": "Google"
+      },
+      {
+        "author": "Laura S.",
+        "text": {
+          "es": "Quedamos muy satisfechos con el trabajo. Repetiremos sin duda en próximos proyectos.",
+          "en": "We were very satisfied with the work. We would absolutely work with them again on future projects."
+        },
+        "rating": 4,
+        "source": "Google"
+      },
+      {
+        "author": "David M.",
+        "text": {
+          "es": "Proceso sencillo, tiempos cumplidos y resultado final impecable. Muy buena experiencia.",
+          "en": "Simple process, timelines met, and an impeccable final result. Very good experience."
+        },
+        "rating": 5,
+        "source": "Google"
+      }
+    ]
+  },
+  "contact": {
+    "locationHeading": {
+      "es": "Acme Plumbing Austin, Austin, TX",
+      "en": "Acme Plumbing Austin, Austin, TX"
+    },
+    "addressComingSoon": {
+      "es": "Dirección disponible próximamente",
+      "en": "Address available soon"
+    },
+    "mapTitle": {
+      "es": "Acme Plumbing Austin, Austin, TX - Ubicación",
+      "en": "Acme Plumbing Austin, Austin, TX - Location"
+    },
+    "viewOnMap": {
+      "es": "Ver en OpenStreetMap",
+      "en": "View on OpenStreetMap"
+    }
+  }
+}

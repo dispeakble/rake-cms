@@ -9,6 +9,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
+import siteContent from "@/lib/i18n/site-content.json";
 
 export default function Footer() {
   const { t, lang } = useLanguage();
@@ -46,14 +47,14 @@ export default function Footer() {
         >
           <div className="md:col-span-2">
             <h4 className="mb-4 text-lg font-semibold text-white">
-              <span className="gradient-text-gold">Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch</span>
+              <span className="gradient-text-gold">{siteContent.business.name}</span>
             </h4>
             <p className="max-w-sm text-sm leading-relaxed text-tertiary">
-              {__({es: "We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area.", en: "We are Daria's Bakery & Bistro | Breakfast & Lunch, serving the local area."})}
+              {__(siteContent.business.description)}
             </p>
             {/* Address */}
             <p className="mt-4 text-xs text-quaternary leading-relaxed">
-              Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch
+              {siteContent.business.location}
             </p>
             {/* Social / Watermark link with Glow Hover */}
             <div className="mt-6 flex gap-4">
@@ -94,7 +95,6 @@ export default function Footer() {
             <div className="space-y-3 text-sm">
               <Link href="/#about" className="block text-sm text-tertiary transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.about")}</Link>
           <Link href="/#services" className="block text-sm text-tertiary transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.services")}</Link>
-          <Link href="/#menu" className="block text-sm text-tertiary transition-all duration-300 hover:text-[var(--color-gold)] hover:translate-x-1 cursor-pointer">{t("nav.menu")}</Link>
     <p className="text-xs text-quaternary mt-4"></p><div className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-quaternary leading-relaxed">
           <p className="mt-4"></p>
           <p className="mt-2">{t("footer.made_with")} <a href="https://alexawebservers.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:text-[var(--color-gold-light)] transition-colors cursor-pointer" style={{cursor:"pointer"}}>alexawebservers.com</a></p>

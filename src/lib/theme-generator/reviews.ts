@@ -20,32 +20,76 @@ export function getReviews(businessName: string, businessType?: string): Review[
   if (businessType === "travel") {
     return getTravelReviews(businessName);
   }
-  return getRestaurantReviews(businessName);
+  if (businessType === "restaurant") {
+    return getRestaurantReviews(businessName);
+  }
+  return getGeneralBusinessReviews(businessName);
+}
+
+function getGeneralBusinessReviews(name: string): Review[] {
+  return [
+    {
+      author: "María G.",
+      text: `Excelente experiencia con ${name}. Atención rápida, comunicación clara y resultados de calidad.`,
+      rating: 5,
+      source: "Google",
+    },
+    {
+      author: "Carlos R.",
+      text: "Servicio profesional y puntual. El equipo resolvió todo de forma eficiente y con buen trato.",
+      rating: 5,
+      source: "Google",
+    },
+    {
+      author: "Ana & Pedro",
+      text: "Muy recomendables. Nos explicaron cada paso y cumplieron exactamente lo acordado.",
+      rating: 5,
+      source: "Google",
+    },
+    {
+      author: "James T.",
+      text: `Great service from ${name}. Professional team, fair pricing, and excellent follow-through.`,
+      rating: 5,
+      source: "Google",
+    },
+    {
+      author: "Laura S.",
+      text: "Quedamos muy satisfechos con el trabajo. Repetiremos sin duda en próximos proyectos.",
+      rating: 4,
+      source: "Google",
+    },
+    {
+      author: "David M.",
+      text: "Proceso sencillo, tiempos cumplidos y resultado final impecable. Muy buena experiencia.",
+      rating: 5,
+      source: "Google",
+    },
+  ];
 }
 
 function getTravelReviews(name: string): Review[] {
   return [
     {
       author: "María G.",
-      text: `Contratamos una excursión a Tenerife con ${name} y fue una experiencia increíble. El guía conocía todos los rincones del Teide y nos llevó a sitios espectaculares que nunca habríamos encontrado solos. Muy recomendable.`,
+      text: `Contratamos una excursión con ${name} y fue una experiencia increíble. El guía nos llevó a sitios espectaculares que nunca habríamos encontrado solos. Muy recomendable.`,
       rating: 5,
       source: "Google",
     },
     {
       author: "Carlos R.",
-      text: `Excelente servicio para organizar nuestro viaje a Gran Canaria. Los traslados fueron puntuales, el alojamiento perfecto y las excursiones muy bien organizadas. Repetiremos sin duda.`,
+      text: `Excelente servicio para organizar nuestro viaje. Los traslados fueron puntuales, el alojamiento perfecto y las excursiones muy bien organizadas. Repetiremos sin duda.`,
       rating: 5,
       source: "Tripadvisor",
     },
     {
       author: "Ana & Pedro",
-      text: "Hicimos la ruta interinsular de 10 días y fue perfecta. Todo estaba coordinado al detalle, los hoteles excelentes y las excursiones muy variadas. Una forma maravillosa de conocer Canarias.",
+      text: "Hicimos una ruta de 10 días y fue perfecta. Todo estaba coordinado al detalle, los hoteles excelentes y las excursiones muy variadas.",
       rating: 5,
       source: "Google",
     },
     {
       author: "James T.",
-      text: `Booked the Tenerife and La Gomera tour package with ${name}. Absolutely stunning! The guide was knowledgeable and passionate about the islands. The boat trip to La Gomera was unforgettable.`,
+      text: `Booked a multi-stop tour package with ${name}. Absolutely stunning! The guide was knowledgeable and the whole experience was very well organized.`,
       rating: 5,
       source: "Tripadvisor",
     },

@@ -8,8 +8,9 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
+import siteContent from "@/lib/i18n/site-content.json";
 
-const REVIEWS: Array<{ author: string; text: string; rating: number; source: string }> = [{"author":"María G.","text":"Comida excelente y atención inmejorable. Los platos estaban deliciosos y el ambiente muy agradable. Sin duda repetiremos la experiencia.","rating":5,"source":"Google"},{"author":"Carlos R.","text":"Buena relación calidad-precio. El servicio fue rápido y profesional. Los postres caseros son espectaculares. Muy recomendable.","rating":5,"source":"Tripadvisor"},{"author":"Ana & Pedro","text":"Hemos ido varias veces y nunca defrauda. La calidad de la comida es constante y el personal siempre es amable. Un lugar perfecto para cualquier ocasión.","rating":5,"source":"Google"},{"author":"James T.","text":"Great food and amazing atmosphere! The service was top-notch and the portions were generous. Highly recommended for anyone visiting the area.","rating":5,"source":"Tripadvisor"},{"author":"Laura S.","text":"Un descubrimiento maravilloso. La comida es increíble y el trato al cliente es de primera. Los postres son caseros y deliciosos. Volveremos pronto.","rating":4,"source":"Restaurant Guru"},{"author":"David M.","text":"Ambiente acogedor y comida deliciosa. Probamos varios platos y todos estaban espectaculares. El personal muy atento y la relación calidad-precio excelente.","rating":5,"source":"Google"}];
+const REVIEWS = siteContent.reviews.items;
 
 function SparkleStar({ filled, delay }: { filled: boolean; delay: number }) {
   return (
@@ -47,7 +48,8 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function Reviews() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   return (
     <section id="reviews" className="relative px-4 py-24 overflow-hidden">
       <div className="absolute inset-0 bg-section" />
@@ -100,7 +102,7 @@ export default function Reviews() {
               </div>
 
               <StarRating rating={review.rating} />
-              <p className="mt-3 text-sm leading-relaxed text-secondary relative z-10">"{review.text}"</p>
+              <p className="mt-3 text-sm leading-relaxed text-secondary relative z-10">"{__(review.text)}"</p>
               <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-tertiary">
                 <span className="font-medium text-heading">— {review.author}</span>
                 <span className="text-[var(--color-gold)]/80">{review.source}</span>
