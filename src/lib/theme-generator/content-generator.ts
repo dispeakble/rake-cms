@@ -398,60 +398,6 @@ export function generateContent(
   // Detect language from business name + location
   const spanish = isSpanish(name, location);
 
-  // For travel type (Mario Viajes) with no scraped paragraphs, use curated content only for matching names
-  if (businessType === "travel" && rawParagraphs.length < 3 && spanish) {
-    const nameLC = (business?.name || site?.businessName || "").toLowerCase();
-    if (nameLC.includes("mario") || nameLC.includes("viajes")) {
-    const tagline = "Mario Viajes. Crea tu tipo de vacaciones.";
-    const heroSubtitle = "Crea tu tipo de vacaciones. Descubra las Islas Canarias con nosotros.";
-    const aboutHeading = "Sobre nosotros";
-    const aboutParagraphs = [
-      "Con la ayuda de nuestra competencia en turismo de calidad y también, de los aos pasados en Canarias, podemos garantizarle unas vacaciones inolvidables.",
-      "Mario Viajes SLU es una empresa joven, desarrollado a partir de nuestro deseo para proporcionar a los turistas con la ayuda responsable y la información exacta. La disposición, la sobriedad y la dedicación que ponemos en nuestro servicio, nos permiten garantizar a nuestros clientes unas vacaciones inolvidables.",
-      "Estamos aquí para escuchar sus deseos y organizar sus vacaciones tan soñadas. Ofrecemos servicios turísticos individuales y de grupo para cualquiera de las 7 islas del Archipiélago Canario. Le estamos esperando para escribir juntos la historia de unas vacaciones ideales",
-    ];
-    const services = getServices(site, businessType);
-    const seoDescription = `Mario Viajes — Crea tu tipo de vacaciones. ${generateSeoDescription(name, businessType, location)}`;
-
-    return {
-      tagline,
-      heroSubtitle,
-      aboutHeading,
-      aboutParagraphs,
-      services,
-      seoDescription,
-    };
-  }
-  }
-
-  // For restaurant type, use curated content only if name explicitly references it
-  if (businessType === "restaurant") {
-    const nameLC = (business?.name || site?.businessName || "").toLowerCase();
-    const isRodeo = nameLC.includes("rodeo") || nameLC.includes("churrasquería") || nameLC.includes("churrascaria");
-    if (isRodeo && rawParagraphs.length < 3) {
-      const tagline = "CARNE SIN FIN, SABOR SIN LÍMITE";
-      const heroSubtitle = "Bienvenido a Churrasquería Rodeo Grill, donde el auténtico rodizio brasileño cobra vida en Costa Adeje. Déjese llevar por el incesante desfile de carnes premium asadas a la perfección por nuestros gauchos.";
-      const aboutHeading = "La Experiencia Rodizio";
-      const aboutParagraphs = [
-        "En Churrasquería Rodeo Grill hemos traído la esencia más pura del rodizio brasileño hasta el sur de Tenerife. Nuestra parrilla trabaja sin descanso para ofrecerle un festín de carnes seleccionadas, asadas lentamente sobre brasas naturales. Cada corte es preparado con el respeto y la maestría que la tradición gaucha exige, garantizando una experiencia que despierta todos los sentidos.",
-        "El servicio continuo es el alma de nuestra propuesta: nuestros passadores recorren las mesas con espetos humeantes de picanha, alcatra, costela de res, medallones de lomo y mucho más. Usted decide el ritmo, el corte y la cantidad. Cada pieza se sirve en su punto óptimo, recién salida del fuego, con ese sabor ahumado e intenso que solo el asado tradicional puede ofrecer.",
-        "Maridamos cada bocado con una cuidada selección de vinos, cervezas artesanales y cócteles tropicales que complementan la riqueza de la carne. Nuestra guarnición incluye clásicos brasileños como la farofa crujiente, la vinagreta fresca, el arroz con frijoles negros y el plátano frito caramelizado, creando un equilibrio perfecto de sabores y texturas.",
-        "El ambiente de Rodeo Grill evoca la calidez de las churrascuerías de São Paulo y Porto Alegre, con una decoración rústica y acogedora que invita a compartir. Ya sea para una cena en pareja, una reunión familiar o una celebración especial, nuestro equipo está dedicado a hacer de cada visita un momento inolvidable. Ven y descubre por qué somos el destino favorito de los amantes de la carne en Tenerife.",
-      ];
-      const services = getServices(site, businessType);
-      const seoDescription = `Churrasquería Rodeo Grill — CARNE SIN FIN, SABOR SIN LÍMITE. ${generateSeoDescription(name, businessType, location)}`;
-
-      return {
-        tagline,
-        heroSubtitle,
-        aboutHeading,
-        aboutParagraphs,
-        services,
-        seoDescription,
-      };
-    }
-  }
-
   // Pick tagline — use scraped or random from industry templates
   const industryTaglines = spanish ? (ES_TAGLINES[businessType] || ES_TAGLINES.other) : (TAGLINES[businessType] || TAGLINES.other);
   const tagline = rawDescription || industryTaglines[Math.floor(Math.random() * industryTaglines.length)];
@@ -518,7 +464,7 @@ function generateAboutParagraph(name: string, type: BusinessType, location: stri
       "real-estate": `${name} es su socio inmobiliario de confianza${loc}. Con conocimiento local y compromiso con el servicio excepcional.`,
       construction: `${name} aporta décadas de experiencia en construcción${loc}. Somos conocidos por la calidad artesanal y la atención al detalle.`,
       creative: `${name} es un estudio creativo${loc} dedicado a dar vida a ideas audaces. Combinamos visión artística con pensamiento estratégico.`,
-      travel: `${name} es su agencia de viajes de confianza en el sur de Tenerife${loc}. Con años de experiencia en el sector turístico de Canarias.`,
+      travel: `${name} es su agencia de viajes de confianza${loc}. Diseñamos experiencias personalizadas y acompañamos a cada cliente en cada paso de su viaje.`,
       fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
       beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
       automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
@@ -538,7 +484,7 @@ function generateAboutParagraph(name: string, type: BusinessType, location: stri
     "real-estate": `${name} is your trusted real estate partner${loc}. With deep local knowledge and a commitment to exceptional service, we help you find the perfect property.`,
     construction: `${name} brings decades of construction expertise${loc}. We're known for quality craftsmanship, attention to detail, and completing projects on time and on budget.`,
     creative: `${name} is a creative studio${loc} dedicated to bringing bold ideas to life. We blend artistic vision with strategic thinking to create work that resonates.`,
-    travel: `${name} es su agencia de viajes de confianza en el sur de Tenerife${loc}. Con años de experiencia en el sector turístico de Canarias, le ofrecemos el conocimiento local y la dedicación necesaria para hacer de sus vacaciones una experiencia inolvidable. Nuestra pasión por las Islas Canarias se refleja en cada excursión y paquete que diseñamos.`,
+    travel: `${name} es su agencia de viajes de confianza${loc}. Le ofrecemos conocimiento local, planificación clara y acompañamiento para que sus vacaciones sean una experiencia inolvidable.`,
     fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
     beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
     automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
@@ -561,7 +507,7 @@ function generateSecondParagraph(name: string, type: BusinessType, location: str
       "real-estate": `Ya sea comprando, vendiendo o alquilando, nuestro equipo experimentado le guía en todo el proceso.`,
       construction: `Desde el concepto inicial hasta la inspección final, trabajamos estrechamente con los clientes para garantizar que cada detalle cumpla sus expectativas.`,
       creative: `Creemos que un buen diseño cuenta una historia. Cada proyecto es una oportunidad para crear algo significativo.`,
-      travel: `Estamos aquí para escuchar sus deseos y organizar sus vacaciones soñadas${loc}. Le esperamos para escribir juntos la historia de unas vacaciones ideales.`,
+      travel: `Estamos aquí para escuchar sus deseos y organizar sus vacaciones soñadas${loc}. Diseñamos propuestas flexibles, cómodas y adaptadas a su estilo de viaje.`,
       fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
       beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
       automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
@@ -607,7 +553,7 @@ function generateSeoDescription(name: string, type: BusinessType, location: stri
       "real-estate": `Encuentre su propiedad soñada con ${name}${loc}. Explore listados o contacte a nuestros agentes expertos.`,
       construction: `${name} ofrece servicios de construcción de calidad${loc}. Solicite un presupuesto gratuito.`,
       creative: `${name} ofrece servicios creativos de diseño${loc}. Démos vida a su visión.`,
-      travel: `Visite ${name}${loc} y descubra las Islas Canarias como nunca antes. Excursiones guiadas y paquetes vacacionales personalizados.`,
+      travel: `Visite ${name}${loc} y descubra destinos inolvidables. Excursiones guiadas y paquetes vacacionales personalizados.`,
       fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
       beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
       automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,
@@ -617,7 +563,7 @@ function generateSeoDescription(name: string, type: BusinessType, location: stri
   }
   const loc = location ? ` in ${location}` : "";
   const intros: Record<BusinessType, string> = {
-    restaurant: `Visite ${name}${loc} para disfrutar del mejor rodizio brasileño. Cortes premium como picanha, alcatra y costela asados a la perfección. Disfrute de nuestra experiencia gastronómica en Costa Adeje, Tenerife. Reserve su mesa y déjese conquistar por el sabor sin límite de nuestras parrillas.`,
+    restaurant: `Visit ${name}${loc} for an unforgettable dining experience with fresh ingredients, signature dishes, and warm service. Reserve your table today.`,
     retail: `Shop at ${name}${loc} for quality products at great prices. Visit our store or browse our online catalog.`,
     service: `Need reliable service${loc}? Trust ${name} for professional results. Contact us today for a free quote.`,
     professional: `${name} provides expert professional services${loc}. Schedule a consultation and let us help you succeed.`,
@@ -627,7 +573,7 @@ function generateSeoDescription(name: string, type: BusinessType, location: stri
     "real-estate": `Find your dream property with ${name}${loc}. Browse listings or contact our expert agents today.`,
     construction: `${name} provides quality construction services${loc}. Get a free estimate for your project.`,
     creative: `${name} offers creative design services${loc}. Let's bring your vision to life.`,
-    travel: `Visite ${name}${loc} y descubra las Islas Canarias como nunca antes. Excursiones guiadas por Tenerife, Gran Canaria, La Gomera y ms. Paquetes vacacionales personalizados, traslados, alquiler de coches y asistencia turística en varios idiomas. Reserve su aventura canaria hoy mismo.`,
+    travel: `Visit ${name}${loc} and discover memorable destinations with guided tours, tailored travel packages, transport options, and multilingual assistance.`,
     fitness: `At our fitness center we transform lives through exercise and personalized nutrition.`,
     beauty: `At our beauty salon we enhance your natural beauty with premium treatments.`,
     automotive: `At our auto shop we keep your vehicle in perfect condition with expert service.`,

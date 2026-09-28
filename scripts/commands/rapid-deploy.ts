@@ -24,7 +24,13 @@ import { generateTheme } from "@/lib/theme-generator/index";
 import { seedSite } from "@/lib/seeder/site-seeder";
 import { slugify } from "@/lib/site-context";
 import path from "path";
+import fs from "fs/promises";
 import { execSync } from "child_process";
+import { randomBytes } from "crypto";
+
+function generatePassword(): string {
+  return randomBytes(18).toString("base64");
+}
 
 export const rapidDeployCommand = new Command("rapid:deploy")
   .description("One-command: scrape → create site → generate theme → seed CMS → deploy to subdomain")
@@ -34,6 +40,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
   .option("-d, --deploy", "Enable Virtualmin deployment to subdomain")
   .option("--no-build", "Skip build step")
   .option("--no-seed", "Skip seeding content to CMS")
+  .option("--no-crawl-test", "Skip post-run Playwright crawl validation")
   .option("--dry-run", "Show what would be done without writing anything")
   .action(async (options) => {
     intro("🚀 Rake CMS — Rapid Deploy (Multi-Tenant)");
@@ -156,6 +163,29 @@ export const rapidDeployCommand = new Command("rapid:deploy")
       }
     } catch (error) {
       console.log(`   ⚠️ Brave Search: ${(error as Error).message}`);
+    }
+
+    // Keep local Apache vhost template aligned with the current generated site.
+    console.log("\n" + "=".repeat(50));
+    console.log("  PHASE 1d: Sync Local Apache Vhost Template");
+    console.log("=".repeat(50));
+    const vhostTemplateSpinner = spinner();
+    vhostTemplateSpinner.start("Updating cli/apache-vhost.conf with current subdomain...");
+    try {
+      const localVhostPath = path.join(outputDir, "cli", "apache-vhost.conf");
+      const syncResult = await syncLocalApacheVhostTemplate({
+        filePath: localVhostPath,
+        subdomain,
+        parentDomain: "alexawebservers.com",
+        dryRun: !!options.dryRun,
+      });
+      if (syncResult.updated) {
+        vhostTemplateSpinner.stop(`✅ Local vhost template ${options.dryRun ? "would be updated" : "updated"}`);
+      } else {
+        vhostTemplateSpinner.stop("✅ Local vhost template already up to date");
+      }
+    } catch (error) {
+      vhostTemplateSpinner.stop(`⚠️  Local vhost template sync skipped: ${(error as Error).message}`);
     }
 
     // Phase 2: Create Site in DB
@@ -327,7 +357,7 @@ export const rapidDeployCommand = new Command("rapid:deploy")
           .substring(0, 8);
         // Ensure it starts with a letter
         const vmUser = /^[a-z]/.test(rawUser) ? rawUser : "s" + rawUser;
-        const vmPass = execSync("openssl rand -base64 12", { encoding: "utf-8" }).trim();
+        const vmPass = generatePassword();
 
         // Create the Virtualmin virtual server for the subdomain
         // This creates a proper Unix user with its own home dir, FTP, email, etc.
@@ -634,6 +664,38 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
       }
     }
 
+    // Phase 10: Crawl validation (Playwright)
+    let crawlValidationPassed = false;
+    if (options.crawlTest !== false) {
+      console.log("\n" + "=".repeat(50));
+      console.log("  PHASE 10: Playwright Crawl Validation");
+      console.log("=".repeat(50));
+
+      const crawlBaseUrl = process.env.CRAWL_BASE_URL
+        || (doDeploy ? `https://${subdomain}` : "http://localhost:3000");
+      const expectedBusinessText = business?.name || site?.businessName || rawName;
+
+      const crawlSpinner = spinner();
+      crawlSpinner.start(`Running crawl validation against ${crawlBaseUrl}...`);
+      try {
+        runPostDeployCrawlValidation({
+          outputDir,
+          crawlBaseUrl,
+          expectedBusinessText,
+        });
+        crawlValidationPassed = true;
+        crawlSpinner.stop("✅ Crawl validation passed");
+      } catch (error: any) {
+        crawlValidationPassed = false;
+        crawlSpinner.stop(`❌ Crawl validation failed: ${(error as Error).message}`);
+      }
+    } else {
+      console.log("\n" + "=".repeat(50));
+      console.log("  PHASE 10: Playwright Crawl Validation");
+      console.log("=".repeat(50));
+      console.log("   ⏭️  Skipped (--no-crawl-test)");
+    }
+
     // Final summary
     console.log("\n" + "=".repeat(50));
     console.log("  ✅ RAPID DEPLOY COMPLETE");
@@ -642,10 +704,11 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
     console.log("  📊 What was done:");
     console.log(`     ${site ? "✓" : " "} Website scraped: ${site?.homepageUrl || "—"}`);
     console.log(`     ${business ? "✓" : " "} Business data: ${business?.name || "—"}`);
-    console.log(`     ✓ Site created in DB: ${slug} (ID: ${siteId || "—"})`);
+    console.log(`     ${options.seed !== false ? "✓" : " "} Site created in DB: ${options.seed !== false ? `${slug} (ID: ${siteId || "—"})` : "skipped (--no-seed)"}`);
     console.log(`     ✓ Theme generated`);
-    console.log(`     ✓ Content seeded to CMS`);
-    console.log(`     ✓ Build complete`);
+    console.log(`     ${options.seed !== false ? "✓" : " "} Content seeded to CMS${options.seed !== false ? "" : " (skipped)"}`);
+    console.log(`     ${options.build !== false ? "✓" : " "} Build complete${options.build !== false ? "" : " (skipped --no-build)"}`);
+    console.log(`     ${options.crawlTest !== false ? (crawlValidationPassed ? "✓" : "✗") : " "} Crawl validation${options.crawlTest !== false ? (crawlValidationPassed ? "" : " (failed)") : " (skipped --no-crawl-test)"}`);
     if (doDeploy) {
       console.log(`     ✓ Subdomain: https://${subdomain}`);
     }
@@ -689,4 +752,54 @@ function guessTypeFromName(name: string): string | null {
   for (const kw of creative) if (lower.includes(kw)) return "creative";
   for (const kw of realEstate) if (lower.includes(kw)) return "real-estate";
   return null;
+}
+
+async function syncLocalApacheVhostTemplate(params: {
+  filePath: string;
+  subdomain: string;
+  parentDomain: string;
+  dryRun: boolean;
+}): Promise<{ updated: boolean }> {
+  const { filePath, subdomain, parentDomain, dryRun } = params;
+  const current = await fs.readFile(filePath, "utf-8");
+
+  const updated = current
+    .replace(/(ServerName\s+)([^\s\n]+)/g, `$1${subdomain}`)
+    .replace(/(ServerAlias\s+)([^\n]+)/g, `$1*.${parentDomain}`);
+
+  if (updated === current) {
+    return { updated: false };
+  }
+
+  if (!dryRun) {
+    await fs.writeFile(filePath, updated, "utf-8");
+  }
+
+  return { updated: true };
+}
+
+function runPostDeployCrawlValidation(params: {
+  outputDir: string;
+  crawlBaseUrl: string;
+  expectedBusinessText: string;
+}): void {
+  const { outputDir, crawlBaseUrl, expectedBusinessText } = params;
+  const existingTexts = process.env.CRAWL_EXPECT_TEXTS;
+  const mergedExpectedTexts = existingTexts
+    ? `${existingTexts}||${expectedBusinessText}`
+    : expectedBusinessText;
+
+  const env = {
+    ...process.env,
+    CRAWL_BASE_URL: crawlBaseUrl,
+    CRAWL_EXPECT_TEXTS: mergedExpectedTexts,
+    CRAWL_REQUIRE_NON_PLACEHOLDER: process.env.CRAWL_REQUIRE_NON_PLACEHOLDER ?? "false",
+  };
+
+  execSync("npm run test:e2e:crawl", {
+    cwd: outputDir,
+    stdio: "inherit",
+    env,
+    timeout: 300000,
+  });
 }

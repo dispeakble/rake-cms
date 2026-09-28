@@ -8,9 +8,9 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
+import siteContent from "@/lib/i18n/site-content.json";
 
-// ─── Per-site services (embedded from scraped content) ───
-const SERVICES = [{"title":{"es":"Menú del Día","en":"Menú del Día"},"description":{"es":"Delicioso menú diario con platos frescos de temporada. Entrante, principal y postre, elaborados con ingredientes locales y recetas tradicionales.","en":"Delicioso menú diario con platos frescos de temporada. Entrante, principal y postre, elaborados con ingredientes locales y recetas tradicionales."}},{"title":{"es":"Especialidades de la Casa","en":"Especialidades de la Casa"},"description":{"es":"Nuestros platos estrella preparados con recetas únicas que combinan tradición e innovación. Pregunte a nuestro servicio por las sugerencias del chef.","en":"Nuestros platos estrella preparados con recetas únicas que combinan tradición e innovación. Pregunte a nuestro servicio por las sugerencias del chef."}},{"title":{"es":"Postres Artesanales","en":"Postres Artesanales"},"description":{"es":"Repostería casera elaborada cada día con ingredientes naturales. Tartas, pasteles y dulces tradicionales que ponen el broche de oro a su comida.","en":"Repostería casera elaborada cada día con ingredientes naturales. Tartas, pasteles y dulces tradicionales que ponen el broche de oro a su comida."}},{"title":{"es":"Carta de Vinos","en":"Carta de Vinos"},"description":{"es":"Cuidada selección de vinos locales e internacionales para acompañar su experiencia gastronómica. También disponibles cervezas artesanales y cócteles.","en":"Cuidada selección de vinos locales e internacionales para acompañar su experiencia gastronómica. También disponibles cervezas artesanales y cócteles."}},{"title":{"es":"Eventos y Celebraciones","en":"Eventos y Celebraciones"},"description":{"es":"Organizamos eventos privados, cumpleaños, reuniones de empresa y celebraciones especiales. Menús personalizados y atención exclusiva para su grupo.","en":"Organizamos eventos privados, cumpleaños, reuniones de empresa y celebraciones especiales. Menús personalizados y atención exclusiva para su grupo."}},{"title":{"es":"Take Away","en":"Take Away"},"description":{"es":"Disfrute de nuestra cocina en casa. Todos nuestros platos están disponibles para llevar, con un servicio rápido y empaquetado cuidadoso.","en":"Disfrute de nuestra cocina en casa. Todos nuestros platos están disponibles para llevar, con un servicio rápido y empaquetado cuidadoso."}}];
+const SERVICES = siteContent.services.items;
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -87,7 +87,7 @@ export default function Services() {
               transition={{ delay: 0.1 }}
               className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60"
             >
-              Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch
+              {__(siteContent.services.badge)}
             </motion.span>
             <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("services.title")}</h2>
           </div>

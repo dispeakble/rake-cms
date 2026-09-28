@@ -8,9 +8,11 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
+import siteContent from "@/lib/i18n/site-content.json";
 
 export default function Contact() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const __ = (m: Record<string,string>) => m[lang] || m.es || "";
   useEffect(() => {
     if (!document.querySelector('script[src*="recaptcha/api.js"]')) {
       const script = document.createElement("script");
@@ -45,7 +47,7 @@ export default function Contact() {
         >
           <span className="mb-4 block text-xs uppercase tracking-[0.3em] text-[var(--color-gold)]/60">{t("contact.badge")}</span>
           <h2 className="text-3xl font-bold text-white md:text-4xl gradient-text">{t("contact.title")}</h2>
-          <p className="mx-auto mt-3 max-w-xl text-tertiary">Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch</p>
+          <p className="mx-auto mt-3 max-w-xl text-tertiary">{__(siteContent.contact.locationHeading)}</p>
         </motion.div>
 
         <div className="grid gap-10 md:grid-cols-2">
@@ -63,12 +65,12 @@ export default function Contact() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[var(--color-gold)]/30"
             >
               <h3 className="mb-4 text-lg font-bold text-heading">
-                <span className="text-[var(--color-gold)]">📍</span> Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch
+                <span className="text-[var(--color-gold)]">📍</span> {__(siteContent.contact.locationHeading)}
               </h3>
               <div className="space-y-3 text-sm text-secondary">
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📍</span>
-                  <span>Dirección disponible próximamente</span>
+                  <span>{__(siteContent.contact.addressComingSoon)}</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5">📞</span>
@@ -88,7 +90,7 @@ export default function Contact() {
             >
               <div className="map-container">
                 <iframe
-                  title="Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch - Ubicación"
+                  title={__(siteContent.contact.mapTitle)}
                   src="https://www.openstreetmap.org/export/embed.html?bbox=-0.006%2C-0.006%2C0.006%2C0.006&amp;layer=mapnik&amp;marker=0%2C0"
                   width="100%"
                   height="100%"
@@ -99,7 +101,7 @@ export default function Contact() {
                 />
               </div>
               <p className="mt-2 text-center text-[10px] text-quaternary">
-                <a href="https://www.openstreetmap.org/?mlat=0&amp;mlon=0#map=16/0/0" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">Ver en OpenStreetMap</a>
+                <a href="https://www.openstreetmap.org/?mlat=0&amp;mlon=0#map=16/0/0" target="_blank" rel="noopener noreferrer" className="text-[var(--color-gold)] hover:underline">{__(siteContent.contact.viewOnMap)}</a>
               </p>
             </motion.div>
 
@@ -114,7 +116,7 @@ export default function Contact() {
               <div className="space-y-3 text-sm text-secondary">
                 <p>{t("contact.info_text")}</p>
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <p className="text-xs text-tertiary">{t("contact.response_time")}</p>
+                <p className="text-xs text-tertiary">{t("contact.info_response")}</p>
                 </div>
               </div>
             </motion.div>

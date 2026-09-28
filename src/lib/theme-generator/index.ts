@@ -925,9 +925,9 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
     true
   );
 
-  // Logo URL
-  const logoUrl = `/media/scraped/generated/logo.svg`;
-  const hasLogo = true;
+  // Prefer scraped logo; if unavailable, render text brand only.
+  const logoUrl = site?.logoUrl || "";
+  const hasLogo = logoUrl.length > 0;
 
   const navLinkClass = `relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full`;
   const mobileNavLinkClass = `text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer`;
@@ -1003,8 +1003,7 @@ function generateHeader(name: string, pageSlugs: SitePage[], businessType: Busin
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
-            <img src="${escapeJsx(logoUrl)}" alt="${escapeJsx(name)}" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
-            ${hasLogo ? '' : `
+            ${hasLogo ? `<img src="${escapeJsx(logoUrl)}" alt="${escapeJsx(name)}" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />` : `
             <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
               ${escapeJsx(name)}
             </span>
@@ -1175,9 +1174,9 @@ function generateHero(content: GeneratedContent, config: ThemeConfig, heroPhoto:
   // Carousel images base path
   const nameSlug = config.name.toLowerCase().replace(/[\s']/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   const carouselImages = [
-    `/media/scraped/generated/slide1.svg`,
-    `/media/scraped/generated/slide2.svg`,
-    `/media/scraped/generated/slide3.svg`,
+    `https://placehold.co/1920x1080/0f172a/e2e8f0?text=Slide+1`,
+    `https://placehold.co/1920x1080/111827/f8fafc?text=Slide+2`,
+    `https://placehold.co/1920x1080/1f2937/e5e7eb?text=Slide+3`,
   ];
 
   // ─── Per-language hero subtitle map ───
@@ -2296,9 +2295,9 @@ import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
 
 const ISLANDS = [
-  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", extraKey: "island_tenerife.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Tenerife" },
-  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", extraKey: "island_grancanaria.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Gran+Canaria" },
-  { titleKey: "island_other.title", descKey: "island_other.text", extraKey: "island_other.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Canarias" },
+  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", extraKey: "island_tenerife.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Destination+1" },
+  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", extraKey: "island_grancanaria.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Destination+2" },
+  { titleKey: "island_other.title", descKey: "island_other.text", extraKey: "island_other.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Destination+3" },
 ];
 
 export default function Islands() {

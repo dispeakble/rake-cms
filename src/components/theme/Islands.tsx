@@ -6,13 +6,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 import { useLanguage } from "@/lib/i18n";
+import siteContent from "@/lib/i18n/site-content.json";
 
 const ISLANDS = [
-  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", extraKey: "island_tenerife.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Tenerife" },
-  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", extraKey: "island_grancanaria.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Gran+Canaria" },
-  { titleKey: "island_other.title", descKey: "island_other.text", extraKey: "island_other.extra", image: "https://placehold.co/800x600/e2e8f0/64748b?text=Canarias" },
+  { titleKey: "island_tenerife.title", descKey: "island_tenerife.text", extraKey: "island_tenerife.extra" },
+  { titleKey: "island_grancanaria.title", descKey: "island_grancanaria.text", extraKey: "island_grancanaria.extra" },
+  { titleKey: "island_other.title", descKey: "island_other.text", extraKey: "island_other.extra" },
 ];
 
 export default function Islands() {
@@ -43,7 +43,9 @@ export default function Islands() {
         </motion.div>
 
         <div className="grid gap-8 md:grid-cols-3">
-          {ISLANDS.map((island, i) => (
+          {ISLANDS.map((island, i) => {
+            const image = siteContent.images.islandCards[i] || siteContent.images.aboutImage;
+            return (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 40, scale: 0.95 }}
@@ -57,7 +59,7 @@ export default function Islands() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
                 <div
                   className="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                  style={{ backgroundImage: `url(${island.image})` }}
+                  style={{ backgroundImage: `url(${image})` }}
                 />
                 <div className="absolute bottom-0 left-0 right-0 z-20 p-6">
                   <span className="mb-2 inline-block rounded-full bg-[var(--color-gold)]/20 px-3 py-1 text-xs font-medium text-[var(--color-gold)]">
@@ -77,7 +79,8 @@ export default function Islands() {
                 </div>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

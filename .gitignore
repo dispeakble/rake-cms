@@ -1,13 +1,32 @@
-# Generated sites per-output-mode
-generated-sites/
-wp-theme/
-wp-docker/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+/playwright-report/
+/test-results/
+.playwright/
+
+# next.js
+/.next/
+/out/
 
 # Dependencies
 node_modules/
 
-# Build artifacts
-.next/
+# misc
+.DS_Store
+*.pem
+.idea
 
 # Environment — NEVER commit real secrets
 .env
@@ -66,6 +85,17 @@ npm-debug.log*
 
 # Local scripts & scratch
 fix-key.*
+
+next-env.d.ts
+
+/public/media/scraped/
+/public/media/scraped/**
+/public/fonts/
+/public/images/
+
+# graphify outputs
+graphify-out/
+*/graphify-out/
 
 .nx/cache
 .nx/workspace-data

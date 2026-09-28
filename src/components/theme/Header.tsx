@@ -11,9 +11,11 @@
 	  import { useLanguage } from "@/lib/i18n";
 	  import { useTheme } from "@/components/theme/ThemeProvider";
 	  import type { Lang } from "@/lib/i18n";
+	  import siteContent from "@/lib/i18n/site-content.json";
 
 	  export default function Header() {
 	    const { lang, switchLang, t } = useLanguage();
+	      const __ = (m: Record<string,string>) => m[lang] || m.es || "";
 	    const { theme, toggleTheme } = useTheme();
 	    const [open, setOpen] = useState(false);
 	    const [langOpen, setLangOpen] = useState(false);
@@ -35,8 +37,11 @@
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           {/* Logo with gradient glow */}
           <Link href="/" className="group relative flex items-center gap-3 cursor-pointer">
-            <img src="/media/scraped/generated/logo.svg" alt="Daria&#x27;s Bakery &amp; Bistro | Breakfast &amp; Lunch" className="h-10 w-auto object-contain" style={{minWidth:'120px'}} />
             
+            <span className="text-xl font-black tracking-tight text-white transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[var(--color-gold)] group-hover:to-[var(--color-gold-light)]">
+              {siteContent.business.name}
+            </span>
+            <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-gradient-to-r from-[var(--color-gold)] to-[var(--color-gold-light)] transition-all duration-300 group-hover:w-full" />
           </Link>
 
           {/* ── Spacer between logo and menu ── */}
@@ -47,7 +52,6 @@
             <Link href="/" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.home")}</Link>
             <Link href="/#about" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.about")}</Link>
           <Link href="/#services" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.services")}</Link>
-          <Link href="/#menu" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.menu")}</Link>
             <Link href="/#contact" className="relative text-sm font-medium text-white/70 transition-colors hover:text-white cursor-pointer after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-gradient-to-r after:from-[var(--color-gold)] after:to-[var(--color-gold-light)] after:transition-all after:duration-300 hover:after:w-full">{t("nav.contact")}</Link>
             {/* ─── Language Dropdown ─── */}
             <div className="relative">
@@ -81,7 +85,7 @@
             <button
               onClick={toggleTheme}
               className="theme-toggle-btn"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label={theme === 'dark' ? __(siteContent.header.switchToLightMode) : __(siteContent.header.switchToDarkMode)}
             >
               {theme === 'dark' ? (
                 <svg className="w-4 h-4 text-[var(--color-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +103,7 @@
           <button
             className="relative z-50 flex h-10 w-10 items-center justify-center text-white md:hidden cursor-pointer"
             onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
+            aria-label={__(siteContent.header.toggleMenuAria)}
             style={{cursor:'pointer'}}
           >
             <motion.span
@@ -141,7 +145,6 @@
                 <Link href="/" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.home")}</Link>
                 <Link href="/#about" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.about")}</Link>
           <Link href="/#services" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.services")}</Link>
-          <Link href="/#menu" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.menu")}</Link>
                 <Link href="/#contact" className="text-base font-medium text-white/80 transition hover:text-[var(--color-gold)] cursor-pointer" onClick={() => setOpen(false)}>{t("nav.contact")}</Link>
                 <div className="relative">
                   <button
@@ -179,7 +182,7 @@
                     {theme === 'dark' ? '☀️' : '🌙'}
                   </span>
                   <span className="text-white/80">
-                    {theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+                    {theme === 'dark' ? __(siteContent.header.lightModeLabel) : __(siteContent.header.darkModeLabel)}
                   </span>
                 </button>
               </motion.div>

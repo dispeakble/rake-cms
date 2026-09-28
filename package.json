@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "node scripts/bootstrap-env.js && next start",
     "lint": "eslint",
+    "test:e2e:crawl": "playwright test tests/e2e/crawl-validation.spec.ts",
+    "test:e2e:crawl:ui": "playwright test tests/e2e/crawl-validation.spec.ts --ui",
+    "playwright:install": "playwright install chromium",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
@@ -43,6 +46,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
